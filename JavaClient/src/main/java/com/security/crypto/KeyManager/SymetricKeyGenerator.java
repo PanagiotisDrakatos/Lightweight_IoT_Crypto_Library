@@ -6,7 +6,7 @@ import org.apache.commons.codec.binary.Base64;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 
-public class SymetricKeyGenerator extends Keys {
+public class SymetricKeyGenerator extends GeneralKey {
 
     private String Base64SymetriKeyFormat;
 
@@ -26,7 +26,7 @@ public class SymetricKeyGenerator extends Keys {
         this.Base64SymetriKeyFormat = Base64StringKeyFormat;
     }
 
-    public String getBase64SymetriKeyFormat() {
+    public String getBase64SymetricKeyFormat() {
         return Base64SymetriKeyFormat;
     }
 

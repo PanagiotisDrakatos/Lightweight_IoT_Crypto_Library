@@ -1,31 +1,33 @@
 package com.security.crypto.Handshake;
 
-import com.security.crypto.AES_Encryption.Aes_Encryption;
-import com.security.crypto.AES_Encryption.HMacAlgoProvider;
+import com.security.crypto.Ciphers.AES.AES_ECB_PKCS7;
+import com.security.crypto.Ciphers.AES.HMacAlgoProvider;
+import com.security.crypto.Ciphers.RSA.Fingerprint;
 import com.security.crypto.Configuration.JSonObject;
 import com.security.crypto.IOSocket.IOCallback;
 import com.security.crypto.IOSocket.IOTransport;
 import com.security.crypto.KeyManager.KeyManagerImp;
-import com.security.crypto.RSA_Encryption.Fingerprint;
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class IOMessageExhange implements IOCallback {
+public class IOMessageExhange extends IOCallback {
 
     private final KeyManagerImp keystore;
     private final IOTransport SocketChanel;
+    private AES_ECB_PKCS7 aes_ecb_pkcs7;
 
     public IOMessageExhange(IOTransport SocketChanel, KeyManagerImp keystore) {
         this.SocketChanel = SocketChanel;
         this.keystore = keystore;
+        this.aes_ecb_pkcs7 = new AES_ECB_PKCS7();
     }
 
     @Override
     public void SendDHEncryptedMessage(String Message) {
         try {
-            String encryptedMessage = (Aes_Encryption.AeS_Encrypt(Message, this.keystore.loadRemoteSecretKey().getSessionKey()));
+            String encryptedMessage = (this.aes_ecb_pkcs7.AeS_Encrypt(Message, this.keystore.loadRemoteSecretKey().getSessionKey()));
             String HmacHash = HMacAlgoProvider.HmacSha256Sign(encryptedMessage, this.keystore.loadRemoteSecretKey().getSessionKey());
 
             JSonObject WriteObj = new JSonObject();
@@ -47,7 +49,7 @@ public class IOMessageExhange implements IOCallback {
             if (Fingerprint.verifySig(ReadObj.getEncryptedMessage(), this.keystore.loadRemoteServerPublicKey(), ReadObj.getFingerPrint())) {
                 if (HMacAlgoProvider.HmacSha256Verify(ReadObj.getEncryptedMessage(), this.keystore.loadRemoteSecretKey().getSessionKey(),
                         ReadObj.getHmacHash())) {
-                    return Aes_Encryption.AeS_Decrypt(ReadObj.getEncryptedMessage(),
+                    return this.aes_ecb_pkcs7.AeS_Decrypt(ReadObj.getEncryptedMessage(),
                             this.keystore.loadRemoteSecretKey().getSessionKey());
                 } else {
                     throw new Exception("Integrity of SymmetricKey canot verified");

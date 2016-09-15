@@ -1,7 +1,7 @@
 package com.security.crypto.Configuration;
 
 
-public final class JSonObject {
+public class JSonObject {
 
     public String EncryptedSymetricClientKey;
     public String RSAPublicKey;

@@ -1,4 +1,4 @@
-package com.security.crypto.AES_Encryption;
+package com.security.crypto.Ciphers.AES;
 
 
 import com.security.crypto.Configuration.Properties;

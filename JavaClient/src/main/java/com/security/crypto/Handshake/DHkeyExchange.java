@@ -1,14 +1,14 @@
 package com.security.crypto.Handshake;
 
-import com.security.crypto.AES_Encryption.Aes_Encryption;
-import com.security.crypto.AES_Encryption.HMacAlgoProvider;
+import com.security.crypto.Ciphers.AES.AES_ECB_PKCS7;
+import com.security.crypto.Ciphers.AES.HMacAlgoProvider;
+import com.security.crypto.Ciphers.RSA.Fingerprint;
+import com.security.crypto.Ciphers.RSA.RSA_ECB_PKCS1;
 import com.security.crypto.Configuration.JSonObject;
 import com.security.crypto.Configuration.RandomGenerator;
 import com.security.crypto.IOSocket.IOSynAck;
 import com.security.crypto.IOSocket.IOTransport;
 import com.security.crypto.KeyManager.KeyManagerImp;
-import com.security.crypto.RSA_Encryption.Fingerprint;
-import com.security.crypto.RSA_Encryption.RSA_Encryption;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -20,11 +20,15 @@ public final class DHkeyExchange implements IOSynAck {
     private final IOTransport SocketChanel;
     private final RandomGenerator Genarator;
     private final KeyManagerImp keystore;
+    private AES_ECB_PKCS7 aes_ecb_pkcs7;
+    private RSA_ECB_PKCS1 rsa_ecb_pkcs1;
 
     public DHkeyExchange(IOTransport SocketChanel, KeyManagerImp keystore) {
         this.SocketChanel = SocketChanel;
         this.Genarator = new RandomGenerator();
         this.keystore = keystore;
+        this.aes_ecb_pkcs7 = new AES_ECB_PKCS7();
+        this.rsa_ecb_pkcs1 = new RSA_ECB_PKCS1();
     }
 
     @Override
@@ -65,16 +69,16 @@ public final class DHkeyExchange implements IOSynAck {
         try {
             BigInteger ServerPublicPrimeNumber = Genarator.GeneratePublicPrimeNumber();
 
-            System.out.println(keystore.loadRemoteSymetricKey().getBase64SymetriKeyFormat());
-            String ClientEncryptedPrimeNumber = Aes_Encryption.AeS_Encrypt(ServerPublicPrimeNumber.toString(), keystore.loadRemoteSymetricKey().getBase64SymetriKeyFormat());
-            String HmacHash = HMacAlgoProvider.HmacSha256Sign(ClientEncryptedPrimeNumber, keystore.loadRemoteSymetricKey().getBase64SymetriKeyFormat());
+            System.out.println(keystore.loadRemoteSymetricKey().getBase64SymetricKeyFormat());
+            String ClientEncryptedPrimeNumber = this.aes_ecb_pkcs7.AeS_Encrypt(ServerPublicPrimeNumber.toString(), keystore.loadRemoteSymetricKey().getBase64SymetricKeyFormat());
+            String HmacHash = HMacAlgoProvider.HmacSha256Sign(ClientEncryptedPrimeNumber, keystore.loadRemoteSymetricKey().getBase64SymetricKeyFormat());
 
             JSonObject ObjToSend = new JSonObject();
 
             ObjToSend.setClientEncryptedPrimeNumber(ClientEncryptedPrimeNumber);
-            ObjToSend.setClientKey(keystore.loadRemoteSymetricKey().getBase64SymetriKeyFormat());
+            ObjToSend.setClientKey(keystore.loadRemoteSymetricKey().getBase64SymetricKeyFormat());
             ObjToSend.setHmacHash(HmacHash);
-            ObjToSend.setEncryptedSymetricClientKey(RSA_Encryption.RsaEecrypt(keystore.loadRemoteServerPublicKey(), keystore.loadRemoteSymetricKey().getBase64SymetriKeyFormat()));
+            ObjToSend.setEncryptedSymetricClientKey(this.rsa_ecb_pkcs1.RsaEncrypt(keystore.loadRemoteServerPublicKey(), keystore.loadRemoteSymetricKey().getBase64SymetricKeyFormat()));
             ObjToSend.setFingerPrint(Fingerprint.SignData(ObjToSend.getEncryptedSymetricClientKey(), keystore.loadClientPrivateKey()));
 
             String JsonString = JSonParse.WriteObject(ObjToSend);
@@ -96,10 +100,10 @@ public final class DHkeyExchange implements IOSynAck {
             String DecryptedServerNumber;
 
             if (Fingerprint.verifySig(receivedObj.getServerPrimeNumber(), keystore.loadRemoteServerPublicKey(), receivedObj.getFingerPrint())) {
-                if (HMacAlgoProvider.HmacSha256Verify(receivedObj.getServerPrimeNumber(), keystore.loadRemoteSymetricKey().getBase64SymetriKeyFormat(),
+                if (HMacAlgoProvider.HmacSha256Verify(receivedObj.getServerPrimeNumber(), keystore.loadRemoteSymetricKey().getBase64SymetricKeyFormat(),
                         receivedObj.getHmacHash())) {
-                    DecryptedServerNumber = Aes_Encryption.AeS_Decrypt(receivedObj.getServerPrimeNumber(),
-                            keystore.loadRemoteSymetricKey().getBase64SymetriKeyFormat());
+                    DecryptedServerNumber = this.aes_ecb_pkcs7.AeS_Decrypt(receivedObj.getServerPrimeNumber(),
+                            keystore.loadRemoteSymetricKey().getBase64SymetricKeyFormat());
                     BigInteger sessionResult = Genarator.SessionGenerator(DecryptedServerNumber);
                     keystore.saveSecretKey(sessionResult.toString());
 

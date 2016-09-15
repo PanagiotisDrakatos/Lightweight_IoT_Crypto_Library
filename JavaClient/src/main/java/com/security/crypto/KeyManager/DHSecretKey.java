@@ -1,7 +1,7 @@
 package com.security.crypto.KeyManager;
 
 
-public class DHSecretKey extends Keys {
+public class DHSecretKey extends GeneralKey {
 
     private String SessionKey;
 

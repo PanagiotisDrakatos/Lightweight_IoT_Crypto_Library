@@ -1,8 +1,8 @@
 package com.security.crypto.IOSocket;
 
-public interface IOCallback {
+public abstract class IOCallback {
 
-    void SendDHEncryptedMessage(String Message);
+    public abstract void SendDHEncryptedMessage(String Message);
 
-    String ReceiveDHEncryptedMessage();
+    public abstract String ReceiveDHEncryptedMessage();
 }

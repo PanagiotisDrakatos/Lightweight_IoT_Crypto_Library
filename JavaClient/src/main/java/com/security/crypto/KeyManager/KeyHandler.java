@@ -19,11 +19,11 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class KeyHandler implements KeyManagerImp {
+public class KeyHandler extends KeyManagerImp {
 
     private final SymetricKeyGenerator SymetricKey;
     private final DHSecretKey SecretKey;
-    private static final String StringToReplace = "(-+BEGIN PUBLIC KEY-+\\r?\\n|-+END PUBLIC KEY-+\\r?\\n?)";
+
 
     public KeyHandler() {
         this.SecretKey = new DHSecretKey();
@@ -41,7 +41,7 @@ public class KeyHandler implements KeyManagerImp {
             byte[] keyBytes = Base64.decodeBase64(pubKey.getBytes(Properties.CHAR_ENCODING));
             // Store Public Key.
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
-            FileOutputStream Fos = new FileOutputStream(KeyManagerImp.Server_PUBLIC_KEY);
+            FileOutputStream Fos = new FileOutputStream(Server_PUBLIC_KEY);
             Fos.write(x509EncodedKeySpec.getEncoded());
             Fos.close();
         } catch (UnsupportedEncodingException ex) {
@@ -68,8 +68,8 @@ public class KeyHandler implements KeyManagerImp {
         FileInputStream fis;
         try {
             // Read Public Key.
-            File filePublicKey = new File(KeyManagerImp.Server_PUBLIC_KEY);
-            fis = new FileInputStream(KeyManagerImp.Server_PUBLIC_KEY);
+            File filePublicKey = new File(Server_PUBLIC_KEY);
+            fis = new FileInputStream(Server_PUBLIC_KEY);
             byte[] encodedPublicKey = new byte[(int) filePublicKey.length()];
             fis.read(encodedPublicKey);
             fis.close();
@@ -105,7 +105,7 @@ public class KeyHandler implements KeyManagerImp {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
-            fis = new FileInputStream(new File(KeyManagerImp.Client_PUBLIC_KEY));
+            fis = new FileInputStream(new File(Client_PUBLIC_KEY));
             ois = new ObjectInputStream(fis);
 
             BigInteger mod = (BigInteger) ois.readObject();
@@ -139,7 +139,7 @@ public class KeyHandler implements KeyManagerImp {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
-            fis = new FileInputStream(new File(KeyManagerImp.Client_PRIVATE_KEY));
+            fis = new FileInputStream(new File(Client_PRIVATE_KEY));
             ois = new ObjectInputStream(fis);
 
             BigInteger mod = (BigInteger) ois.readObject();
@@ -203,8 +203,8 @@ public class KeyHandler implements KeyManagerImp {
     @Override
     public boolean Key_Files() {
 
-        File privateKey = new File(KeyManagerImp.Client_PRIVATE_KEY);
-        File publicKey = new File(KeyManagerImp.Client_PUBLIC_KEY);
+        File privateKey = new File(Client_PRIVATE_KEY);
+        File publicKey = new File(Client_PUBLIC_KEY);
 
         return !(privateKey.exists() && publicKey.exists());
     }
@@ -213,7 +213,6 @@ public class KeyHandler implements KeyManagerImp {
     public String loadStringFormatClientPublicKey() {
         try {
             byte[] encoded = loadClientPublicKey().getEncoded();
-            ASN1Sequence dsds = ASN1Sequence.getInstance(encoded);
             SubjectPublicKeyInfo subjectPublicKeyInfo = new SubjectPublicKeyInfo(ASN1Sequence.getInstance(encoded));
             byte[] otherEncoded = Base64.encodeBase64(subjectPublicKeyInfo.getPublicKey().getEncoded());
             String publikey = new String(otherEncoded);

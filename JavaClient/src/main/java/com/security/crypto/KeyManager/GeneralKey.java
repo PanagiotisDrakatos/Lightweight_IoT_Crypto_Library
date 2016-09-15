@@ -1,7 +1,7 @@
 package com.security.crypto.KeyManager;
 
 
-public abstract class Keys {
+public abstract class GeneralKey {
 
     private final Type type;
 
@@ -11,7 +11,7 @@ public abstract class Keys {
     }
 
     //this constructor  doesn't actually "BUILD" the object, it is used to initialize fields.
-    public Keys(Type type) {
+    public GeneralKey(Type type) {
         this.type = type;
     }
 

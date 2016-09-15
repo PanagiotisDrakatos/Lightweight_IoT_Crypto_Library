@@ -1,5 +1,6 @@
-package com.security.crypto.RSA_Encryption;
+package com.security.crypto.Ciphers.RSA;
 
+import com.security.crypto.Ciphers.RsaCiphers;
 import com.security.crypto.Configuration.Properties;
 import org.apache.commons.codec.binary.Base64;
 
@@ -7,9 +8,9 @@ import javax.crypto.Cipher;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-public class RSA_Encryption {
+public class RSA_ECB_PKCS1 implements RsaCiphers {
 
-    public static String RsaEecrypt(PublicKey pubKey, String plainText) throws Exception {
+    public String RsaEncrypt(PublicKey pubKey, String plainText) throws Exception {
         byte[] plainBytes = plainText.getBytes(Properties.CHAR_ENCODING);
         Cipher cipher = Cipher.getInstance(Properties.RSA_CRYPTO_ALGORITHM);
 
@@ -22,7 +23,7 @@ public class RSA_Encryption {
         return encryptedString;
     }
 
-    public static String RsaDecrypt(PrivateKey privateKey, String EncryptedText) throws Exception {
+    public String RsaDecrypt(PrivateKey privateKey, String EncryptedText) throws Exception {
         byte[] plainBytes = Base64.decodeBase64(EncryptedText.getBytes(Properties.CHAR_ENCODING));
         byte[] iv = new byte[16]; // initialization vector with all 0
 

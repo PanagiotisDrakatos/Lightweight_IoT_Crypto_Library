@@ -1,4 +1,4 @@
-package com.security.crypto.RSA_Encryption;
+package com.security.crypto.Ciphers.RSA;
 
 import com.security.crypto.Configuration.Properties;
 import org.apache.commons.codec.binary.Base64;

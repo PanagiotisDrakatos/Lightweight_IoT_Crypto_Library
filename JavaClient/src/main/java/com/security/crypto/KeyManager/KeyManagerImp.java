@@ -4,34 +4,35 @@ import java.math.BigInteger;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-public interface KeyManagerImp {
+public abstract class KeyManagerImp {
 
-    String exponent = "95632573769194905177488615436919317766582673020891665265323677789504596581977";
-    String modulus = "81554351438297688582888558141846154981885664956959015742153749206820791432251";
+    public static final String exponent = "95632573769194905177488615436919317766582673020891665265323677789504596581977";
+    public static final String modulus = "81554351438297688582888558141846154981885664956959015742153749206820791432251";
 
     //unfortunately this works only for Windows os
-    String Server_PUBLIC_KEY = System.getProperty("user.dir") + "\\Server\\Public.key";
-    String Client_PUBLIC_KEY = System.getProperty("user.dir") + "\\Client\\Public.key";
-    String Client_PRIVATE_KEY = System.getProperty("user.dir") + "\\Client\\Private.key";
+    public static final String Server_PUBLIC_KEY = System.getProperty("user.dir") + "\\Server\\Public.key";
+    public static final String Client_PUBLIC_KEY = System.getProperty("user.dir") + "\\Client\\Public.key";
+    public static final String Client_PRIVATE_KEY = System.getProperty("user.dir") + "\\Client\\Private.key";
+    public static final String StringToReplace = "(-+BEGIN PUBLIC KEY-+\\r?\\n|-+END PUBLIC KEY-+\\r?\\n?)";
 
-    void saveServerPublicKey(String pubKey);
+    public abstract void saveServerPublicKey(String pubKey);
 
-    void saveClientKeyPair(String fileName, BigInteger modules, BigInteger exponent);
+    public abstract void saveClientKeyPair(String fileName, BigInteger modules, BigInteger exponent);
 
-    void saveSecretKey(String keyStringFormat);
+    public abstract void saveSecretKey(String keyStringFormat);
 
-    PublicKey loadRemoteServerPublicKey();
+    public abstract PublicKey loadRemoteServerPublicKey();
 
-    PublicKey loadClientPublicKey();
+    public abstract PublicKey loadClientPublicKey();
 
-    String loadStringFormatClientPublicKey();
+    public abstract String loadStringFormatClientPublicKey();
 
-    PrivateKey loadClientPrivateKey();
+    public abstract PrivateKey loadClientPrivateKey();
 
-    DHSecretKey loadRemoteSecretKey();
+    public abstract DHSecretKey loadRemoteSecretKey();
 
-    SymetricKeyGenerator loadRemoteSymetricKey();
+    public abstract SymetricKeyGenerator loadRemoteSymetricKey();
 
-    boolean Key_Files();
+    public abstract boolean Key_Files();
 
 }
