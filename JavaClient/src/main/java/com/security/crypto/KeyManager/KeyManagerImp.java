@@ -1,8 +1,7 @@
 package com.security.crypto.KeyManager;
 
-import java.math.BigInteger;
-import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.Certificate;
 
 public abstract class KeyManagerImp {
 
@@ -11,28 +10,18 @@ public abstract class KeyManagerImp {
 
     //unfortunately this works only for Windows os
     public static final String Server_PUBLIC_KEY = System.getProperty("user.dir") + "\\Server\\Public.key";
-    public static final String Client_PUBLIC_KEY = System.getProperty("user.dir") + "\\Client\\Public.key";
-    public static final String Client_PRIVATE_KEY = System.getProperty("user.dir") + "\\Client\\Private.key";
-    public static final String StringToReplace = "(-+BEGIN PUBLIC KEY-+\\r?\\n|-+END PUBLIC KEY-+\\r?\\n?)";
+    public static final String Server_Certificate = System.getProperty("user.dir") + "\\Server\\Certificate.keystore";
 
-    public abstract void saveServerPublicKey(String pubKey);
+    public abstract void saveServerPublicKey(Certificate cert);
 
-    public abstract void saveClientKeyPair(String fileName, BigInteger modules, BigInteger exponent);
 
     public abstract void saveSecretKey(String keyStringFormat);
 
     public abstract PublicKey loadRemoteServerPublicKey();
 
-    public abstract PublicKey loadClientPublicKey();
-
-    public abstract String loadStringFormatClientPublicKey();
-
-    public abstract PrivateKey loadClientPrivateKey();
-
     public abstract DHSecretKey loadRemoteSecretKey();
 
     public abstract SymetricKeyGenerator loadRemoteSymetricKey();
 
-    public abstract boolean Key_Files();
 
 }

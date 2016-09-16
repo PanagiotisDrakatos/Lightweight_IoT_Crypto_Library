@@ -1,13 +1,17 @@
 package com.security.crypto.IOSocket;
 
-public interface IOSynAck {
+import java.io.IOException;
 
-    void SendClientPublicKey();
+public abstract class IOSynAck {
 
-    void ReceiveServerPublicKey();
+    public abstract void SendPlainMessage() throws IOException;
 
-    String SendPrimeNumber();
+    public abstract void ReceiveServerCertificate() throws Exception;
 
-    void EndDHsession();
+    public abstract void ResendCookieServer() throws IOException;
+
+    public abstract void SendPublicValue() throws IOException;
+
+    public abstract void ReceivePublicValue() throws IOException;
 
 }

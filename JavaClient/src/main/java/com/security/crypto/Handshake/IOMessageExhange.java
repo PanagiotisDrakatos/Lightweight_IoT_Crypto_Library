@@ -32,9 +32,9 @@ public class IOMessageExhange extends IOCallback {
 
             JSonObject WriteObj = new JSonObject();
 
-            WriteObj.setEncryptedMessage(encryptedMessage);
-            WriteObj.setHmacHash(HmacHash);
-            WriteObj.setFingerPrint(Fingerprint.SignData(WriteObj.getEncryptedMessage(), keystore.loadClientPrivateKey()));
+            WriteObj.EncryptedMessage = encryptedMessage;
+            WriteObj.HmacHash = HmacHash;
+            //  WriteObj.FingerPrint=Fingerprint.SignData(WriteObj.EncryptedMessage, keystore.loadClientPrivateKey());
             String JsonString = JSonParse.WriteObject(WriteObj);
             SocketChanel.SendMessage(JsonString);
         } catch (Exception ex) {
@@ -46,10 +46,10 @@ public class IOMessageExhange extends IOCallback {
     public String ReceiveDHEncryptedMessage() {
         try {
             JSonObject ReadObj = JSonParse.ReadObject(SocketChanel.receiveMessage());
-            if (Fingerprint.verifySig(ReadObj.getEncryptedMessage(), this.keystore.loadRemoteServerPublicKey(), ReadObj.getFingerPrint())) {
-                if (HMacAlgoProvider.HmacSha256Verify(ReadObj.getEncryptedMessage(), this.keystore.loadRemoteSecretKey().getSessionKey(),
-                        ReadObj.getHmacHash())) {
-                    return this.aes_ecb_pkcs7.AeS_Decrypt(ReadObj.getEncryptedMessage(),
+            if (Fingerprint.verifySig(ReadObj.EncryptedMessage, this.keystore.loadRemoteServerPublicKey(), ReadObj.FingerPrint)) {
+                if (HMacAlgoProvider.HmacSha256Verify(ReadObj.EncryptedMessage, this.keystore.loadRemoteSecretKey().getSessionKey(),
+                        ReadObj.HmacHash)) {
+                    return this.aes_ecb_pkcs7.AeS_Decrypt(ReadObj.EncryptedMessage,
                             this.keystore.loadRemoteSecretKey().getSessionKey());
                 } else {
                     throw new Exception("Integrity of SymmetricKey canot verified");

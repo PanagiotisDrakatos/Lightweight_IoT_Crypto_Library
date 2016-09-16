@@ -1,6 +1,5 @@
 package com.security.crypto.Handshake;
 
-import com.security.crypto.Ciphers.RSA.RsaKeyGen;
 import com.security.crypto.IOSocket.EstablishConnection;
 import com.security.crypto.IOSocket.IOCallback;
 import com.security.crypto.IOSocket.IOSynAck;
@@ -9,9 +8,6 @@ import com.security.crypto.KeyManager.KeyManagerImp;
 
 import java.awt.*;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -29,34 +25,31 @@ public class SessionHandler {
     private Toolkit toolkit;
 
     public SessionHandler(String connection) {
-        try {
-            this.Session = new EstablishConnection(connection);
-            this.keystore = new KeyHandler();
-            RsaKeyGen rsaKeyGen = new RsaKeyGen(this.keystore);
-            this.keyExchange = new DHkeyExchange(this.Session.getTransport(), this.keystore);
-            this.MessageExhange = new IOMessageExhange(this.Session.getTransport(), this.keystore);
-        } catch (IOException | NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException ex) {
-            Logger.getLogger(SessionHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.Session = new EstablishConnection(connection);
+        this.keystore = new KeyHandler();
+        this.keyExchange = new DHkeyExchange(this.Session.getTransport(), this.keystore);
+        this.MessageExhange = new IOMessageExhange(this.Session.getTransport(), this.keystore);
     }
 
     public SessionHandler(String connection, int timeout) {
-        try {
-            this.Session = new EstablishConnection(connection, timeout);
-            this.keystore = new KeyHandler();
-            RsaKeyGen rsaKeyGen = new RsaKeyGen(this.keystore);
-            this.keyExchange = new DHkeyExchange(this.Session.getTransport(), this.keystore);
-            this.MessageExhange = new IOMessageExhange(this.Session.getTransport(), this.keystore);
-        } catch (IOException | NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException ex) {
-            Logger.getLogger(SessionHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.Session = new EstablishConnection(connection, timeout);
+        this.keystore = new KeyHandler();
+        this.keyExchange = new DHkeyExchange(this.Session.getTransport(), this.keystore);
+        this.MessageExhange = new IOMessageExhange(this.Session.getTransport(), this.keystore);
     }
 
     public void StartDHKeyExchange() {
-        this.keyExchange.SendClientPublicKey();
-        this.keyExchange.ReceiveServerPublicKey();
-        this.keyExchange.SendPrimeNumber();
-        this.keyExchange.EndDHsession();
+        try {
+            this.keyExchange.SendPlainMessage();
+            this.keyExchange.ReceiveServerCertificate();
+            this.keyExchange.ResendCookieServer();
+            this.keyExchange.SendPublicValue();
+            this.keyExchange.ReceivePublicValue();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println("---------------DHkeys Sucessfuly Changed--------------------");
     }
 

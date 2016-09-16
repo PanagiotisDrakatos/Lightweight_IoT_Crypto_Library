@@ -9,6 +9,12 @@ public abstract class Properties {
     public static final String PlainTextConnection = "PlainTextConnection";
     public static final String SslTlsV2 = "SslTlsV2";
 
+
+    public static final String SYN = "ClientHello";
+    public static final String SYN_ACK = "ServerHello";
+    public static final String Replay = "Resend";
+
+
     //encryption properties  
     //for more info check https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
     //g^x mod p 

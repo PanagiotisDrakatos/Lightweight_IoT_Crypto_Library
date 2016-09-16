@@ -2,19 +2,15 @@ package com.security.crypto.KeyManager;
 
 import com.security.crypto.Configuration.Properties;
 import com.security.crypto.Handshake.DHkeyExchange;
-import org.apache.commons.codec.binary.Base64;
-import org.bouncycastle.asn1.ASN1Sequence;
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 
 import java.io.*;
-import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.RSAPrivateKeySpec;
-import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,34 +26,35 @@ public class KeyHandler extends KeyManagerImp {
         this.SymetricKey = new SymetricKeyGenerator();
     }
 
-    /**
-     * @param pubKey
-     */
     @Override
-    public void saveServerPublicKey(String pubKey) {
+    public void saveServerPublicKey(Certificate cert) {
         try {
-            // 
-            pubKey = pubKey.replaceAll(StringToReplace, "");
-            byte[] keyBytes = Base64.decodeBase64(pubKey.getBytes(Properties.CHAR_ENCODING));
-            // Store Public Key.
-            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
-            FileOutputStream Fos = new FileOutputStream(Server_PUBLIC_KEY);
-            Fos.write(x509EncodedKeySpec.getEncoded());
-            Fos.close();
+
+            if (cert instanceof X509Certificate) {
+                X509Certificate x = (X509Certificate) cert;
+                X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(x.getEncoded());
+                FileOutputStream Fos = new FileOutputStream(Server_PUBLIC_KEY);
+                Fos.write(x509EncodedKeySpec.getEncoded());
+                Fos.close();
+            } else
+                throw new CertificateException("Not valid Cetificate");
+
+
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(DHkeyExchange.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DHkeyExchange.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(DHkeyExchange.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CertificateException e) {
+            e.printStackTrace();
         }
-
     }
 
     @Override
     public void saveSecretKey(String keyStringFormat) {
         this.SecretKey.setSessionKey(keyStringFormat);
-    }
+        }
 
     /**
      * @return
@@ -83,13 +80,11 @@ public class KeyHandler extends KeyManagerImp {
             Logger.getLogger(DHkeyExchange.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException ex) {
             Logger.getLogger(DHkeyExchange.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            }
         return publicKey;
     }
 
-    /**
-     * @return
-     */
+
     @Override
     public DHSecretKey/**/ loadRemoteSecretKey() {
         return this.SecretKey; //To change body of generated methods, choose Tools | Templates.
@@ -100,127 +95,5 @@ public class KeyHandler extends KeyManagerImp {
         return this.SymetricKey;
     }
 
-    @Override
-    public PublicKey loadClientPublicKey() {
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
-        try {
-            fis = new FileInputStream(new File(Client_PUBLIC_KEY));
-            ois = new ObjectInputStream(fis);
 
-            BigInteger mod = (BigInteger) ois.readObject();
-            BigInteger expon = (BigInteger) ois.readObject();
-
-            //Get Public Key
-            RSAPublicKeySpec rsaPublicKeySpec = new RSAPublicKeySpec(mod, expon);
-            KeyFactory fact = KeyFactory.getInstance(Properties.RSA_ALGORITHM);
-            PublicKey publicKey = fact.generatePublic(rsaPublicKeySpec);
-
-            return publicKey;
-
-        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-        } finally {
-            if (ois != null) {
-                try {
-                    ois.close();
-                    if (fis != null) {
-                        fis.close();
-                    }
-                } catch (IOException ex) {
-                    Logger.getLogger(KeyHandler.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        return null;
     }
-
-    @Override
-    public PrivateKey loadClientPrivateKey() {
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
-        try {
-            fis = new FileInputStream(new File(Client_PRIVATE_KEY));
-            ois = new ObjectInputStream(fis);
-
-            BigInteger mod = (BigInteger) ois.readObject();
-            BigInteger exp = (BigInteger) ois.readObject();
-
-            //Get Private Key
-            RSAPrivateKeySpec rsaPrivateKeySpec = new RSAPrivateKeySpec(mod, exp);
-            KeyFactory fact = KeyFactory.getInstance(Properties.RSA_ALGORITHM);
-            PrivateKey privateKey = fact.generatePrivate(rsaPrivateKeySpec);
-
-            return privateKey;
-
-        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-        } finally {
-            if (ois != null) {
-                try {
-                    ois.close();
-                    if (fis != null) {
-                        fis.close();
-                    }
-                } catch (IOException ex) {
-                    Logger.getLogger(KeyHandler.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void saveClientKeyPair(String fileName, BigInteger modules, BigInteger exponent) {
-        FileOutputStream fos = null;
-        ObjectOutputStream oos = null;
-
-        try {
-            //System.out.println("Generating " + fileName + "...");
-            fos = new FileOutputStream(fileName);
-            oos = new ObjectOutputStream(new BufferedOutputStream(fos));
-
-            oos.writeObject(modules);
-            oos.writeObject(exponent);
-            // System.out.println(fileName + " generated successfully");
-        } catch (Exception e) {
-        } finally {
-            if (oos != null) {
-                try {
-                    oos.close();
-
-                    if (fos != null) {
-                        fos.close();
-                    }
-                } catch (IOException ex) {
-                    Logger.getLogger(KeyHandler.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public boolean Key_Files() {
-
-        File privateKey = new File(Client_PRIVATE_KEY);
-        File publicKey = new File(Client_PUBLIC_KEY);
-
-        return !(privateKey.exists() && publicKey.exists());
-    }
-
-    @Override
-    public String loadStringFormatClientPublicKey() {
-        try {
-            byte[] encoded = loadClientPublicKey().getEncoded();
-            SubjectPublicKeyInfo subjectPublicKeyInfo = new SubjectPublicKeyInfo(ASN1Sequence.getInstance(encoded));
-            byte[] otherEncoded = Base64.encodeBase64(subjectPublicKeyInfo.getPublicKey().getEncoded());
-            String publikey = new String(otherEncoded);
-            return publikey;
-        } catch (IOException ex) {
-            Logger.getLogger(KeyHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-}
