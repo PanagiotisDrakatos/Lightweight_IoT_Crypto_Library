@@ -1,0 +1,9 @@
+{
+    "HmacHash": "Nulls",
+    "RSAPublicKey": "Nulls",
+    "ServerPrimeNumber": "Nulls",
+    "EncryptedMessage": "Nulls",
+    "EncryptedSymetricClientKey": "Nulls",
+    "ClientEncryptedPrimeNumber": "Nulls",
+    "fingerPrint": "Nulls"
+}
