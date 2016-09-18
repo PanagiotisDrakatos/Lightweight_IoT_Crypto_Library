@@ -16,20 +16,15 @@ var RsaEncrypts = require("./RsaEncrypt");
 var FingerPrint = require('./FingerPrint');
 var AesEncrypt = require("./AES_Encryption");
 
+var Keypair=require('./RsaKeipairs');
+var KeyHandle=require('./KeyManager')
+var keystore=new KeyHandle();
+var server = new Keypair(keystore);
+
 var _Event = 'DHSessionHandshake';
 
-const Keypair = require("./RsaKeyPair");
 const Generator = new RandomGenerators();
 var x = Generator.PrimeNumber();
-//console.log(x);
-//console.log(Generator.PublicPrimeNumber());
-//const KeyGenarator=new Keypair('RsaKeyPairs');
-
-
-var _privkeyServer = ursa.createPrivateKey(fs.readFileSync('./RsaKeyPairs/privkey.pem'), 'ascii');
-var _pubkeyServer = ursa.createPublicKey(fs.readFileSync('./RsaKeyPairs/pubkey.pem'), 'ascii');
-var _pubkeyClientpem = fs.readFileSync('./Client/ClientPublicpem.pem');
-
 var _ClientSymmetricKey;
 
 module.exports = BasicProtocolEmmitter;
