@@ -44,7 +44,7 @@ public final class DHkeyExchange extends IOSynAck {
         if (receivedObj.PlainMessage == Properties.SYN_ACK)
             throw new Exception("Server Cannot Be Verified");
         else
-            this.keystore.saveServerPublicKey(receivedObj.cert);
+            this.keystore.saveCertificate(receivedObj.CertPemFormat);
         cookie.setCookieServer(receivedObj.CookieServer);
         return;
     }

@@ -1,13 +1,11 @@
 package com.security.crypto.Configuration;
 
 
-import java.security.cert.Certificate;
-
 public class JSonObject {
 
     public String PlainMessage = "";
     public String CookieServer = "";
-    public Certificate cert;
+    public String CertPemFormat;
 
     public String ClientEncryptedPrimeNumber = "";
     public String ServerPrimeNumber = "";

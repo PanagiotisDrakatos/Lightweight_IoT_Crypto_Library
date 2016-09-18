@@ -7,8 +7,8 @@ import java.io.*;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -27,34 +27,27 @@ public class KeyHandler extends KeyManagerImp {
     }
 
     @Override
-    public void saveServerPublicKey(Certificate cert) {
+    public void saveServerPublicKey() {
         try {
-
-            if (cert instanceof X509Certificate) {
-                X509Certificate x = (X509Certificate) cert;
-                X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(x.getEncoded());
-                FileOutputStream Fos = new FileOutputStream(Server_PUBLIC_KEY);
-                Fos.write(x509EncodedKeySpec.getEncoded());
-                Fos.close();
-            } else
-                throw new CertificateException("Not valid Cetificate");
-
-
+            PublicKey key = this.loadCertificate().getPublicKey();
+            byte[] keyBytes = key.getEncoded();
+            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
+            FileOutputStream Fos = new FileOutputStream(KeyManagerImp.Server_PUBLIC_KEY);
+            Fos.write(x509EncodedKeySpec.getEncoded());
+            Fos.close();
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(DHkeyExchange.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DHkeyExchange.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(DHkeyExchange.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CertificateException e) {
-            e.printStackTrace();
         }
     }
 
     @Override
     public void saveSecretKey(String keyStringFormat) {
         this.SecretKey.setSessionKey(keyStringFormat);
-        }
+    }
 
     /**
      * @return
@@ -80,10 +73,37 @@ public class KeyHandler extends KeyManagerImp {
             Logger.getLogger(DHkeyExchange.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException ex) {
             Logger.getLogger(DHkeyExchange.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        }
         return publicKey;
     }
 
+    public void saveCertificate(String CertPemFormat) {
+        try {
+            FileOutputStream Fos = new FileOutputStream(KeyManagerImp.Server_PUBLIC_KEY);
+            Fos.write(CertPemFormat.getBytes(Properties.CHAR_ENCODING));
+            Fos.close();
+            this.saveServerPublicKey();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public X509Certificate loadCertificate() {
+        FileInputStream is = null;
+        try {
+            CertificateFactory fact = CertificateFactory.getInstance("X.509");
+            is = new FileInputStream(new File(Server_Certificate));
+            X509Certificate cer = (X509Certificate) fact.generateCertificate(is);
+            return cer;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     public DHSecretKey/**/ loadRemoteSecretKey() {
@@ -96,4 +116,4 @@ public class KeyHandler extends KeyManagerImp {
     }
 
 
-    }
+}
