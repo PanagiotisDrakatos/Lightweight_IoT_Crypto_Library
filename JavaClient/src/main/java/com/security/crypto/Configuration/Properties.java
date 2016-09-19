@@ -4,7 +4,7 @@ public abstract class Properties {
 
     //socket properties
 
-    public static final String host = "127.0.0.1";
+    public static final String host = "192.168.1.66";
     public static final int portNumber = 1337;
     public static final String PlainTextConnection = "PlainTextConnection";
     public static final String SslTlsV2 = "SslTlsV2";

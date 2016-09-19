@@ -48,12 +48,15 @@ public class IOTransport {
     }
 
     public void close() throws IOException {
-        out.close();
-        br.close();
+
         if (socket != null) {
             socket.close();
+            out.close();
+            br.close();
         } else {
             sslsocket.close();
+            out.close();
+            br.close();
         }
     }
 

@@ -9,7 +9,6 @@ import com.security.crypto.KeyManager.KeyManagerImp;
 import java.awt.*;
 import java.io.IOException;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,18 +44,16 @@ public class SessionHandler {
             this.keyExchange.ResendCookieServer();
             this.keyExchange.SendPublicValue();
             this.keyExchange.ReceivePublicValue();
+            System.out.println("---------------DHkeys Sucessfuly Changed--------------------");
         } catch (IOException e) {
             e.printStackTrace();
+            this.ConnectionClose();
+            return;
         } catch (Exception e) {
             e.printStackTrace();
+            this.ConnectionClose();
+            return;
         }
-        System.out.println("---------------DHkeys Sucessfuly Changed--------------------");
-    }
-
-    public void TimerRenew(int seconds) {
-        toolkit = Toolkit.getDefaultToolkit();
-        timer = new Timer();
-        timer.schedule(new RemindTask(), seconds * 1000);
     }
 
     public void SendSecureMessage(String Message) {
@@ -72,16 +69,6 @@ public class SessionHandler {
             Session.getTransport().close();
         } catch (IOException ex) {
             Logger.getLogger(SessionHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    class RemindTask extends TimerTask {
-
-        @Override
-        public void run() {
-            System.out.println("Time's up need Reset!");
-            toolkit.beep();
-            System.exit(0); //Stops the AWT thread (and everything else)
         }
     }
 

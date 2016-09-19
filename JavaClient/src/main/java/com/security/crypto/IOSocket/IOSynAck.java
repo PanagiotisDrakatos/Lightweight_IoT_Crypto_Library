@@ -12,6 +12,6 @@ public abstract class IOSynAck {
 
     public abstract void SendPublicValue() throws IOException;
 
-    public abstract void ReceivePublicValue() throws IOException;
+    public abstract void ReceivePublicValue() throws Exception;
 
 }

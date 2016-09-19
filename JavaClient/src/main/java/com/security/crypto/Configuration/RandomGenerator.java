@@ -6,6 +6,7 @@ import java.util.Random;
 public class RandomGenerator {
 
     private BigInteger PrivatePrimeNumber;
+    private int seed = 34;
 
     public void setPrivatePrimeNumber(BigInteger PrivatePrimeNumber) {
         this.PrivatePrimeNumber = PrivatePrimeNumber;
@@ -80,6 +81,12 @@ public class RandomGenerator {
         //calculate diffie-helman g^(randomPrimeNumber) mod p
         BigInteger exponent = new BigInteger(ClientResult);
         return exponent.modPow(PrivatePrimeNumber, new BigInteger(Properties.modulus));
+    }
+
+    public String pseudorandom() {
+        seed = seed++;
+        double num = Math.sin(seed) * (0.5);
+        return String.valueOf(num);
     }
 
 }

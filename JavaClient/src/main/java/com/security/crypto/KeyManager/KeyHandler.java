@@ -32,7 +32,7 @@ public class KeyHandler extends KeyManagerImp {
             PublicKey key = this.loadCertificate().getPublicKey();
             byte[] keyBytes = key.getEncoded();
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
-            FileOutputStream Fos = new FileOutputStream(KeyManagerImp.Server_PUBLIC_KEY);
+            FileOutputStream Fos = new FileOutputStream(Server_PUBLIC_KEY);
             Fos.write(x509EncodedKeySpec.getEncoded());
             Fos.close();
         } catch (UnsupportedEncodingException ex) {
@@ -79,7 +79,7 @@ public class KeyHandler extends KeyManagerImp {
 
     public void saveCertificate(String CertPemFormat) {
         try {
-            FileOutputStream Fos = new FileOutputStream(KeyManagerImp.Server_PUBLIC_KEY);
+            FileOutputStream Fos = new FileOutputStream(Server_PUBLIC_KEY);
             Fos.write(CertPemFormat.getBytes(Properties.CHAR_ENCODING));
             Fos.close();
             this.saveServerPublicKey();

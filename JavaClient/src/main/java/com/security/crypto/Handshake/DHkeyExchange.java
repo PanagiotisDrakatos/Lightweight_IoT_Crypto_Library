@@ -35,13 +35,15 @@ public final class DHkeyExchange extends IOSynAck {
         //send PublicKey to Server
         JSonObject ObjToSend = new JSonObject();
         ObjToSend.PlainMessage = Properties.SYN;
+        ObjToSend.PseudoNumber = Genarator.pseudorandom();
         String toSend = JSonParse.WriteObject(ObjToSend);
         SocketChanel.SendMessage(toSend);
     }
 
     public void ReceiveServerCertificate() throws Exception {
         JSonObject receivedObj = JSonParse.ReadObject(SocketChanel.receiveMessage());
-        if (receivedObj.PlainMessage == Properties.SYN_ACK)
+        if (!receivedObj.PlainMessage.equals(Properties.SYN_ACK) ||
+                !receivedObj.PseudoNumber.equals(Genarator.pseudorandom()))
             throw new Exception("Server Cannot Be Verified");
         else
             this.keystore.saveCertificate(receivedObj.CertPemFormat);
@@ -52,6 +54,7 @@ public final class DHkeyExchange extends IOSynAck {
     public void ResendCookieServer() throws IOException {
         JSonObject ObjToSend = new JSonObject();
         ObjToSend.PlainMessage = Properties.Replay;
+        ObjToSend.PseudoNumber = Genarator.pseudorandom();
         ObjToSend.CookieServer = this.cookie.getCookieServer();
         String toSend = JSonParse.WriteObject(ObjToSend);
         SocketChanel.SendMessage(toSend);
@@ -61,8 +64,9 @@ public final class DHkeyExchange extends IOSynAck {
 
     public void SendPublicValue() throws IOException {
         BigInteger ServerPublicPrimeNumber = Genarator.GeneratePublicPrimeNumber();
-        JSonObject ObjToSend = new JSonObject();
         try {
+            JSonObject ObjToSend = new JSonObject();
+            ObjToSend.PseudoNumber = Genarator.pseudorandom();
             ObjToSend.ClientEncryptedPrimeNumber = this.rsa_ecb_pkcs1.RsaEncrypt(
                     keystore.loadRemoteServerPublicKey(), ServerPublicPrimeNumber.toString());
 
@@ -74,8 +78,11 @@ public final class DHkeyExchange extends IOSynAck {
 
     }
 
-    public void ReceivePublicValue() throws IOException {
+    public void ReceivePublicValue() throws Exception {
         JSonObject receivedObj = JSonParse.ReadObject(SocketChanel.receiveMessage());
+        if (!receivedObj.PseudoNumber.equals(Genarator.pseudorandom()))
+            throw new Exception("Server Cannot Be Verified Possible Replay Attack");
+
         BigInteger sessionResult = Genarator.SessionGenerator(receivedObj.ServerPrimeNumber);
         keystore.saveSecretKey(sessionResult.toString());
         return;

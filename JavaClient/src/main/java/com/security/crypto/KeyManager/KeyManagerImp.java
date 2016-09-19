@@ -9,8 +9,8 @@ public abstract class KeyManagerImp {
     public static final String modulus = "81554351438297688582888558141846154981885664956959015742153749206820791432251";
 
     //unfortunately this works only for Windows os
-    public static final String Server_PUBLIC_KEY = System.getProperty("user.dir") + "\\Server\\Public.key";
-    public static final String Server_Certificate = System.getProperty("user.dir") + "\\Server\\Certificate.pem";
+    public static final String Server_PUBLIC_KEY = System.getProperty("user.dir") + "\\ClientStore\\Public.key";
+    public static final String Server_Certificate = System.getProperty("user.dir") + "\\ClientStore\\Certificate.pem";
 
     public abstract void saveServerPublicKey();
 
