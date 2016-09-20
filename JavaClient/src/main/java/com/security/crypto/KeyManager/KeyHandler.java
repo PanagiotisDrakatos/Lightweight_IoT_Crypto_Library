@@ -24,6 +24,9 @@ public class KeyHandler extends KeyManagerImp {
     public KeyHandler() {
         this.SecretKey = new DHSecretKey();
         this.SymetricKey = new SymetricKeyGenerator();
+        File f = new File(currentpath);
+        if (!f.exists())
+            f.mkdir();
     }
 
     @Override
@@ -32,7 +35,7 @@ public class KeyHandler extends KeyManagerImp {
             PublicKey key = this.loadCertificate().getPublicKey();
             byte[] keyBytes = key.getEncoded();
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
-            FileOutputStream Fos = new FileOutputStream(Server_PUBLIC_KEY);
+            FileOutputStream Fos = new FileOutputStream(new File(Server_PUBLIC_KEY));
             Fos.write(x509EncodedKeySpec.getEncoded());
             Fos.close();
         } catch (UnsupportedEncodingException ex) {
@@ -59,7 +62,7 @@ public class KeyHandler extends KeyManagerImp {
         try {
             // Read Public Key.
             File filePublicKey = new File(Server_PUBLIC_KEY);
-            fis = new FileInputStream(Server_PUBLIC_KEY);
+            fis = new FileInputStream(filePublicKey);
             byte[] encodedPublicKey = new byte[(int) filePublicKey.length()];
             fis.read(encodedPublicKey);
             fis.close();
@@ -79,7 +82,7 @@ public class KeyHandler extends KeyManagerImp {
 
     public void saveCertificate(String CertPemFormat) {
         try {
-            FileOutputStream Fos = new FileOutputStream(Server_PUBLIC_KEY);
+            FileOutputStream Fos = new FileOutputStream(new File(Server_Certificate));
             Fos.write(CertPemFormat.getBytes(Properties.CHAR_ENCODING));
             Fos.close();
             this.saveServerPublicKey();

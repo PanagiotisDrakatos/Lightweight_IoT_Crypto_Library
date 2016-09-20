@@ -84,7 +84,7 @@ public class RandomGenerator {
     }
 
     public String pseudorandom() {
-        seed = seed++;
+        seed++;
         double num = Math.sin(seed) * (0.5);
         return String.valueOf(num);
     }

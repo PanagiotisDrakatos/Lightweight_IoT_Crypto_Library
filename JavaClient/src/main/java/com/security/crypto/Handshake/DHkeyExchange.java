@@ -24,6 +24,7 @@ public final class DHkeyExchange extends IOSynAck {
 
     public DHkeyExchange(IOTransport SocketChanel, KeyManagerImp keystore) {
         this.SocketChanel = SocketChanel;
+        this.cookie = new CookieGen();
         this.Genarator = new RandomGenerator();
         this.keystore = keystore;
         this.aes_ecb_pkcs7 = new AES_ECB_PKCS7();
@@ -42,8 +43,9 @@ public final class DHkeyExchange extends IOSynAck {
 
     public void ReceiveServerCertificate() throws Exception {
         JSonObject receivedObj = JSonParse.ReadObject(SocketChanel.receiveMessage());
+        String timestamp = Genarator.pseudorandom();
         if (!receivedObj.PlainMessage.equals(Properties.SYN_ACK) ||
-                !receivedObj.PseudoNumber.equals(Genarator.pseudorandom()))
+                !receivedObj.PseudoNumber.equals(timestamp))
             throw new Exception("Server Cannot Be Verified");
         else
             this.keystore.saveCertificate(receivedObj.CertPemFormat);
@@ -85,6 +87,7 @@ public final class DHkeyExchange extends IOSynAck {
 
         BigInteger sessionResult = Genarator.SessionGenerator(receivedObj.ServerPrimeNumber);
         keystore.saveSecretKey(sessionResult.toString());
+        //   System.out.println(keystore.loadRemoteSecretKey().getSessionKey());
         return;
     }
 

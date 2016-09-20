@@ -39,12 +39,22 @@ public class SessionHandler {
 
     public void StartDHKeyExchange() {
         try {
+            long elapsetime = System.currentTimeMillis();
             this.keyExchange.SendPlainMessage();
+            long Execution_Time1 = (System.currentTimeMillis() - elapsetime);
+            System.out.println("---------------Execution Time1--------------------" + Execution_Time1);//60
             this.keyExchange.ReceiveServerCertificate();
+            long Execution_Time2 = (System.currentTimeMillis() - Execution_Time1);
+            System.out.println("---------------Execution Time2--------------------" + Execution_Time2);//1474378962584
             this.keyExchange.ResendCookieServer();
+            long Execution_Time3 = (System.currentTimeMillis() - Execution_Time2);
+            System.out.println("---------------Execution Time3--------------------" + Execution_Time3);//61
             this.keyExchange.SendPublicValue();
+            long Execution_Time4 = (System.currentTimeMillis() - Execution_Time3);
+            System.out.println("---------------Execution Time4--------------------" + Execution_Time4);//1474378962729
             this.keyExchange.ReceivePublicValue();
-            System.out.println("---------------DHkeys Sucessfuly Changed--------------------");
+            long Execution_Time5 = (System.currentTimeMillis() - Execution_Time4);
+            System.out.println("---------------Execution Time5--------------------" + Execution_Time5);//778
         } catch (IOException e) {
             e.printStackTrace();
             this.ConnectionClose();
