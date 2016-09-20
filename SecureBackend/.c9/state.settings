@@ -20,8 +20,8 @@
         "json()": {
             "meta": {
                 "accessList": [
-                    "tab2",
-                    "tab1"
+                    "tab1",
+                    "tab2"
                 ]
             },
             "name": "pane1",
@@ -31,7 +31,8 @@
                     "name": "tab1",
                     "path": "",
                     "className": [
-                        "tab1"
+                        "tab1",
+                        "focus"
                     ],
                     "document": {
                         "changed": false,
@@ -59,37 +60,16 @@
                         "tab2"
                     ],
                     "document": {
+                        "changed": false,
+                        "meta": {},
                         "filter": true,
                         "title": "Immediate (Javascript (browser))",
                         "tooltip": "Immediate (Javascript (browser))",
                         "immediate": {
-                            "folds": [],
-                            "scrolltop": 0,
-                            "scrollleft": 0,
-                            "selection": {
-                                "start": {
-                                    "row": 2,
-                                    "column": 0
-                                },
-                                "end": {
-                                    "row": 2,
-                                    "column": 0
-                                },
-                                "isBackwards": false
-                            },
-                            "options": {
-                                "guessTabSize": true,
-                                "useWrapMode": false,
-                                "wrapToView": true
-                            },
-                            "firstLineState": 0,
                             "type": "jsbrowser",
                             "history": [],
                             "pos": 0
-                        },
-                        "hash": "bc37e9908b413249fe666f189265c03143e4d841",
-                        "meta": {},
-                        "changed": false
+                        }
                     },
                     "editorType": "immediate",
                     "active": false
@@ -113,18 +93,18 @@
     },
     "ext": {
         "counters": {
-            "@ace": 1,
+            "@ace": 2,
             "@acestatus": 1,
             "@divider": 5,
-            "@document": 11,
+            "@document": 47,
             "@form": 5,
             "@immediate": 1,
             "@menu": 5,
             "@menuitem": 13,
             "@pane": 2,
-            "@session": 10,
-            "@tab": 66,
-            "@undoManager": 11,
+            "@session": 47,
+            "@tab": 47,
+            "@undoManager": 47,
             "@welcome": 1
         }
     },
@@ -143,7 +123,6 @@
     },
     "panecycle": {
         "json()": [
-            "tab0",
             "tab1"
         ]
     },
@@ -189,389 +168,19 @@
     "search-history": {
         "search": {
             "json()": [
+                "0.2645413430600119",
                 "generateRandom()"
             ]
         }
     },
     "tabs": {
         "json()": {
-            "focus": "/IOTransports.js",
+            "focus": "tab1",
             "meta": {
-                "accessList": [
-                    "tab0",
-                    "tab4",
-                    "tab5",
-                    "tab7",
-                    "tab9",
-                    "tab15",
-                    "tab3",
-                    "tab6",
-                    "tab12"
-                ]
+                "accessList": []
             },
             "name": "pane0",
-            "nodes": [
-                {
-                    "type": "tab",
-                    "name": "tab4",
-                    "path": "/RsaKeyPair.js",
-                    "className": [
-                        "tab4",
-                        "changed"
-                    ],
-                    "document": {
-                        "changed": true,
-                        "filter": true,
-                        "title": "RsaKeyPair.js",
-                        "tooltip": "/RsaKeyPair.js",
-                        "ace": {
-                            "folds": [],
-                            "scrolltop": 0,
-                            "scrollleft": 0,
-                            "selection": {
-                                "start": {
-                                    "row": 36,
-                                    "column": 8
-                                },
-                                "end": {
-                                    "row": 36,
-                                    "column": 25
-                                },
-                                "isBackwards": false
-                            },
-                            "options": {
-                                "guessTabSize": true,
-                                "useWrapMode": false,
-                                "wrapToView": true
-                            },
-                            "firstLineState": {
-                                "row": 63,
-                                "mode": "ace/mode/javascript"
-                            }
-                        },
-                        "meta": {
-                            "timestamp": 1474015417295
-                        }
-                    },
-                    "editorType": "ace",
-                    "active": false
-                },
-                {
-                    "type": "tab",
-                    "name": "tab5",
-                    "path": "/PlainConnection.js",
-                    "className": [
-                        "tab5"
-                    ],
-                    "document": {
-                        "filter": true,
-                        "title": "PlainConnection.js",
-                        "tooltip": "/PlainConnection.js",
-                        "ace": {
-                            "folds": [],
-                            "scrolltop": 120,
-                            "scrollleft": 0,
-                            "selection": {
-                                "start": {
-                                    "row": 22,
-                                    "column": 41
-                                },
-                                "end": {
-                                    "row": 22,
-                                    "column": 41
-                                },
-                                "isBackwards": false
-                            },
-                            "options": {
-                                "guessTabSize": true,
-                                "useWrapMode": false,
-                                "wrapToView": true
-                            },
-                            "firstLineState": 0
-                        },
-                        "hash": "b28717a8750b48202d5c9abd50ed02c62c9f9cc8",
-                        "meta": {
-                            "timestamp": 1473934374179
-                        },
-                        "changed": false
-                    },
-                    "editorType": "ace",
-                    "active": false
-                },
-                {
-                    "type": "tab",
-                    "name": "tab7",
-                    "path": "/RsaKeipairs.js",
-                    "className": [
-                        "tab7",
-                        "changed"
-                    ],
-                    "document": {
-                        "changed": true,
-                        "filter": true,
-                        "title": "RsaKeipairs.js",
-                        "tooltip": "/RsaKeipairs.js",
-                        "ace": {
-                            "folds": [],
-                            "scrolltop": 0,
-                            "scrollleft": 0,
-                            "selection": {
-                                "start": {
-                                    "row": 10,
-                                    "column": 26
-                                },
-                                "end": {
-                                    "row": 10,
-                                    "column": 26
-                                },
-                                "isBackwards": false
-                            },
-                            "options": {
-                                "guessTabSize": true,
-                                "useWrapMode": false,
-                                "wrapToView": true
-                            },
-                            "firstLineState": 0
-                        },
-                        "meta": {
-                            "timestamp": 1474228423575
-                        }
-                    },
-                    "editorType": "ace",
-                    "active": false
-                },
-                {
-                    "type": "tab",
-                    "name": "tab9",
-                    "path": "/RsaEncrypt.js",
-                    "className": [
-                        "tab9"
-                    ],
-                    "document": {
-                        "filter": true,
-                        "title": "RsaEncrypt.js",
-                        "tooltip": "/RsaEncrypt.js",
-                        "ace": {
-                            "folds": [],
-                            "scrolltop": 0,
-                            "scrollleft": 0,
-                            "selection": {
-                                "start": {
-                                    "row": 0,
-                                    "column": 0
-                                },
-                                "end": {
-                                    "row": 0,
-                                    "column": 0
-                                },
-                                "isBackwards": false
-                            },
-                            "options": {
-                                "guessTabSize": true,
-                                "useWrapMode": false,
-                                "wrapToView": true
-                            },
-                            "firstLineState": 0
-                        },
-                        "hash": "b2d2b5e3dee0caca3e83b544be2824ea2df67419",
-                        "meta": {
-                            "timestamp": 1473934374179
-                        },
-                        "changed": false
-                    },
-                    "editorType": "ace",
-                    "active": false
-                },
-                {
-                    "type": "tab",
-                    "name": "tab15",
-                    "path": "/jsonObject.json",
-                    "className": [
-                        "tab15"
-                    ],
-                    "document": {
-                        "filter": true,
-                        "title": "jsonObject.json",
-                        "tooltip": "/jsonObject.json",
-                        "ace": {
-                            "folds": [],
-                            "scrolltop": 0,
-                            "scrollleft": 0,
-                            "selection": {
-                                "start": {
-                                    "row": 0,
-                                    "column": 0
-                                },
-                                "end": {
-                                    "row": 0,
-                                    "column": 0
-                                },
-                                "isBackwards": true
-                            },
-                            "options": {
-                                "guessTabSize": true,
-                                "useWrapMode": false,
-                                "wrapToView": true
-                            },
-                            "firstLineState": 0
-                        },
-                        "hash": "9cc0d2b7e70f5853ce705d09b8fea7401f10e2fb",
-                        "meta": {
-                            "timestamp": 1473934374179
-                        },
-                        "changed": false
-                    },
-                    "editorType": "ace",
-                    "active": false
-                },
-                {
-                    "type": "tab",
-                    "name": "tab0",
-                    "path": "/IOTransports.js",
-                    "className": [
-                        "tab0",
-                        "focus"
-                    ],
-                    "document": {
-                        "changed": false,
-                        "meta": {
-                            "timestamp": 1474231728823
-                        },
-                        "filter": true,
-                        "title": "IOTransports.js",
-                        "tooltip": "/IOTransports.js",
-                        "ace": {}
-                    },
-                    "editorType": "ace",
-                    "active": true
-                },
-                {
-                    "type": "tab",
-                    "name": "tab3",
-                    "path": "/RandomGenerator.js",
-                    "className": [
-                        "tab3"
-                    ],
-                    "document": {
-                        "filter": true,
-                        "title": "RandomGenerator.js",
-                        "tooltip": "/RandomGenerator.js",
-                        "ace": {
-                            "folds": [],
-                            "scrolltop": 230,
-                            "scrollleft": 0,
-                            "selection": {
-                                "start": {
-                                    "row": 102,
-                                    "column": 19
-                                },
-                                "end": {
-                                    "row": 102,
-                                    "column": 19
-                                },
-                                "isBackwards": false
-                            },
-                            "options": {
-                                "guessTabSize": true,
-                                "useWrapMode": false,
-                                "wrapToView": true
-                            },
-                            "firstLineState": 0
-                        },
-                        "hash": "114298821a132aae495cf53eb7f24c3652c9999a",
-                        "meta": {
-                            "timestamp": 1473934374179
-                        },
-                        "changed": false
-                    },
-                    "editorType": "ace",
-                    "active": false
-                },
-                {
-                    "type": "tab",
-                    "name": "tab6",
-                    "path": "/CertificateFactory.js",
-                    "className": [
-                        "tab6",
-                        "changed"
-                    ],
-                    "document": {
-                        "changed": true,
-                        "filter": true,
-                        "title": "CertificateFactory.js",
-                        "tooltip": "/CertificateFactory.js",
-                        "ace": {
-                            "folds": [],
-                            "scrolltop": 6,
-                            "scrollleft": 0,
-                            "selection": {
-                                "start": {
-                                    "row": 12,
-                                    "column": 0
-                                },
-                                "end": {
-                                    "row": 12,
-                                    "column": 22
-                                },
-                                "isBackwards": false
-                            },
-                            "options": {
-                                "guessTabSize": true,
-                                "useWrapMode": false,
-                                "wrapToView": true
-                            },
-                            "firstLineState": 0
-                        },
-                        "meta": {
-                            "timestamp": 1474227430283
-                        }
-                    },
-                    "editorType": "ace",
-                    "active": false
-                },
-                {
-                    "type": "tab",
-                    "name": "tab12",
-                    "path": "/KeyManager.js",
-                    "className": [
-                        "tab12"
-                    ],
-                    "document": {
-                        "filter": true,
-                        "title": "KeyManager.js",
-                        "tooltip": "/KeyManager.js",
-                        "ace": {
-                            "folds": [],
-                            "scrolltop": 300,
-                            "scrollleft": 0,
-                            "selection": {
-                                "start": {
-                                    "row": 0,
-                                    "column": 0
-                                },
-                                "end": {
-                                    "row": 0,
-                                    "column": 34
-                                },
-                                "isBackwards": true
-                            },
-                            "options": {
-                                "guessTabSize": true,
-                                "useWrapMode": false,
-                                "wrapToView": true
-                            },
-                            "firstLineState": 0
-                        },
-                        "hash": "857e4746ca4d1c9921efe9ee641640fe99a4a09e",
-                        "meta": {
-                            "timestamp": 1474224073439
-                        },
-                        "changed": false
-                    },
-                    "editorType": "ace",
-                    "active": false
-                }
-            ],
+            "nodes": [],
             "skin": "editor_tab",
             "skinset": "default",
             "type": "pane"

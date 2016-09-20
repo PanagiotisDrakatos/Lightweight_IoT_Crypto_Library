@@ -11,17 +11,16 @@
 
 //npm install mongodb
 
-var _HOST = '127.0.0.1';
+var _HOST = '192.168.1.66';
 var _PORT = 1337;
 var _address;
 
 var net = require('net');
-
+var userCount = 0;
 const BasicProtocolEmmitter = require("./IOTransports");
+var ProtocolEmmitter = new BasicProtocolEmmitter();
 
 var server = net.createServer(function(socket) {
-    const ProtocolEmmitter = new BasicProtocolEmmitter();
-
     socket.on('connect', (e) => {
         console.log('client connected ' +
             socket.remoteAddress + ':' +
@@ -29,13 +28,15 @@ var server = net.createServer(function(socket) {
     });
 
     socket.on('data', function(data) {
-        console.log('clients says' + ': ' + data);
+        //console.log('clients says' + ': ' + data);
+        userCount++;
         ProtocolEmmitter.Receive(data);
         // socket.pipe(socket);
-        var send = ProtocolEmmitter.send();
-        console.log(send);
-        socket.write(send + '\n');
-        //  socket.pipe(socket);
+        if (userCount != 2) {
+            var send = ProtocolEmmitter.send();
+        //    console.log('Server says' + ': ' + send);
+            socket.write(send + '\n');
+        }
 
     });
 
@@ -47,14 +48,8 @@ var server = net.createServer(function(socket) {
     socket.on('close', (e) => {
         console.log('client disconnected');
         socket.end;
-        setTimeout(() => {
-            server.close();
-            server.listen(_PORT, _HOST, () => {
-                _address = server.address();
-                console.log('opened server on %j', _address);
-                console.log(' Server listening on %j ', _HOST, ':', _PORT);
-            });
-        }, 10000);
+        ProtocolEmmitter = new BasicProtocolEmmitter();
+        userCount = 0;
     });
 
 });

@@ -34,20 +34,17 @@ KeyHandle.prototype.SaveCertificate = function(ServerCert) {
     return
 }
 KeyHandle.prototype.loadPrivateKey = function() {
-    var absolutePath = path.resolve(this.relativeOrAbsolutePrivateKey);
-    var privkey = fs.readFile(absolutePath, this._format);
+    var privkey = fs.readFileSync(this.relativeOrAbsolutePrivateKey, this._format);
     return privkey;
 };
 
 KeyHandle.prototype.loadPublicKey = function() {
-    var absolutePath = path.resolve(this.relativeOrAbsolutePathToPublicKey);
-    var publicKey = fs.readFile(absolutePath, this._format);
+    var publicKey = fs.readFileSync(this.relativeOrAbsolutePathToPublicKey, this._format);
     return publicKey;
 };
 
 KeyHandle.prototype.loadCertificate  = function() {
-    var absolutePath = path.resolve(this.relativeOrAbsoluteCertificate);
-    var certpem = fs.readFile(absolutePath, this._format);
+    var certpem = fs.readFileSync(this.relativeOrAbsoluteCertificate, this._format);
     return certpem;
 };
 

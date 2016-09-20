@@ -21,8 +21,8 @@ function Keypair(Keyhandle) {
         this.Keyhandle.SaveCertificate(ServerCert);
         console.log(this.Keyhandle._cert)
     }
-    else
-        console.log("Rsa Already Created!!!!!")
+    //else
+      //  console.log("Rsa Already Created!!!!!")
 }
 
 /*var SavePrivateKey = function(privkey) {

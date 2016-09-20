@@ -1,11 +1,13 @@
 'use strict';
 
-const EventEmitter = require('events');
-var bigInt = require("big-integer");
-const util = require('util');
-
 var forge = require('node-forge');
 var BigInteger = forge.jsbn.BigInteger;
+var bigInt = require("big-integer");
+
+const EventEmitter = require('events');
+const util = require('util');
+
+
 
 // pithanoi prime 30k+i for i = 1, 7, 11, 13, 17, 19, 23, 29
 var GCD_30_DELTA = [6, 4, 2, 4, 2, 4, 6, 2];
@@ -20,11 +22,14 @@ var num = generateRandom(bits);
 var PrivatePrimeNumber = '';
 var PublicPrimeNumber = '';
 var DHKeyExchange = '';
+var ServerCookie = '';
 
 module.exports = RandomGenerators;
 
 function RandomGenerators() {
     EventEmitter.call(this);
+    this.seed = 34;
+    GenerateCookie();
     PrivatePrimeNumber = findPrivatePrime(num, function(num) {
         return num.toString();
     });
@@ -41,6 +46,15 @@ RandomGenerators.prototype.PublicPrimeNumber = function() {
     return PublicPrimeNumber;
 }
 
+RandomGenerators.prototype.CookieServer = function(qty) {
+    return ServerCookie;
+}
+
+function GenerateCookie() {
+    var bytes = forge.random.getBytesSync(32);
+    ServerCookie = forge.util.bytesToHex(bytes)
+        // console.log(ServerCookie);
+}
 
 function generateRandom(bits) {
     var rng = {
@@ -75,6 +89,12 @@ RandomGenerators.prototype.SessionGenerator = function(ClientResult) {
 
 RandomGenerators.prototype.DHKeyExchange = function() {
     return DHKeyExchange;
+}
+
+RandomGenerators.prototype.pseudorandom = function() {
+    this.seed++;
+    var x = Math.sin(this.seed) * 0.5;
+    return x;
 }
 
 function findPrivatePrime(num, callback) {

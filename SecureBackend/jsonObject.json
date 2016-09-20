@@ -1,9 +1,11 @@
 {
-    "HmacHash": "Nulls",
-    "RSAPublicKey": "Nulls",
+    "PlainMessage": "Nulls",
+    "CookieServer": "Nulls",
+    "CertPemFormat": "Nulls",
+    "PseudoNumber": "NUlls",
+    "ClientEncryptedPrimeNumber": "Nulls",
     "ServerPrimeNumber": "Nulls",
     "EncryptedMessage": "Nulls",
-    "EncryptedSymetricClientKey": "Nulls",
-    "ClientEncryptedPrimeNumber": "Nulls",
-    "fingerPrint": "Nulls"
+    "FingerPrint": "Nulls",
+    "HmacHash ": "Nulls"
 }
