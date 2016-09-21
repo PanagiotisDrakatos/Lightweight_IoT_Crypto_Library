@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class Digest {
 
-    public static byte[] Digest(String key, String algorithm) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public static byte[] Hash(String key, String algorithm) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance(algorithm);
         md.update(key.getBytes(Properties.CHAR_ENCODING));
         byte[] keyBytes = md.digest();

@@ -1,6 +1,6 @@
 package com.security.crypto.Handshake;
 
-import com.security.crypto.Ciphers.AES.AES_ECB_PKCS7;
+import com.security.crypto.Ciphers.AES.AesNoIV_Params;
 import com.security.crypto.Ciphers.RSA.RSA_ECB_PKCS1;
 import com.security.crypto.Configuration.CookieGen;
 import com.security.crypto.Configuration.JSonObject;
@@ -18,7 +18,7 @@ public final class DHkeyExchange extends IOSynAck {
     private final IOTransport SocketChanel;
     private final RandomGenerator Genarator;
     private final KeyManagerImp keystore;
-    private AES_ECB_PKCS7 aes_ecb_pkcs7;
+    private AesNoIV_Params aesNoIVParams;
     private RSA_ECB_PKCS1 rsa_ecb_pkcs1;
     private CookieGen cookie;
 
@@ -27,7 +27,7 @@ public final class DHkeyExchange extends IOSynAck {
         this.cookie = new CookieGen();
         this.Genarator = new RandomGenerator();
         this.keystore = keystore;
-        this.aes_ecb_pkcs7 = new AES_ECB_PKCS7();
+        this.aesNoIVParams = new AesNoIV_Params();
         this.rsa_ecb_pkcs1 = new RSA_ECB_PKCS1();
     }
 
@@ -48,7 +48,7 @@ public final class DHkeyExchange extends IOSynAck {
                 !receivedObj.PseudoNumber.equals(timestamp))
             throw new Exception("Server Cannot Be Verified");
         else
-            this.keystore.saveCertificate(receivedObj.CertPemFormat);
+            this.keystore.SaveCertificate(receivedObj.CertPemFormat);
         cookie.setCookieServer(receivedObj.CookieServer);
         return;
     }
@@ -86,8 +86,9 @@ public final class DHkeyExchange extends IOSynAck {
             throw new Exception("Server Cannot Be Verified Possible Replay Attack");
 
         BigInteger sessionResult = Genarator.SessionGenerator(receivedObj.ServerPrimeNumber);
-        keystore.saveSecretKey(sessionResult.toString());
-        //   System.out.println(keystore.loadRemoteSecretKey().getSessionKey());
+        keystore.ProduceCipherKey(sessionResult.toString());//Produce and save Cipher Key from The given Session Result
+        keystore.ProduceIntegrityKey(sessionResult.toString());//Produce and save Integrity Key from The given Session Result
+        System.out.println(sessionResult.bitLength());
         return;
     }
 

@@ -65,7 +65,6 @@ public class RandomGenerator {
         BigInteger skip1024Modulus = new BigInteger(1, skip1024ModulusBytes);
         r.nextBytes(random);
         randomServerPrimeNumber = BigInteger.probablePrime(256, r);
-
         PrivatePrimeNumber = randomServerPrimeNumber;
     }
 

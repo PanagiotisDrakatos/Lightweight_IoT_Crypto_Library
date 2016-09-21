@@ -1,17 +1,17 @@
 package com.security.crypto.KeyManager;
 
 
-public abstract class GeneralKey {
+public abstract class Keys {
 
     private final Type type;
 
     public enum Type {
 
-        SymetricKeyGenerator, DHSecretKey
+        SymetricKeyGenerator, DHSecretKey, DHIntegrityKey
     }
 
     //this constructor  doesn't actually "BUILD" the object, it is used to initialize fields.
-    public GeneralKey(Type type) {
+    public Keys(Type type) {
         this.type = type;
     }
 
@@ -19,8 +19,6 @@ public abstract class GeneralKey {
         return (this.type == type);
     }
 
-    @Override
-    public String toString() {
-        return type.toString();
-    }
+
+    public abstract String RetriveSessionKey();
 }

@@ -3,6 +3,7 @@ package com.security.crypto.KeyManager;
 import com.security.crypto.Configuration.Properties;
 import com.security.crypto.Handshake.DHkeyExchange;
 
+import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -17,20 +18,20 @@ import java.util.logging.Logger;
 
 public class KeyHandler extends KeyManagerImp {
 
-    private final SymetricKeyGenerator SymetricKey;
-    private final DHSecretKey SecretKey;
+    private final DHCipherKey CipherKey;
+    private final DHIntegrityKey IntegrityKey;
 
 
     public KeyHandler() {
-        this.SecretKey = new DHSecretKey();
-        this.SymetricKey = new SymetricKeyGenerator();
+        this.CipherKey = new DHCipherKey();
+        this.IntegrityKey = new DHIntegrityKey();
         File f = new File(currentpath);
         if (!f.exists())
             f.mkdir();
     }
 
     @Override
-    public void saveServerPublicKey() {
+    public void SaveServerPublicKey() {
         try {
             PublicKey key = this.loadCertificate().getPublicKey();
             byte[] keyBytes = key.getEncoded();
@@ -48,13 +49,18 @@ public class KeyHandler extends KeyManagerImp {
     }
 
     @Override
-    public void saveSecretKey(String keyStringFormat) {
-        this.SecretKey.setSessionKey(keyStringFormat);
+    public void ProduceCipherKey(String SessionResult) {
+
+        this.CipherKey.GenerateCipherKey(SessionResult);
     }
 
-    /**
-     * @return
-     */
+    @Override
+    public void ProduceIntegrityKey(String SessionResult) {
+
+        this.IntegrityKey.GenerateIntegrityKey(SessionResult);
+    }
+
+
     @Override
     public PublicKey loadRemoteServerPublicKey() {
         PublicKey publicKey = null;
@@ -80,12 +86,12 @@ public class KeyHandler extends KeyManagerImp {
         return publicKey;
     }
 
-    public void saveCertificate(String CertPemFormat) {
+    public void SaveCertificate(String CertPemFormat) {
         try {
             FileOutputStream Fos = new FileOutputStream(new File(Server_Certificate));
             Fos.write(CertPemFormat.getBytes(Properties.CHAR_ENCODING));
             Fos.close();
-            this.saveServerPublicKey();
+            this.SaveServerPublicKey();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -109,13 +115,14 @@ public class KeyHandler extends KeyManagerImp {
     }
 
     @Override
-    public DHSecretKey/**/ loadRemoteSecretKey() {
-        return this.SecretKey; //To change body of generated methods, choose Tools | Templates.
+    public SecretKeySpec loadRemoteCipherKey() {
+        return this.CipherKey.getCipherKey();
     }
 
     @Override
-    public SymetricKeyGenerator loadRemoteSymetricKey() {
-        return this.SymetricKey;
+    public SecretKeySpec loadRemoteIntegrityKey() {
+
+        return this.IntegrityKey.getIntegrityKey();
     }
 
 

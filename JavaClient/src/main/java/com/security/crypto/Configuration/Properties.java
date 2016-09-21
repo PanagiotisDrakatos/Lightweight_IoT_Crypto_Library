@@ -27,6 +27,7 @@ public abstract class Properties {
 
     public static final String AES_PROVIDER = "AES";
     public static final String AES_ALGORITHM = "AES/ECB/PKCS7Padding";
+    public static final String HashingAlgorithm = "SHA-256";
 
     //Rsa needed
     public static final String RSA_ALGORITHM = "RSA";
@@ -36,7 +37,7 @@ public abstract class Properties {
     //store_keys
     //Encodes values
     public static final String CHAR_ENCODING = "UTF-8";
-    public static final String HashingAlgorithm = "md5";
+
 
     //keysizes-length
     public static final int AesKeySizeLength = 64;

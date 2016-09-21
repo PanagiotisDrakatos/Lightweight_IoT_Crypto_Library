@@ -1,5 +1,6 @@
 package com.security.crypto.KeyManager;
 
+import javax.crypto.spec.SecretKeySpec;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
@@ -13,19 +14,21 @@ public abstract class KeyManagerImp {
     public String Server_PUBLIC_KEY = currentpath + "Public.key";
     public String Server_Certificate = currentpath + "Certificate.pem";
 
-    public abstract void saveServerPublicKey();
+    public abstract void SaveServerPublicKey();
 
-    public abstract void saveCertificate(String CertPemFormat);
+    public abstract void SaveCertificate(String CertPemFormat);
 
-    public abstract void saveSecretKey(String keyStringFormat);
+    public abstract void ProduceCipherKey(String SessionResult);
+
+    public abstract void ProduceIntegrityKey(String SessionResult);
 
     public abstract PublicKey loadRemoteServerPublicKey();
 
-    public abstract DHSecretKey loadRemoteSecretKey();
-
-    public abstract SymetricKeyGenerator loadRemoteSymetricKey();
-
     public abstract X509Certificate loadCertificate();
+
+    public abstract SecretKeySpec loadRemoteCipherKey();
+
+    public abstract SecretKeySpec loadRemoteIntegrityKey();
 
 
 }
