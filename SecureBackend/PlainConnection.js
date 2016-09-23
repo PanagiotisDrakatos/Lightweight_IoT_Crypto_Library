@@ -34,7 +34,7 @@ var server = net.createServer(function(socket) {
         // socket.pipe(socket);
         if (userCount != 2) {
             var send = ProtocolEmmitter.send();
-        //    console.log('Server says' + ': ' + send);
+        ///    console.log('Server says' + ': ' + send);
             socket.write(send + '\n');
         }
 

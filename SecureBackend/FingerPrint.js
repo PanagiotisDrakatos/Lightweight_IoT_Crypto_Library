@@ -1,5 +1,4 @@
 'use strict';
-
 var forge = require('node-forge');
 
 exports.SignData = function(Encrypted, PrivateKey) {

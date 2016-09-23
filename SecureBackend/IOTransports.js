@@ -2,18 +2,18 @@
 
 const EventEmitter = require('events');
 const util = require('util');
-
+var forge = require('node-forge');
 
 var jsonToRead = require('./jsonObject.json');
 var jsonToSend = require('./jsonObject.json');
 
 
-var forge = require('node-forge');
-var fs = require('fs');
 var RandomGenerators = require('./RandomGenerator');
 var RsaEncrypts = require("./RsaEncrypt");
 var FingerPrint = require('./FingerPrint');
 var AesEncrypt = require("./AES_Encryption");
+const HMAC = require('./HmacAlgProvider');
+const AlgorithmsUse = require('./Allgorithms');
 
 var Keypair = require('./RsaKeipairs');
 var KeyHandle = require('./KeyManager')
@@ -21,10 +21,12 @@ var keystore = new KeyHandle();
 var server = new Keypair(keystore);
 
 var _Event = 'DHSessionHandshake';
-var  Generator='';
+var Generator = '';
 var _ClientSymmetricKey;
+var IntegrityKey = require('./DHintegrityKey')
+var key = new IntegrityKey();
+var Algorithms = new AlgorithmsUse();
 
-module.exports = BasicProtocolEmmitter;
 
 function BasicProtocolEmmitter() {
     EventEmitter.call(this);
@@ -108,11 +110,50 @@ var SendPublicValue = function() {
     var serverprime = Generator.PublicPrimeNumber();
     jsonToSend.ServerPrimeNumber = serverprime;
     jsonToSend.PseudoNumber = Generator.pseudorandom();
-
-    //console.log("session keys is :" + Generator.DHKeyExchange());
-    BasicProtocolEmmitter.prototype.on(_Event, ReceiveDHEncryptedMessage);
+    console.log(Generator.DHKeyExchange())
+        //console.log("session keys is :" + Generator.DHKeyExchange());
+    BasicProtocolEmmitter.prototype.on(_Event, ReceiveCipherSuites);
     BasicProtocolEmmitter.prototype.removeListener(_Event, SendPublicValue);
 }
+
+var ReceiveCipherSuites = function(ObjToRead) {
+
+    jsonToRead = JSON.parse(ObjToRead);
+    if (jsonToRead.PseudoNumber != Generator.pseudorandom())
+        new Error('Can Not Valid Client Possible Replay Attack');
+
+    key.GenerateIntegrityKey(Generator.DHKeyExchange());
+    var joiner = (jsonToRead.CipherSuites).split("|");
+    var Chiphers = joiner[0].split(",");
+    var Digests = joiner[1].split(",");
+    var CurrentDiggests = joiner[2].split(",");
+
+    if (CurrentDiggests.indexOf("Hmac"))
+        CurrentDiggests = CurrentDiggests.toString().replace(/Hmac/i, '');
+
+    if (!HMAC.HmacVerify(jsonToRead.CipherSuites,
+            key.returnIntegrityKey(), jsonToRead.HmacHash, CurrentDiggests))
+        new Error('Integrity Of Message can not be verified');
+    Algorithms.ChooserCipher(Chiphers);
+    Algorithms.ChooserHash(Digests);
+    Algorithms.SetCurrentHash(CurrentDiggests);
+    BasicProtocolEmmitter.prototype.on(_Event, SendCipherSuites);
+    BasicProtocolEmmitter.prototype.removeListener(_Event, ReceiveCipherSuites);
+};
+
+var SendCipherSuites = function() {
+    clear();
+
+    var Algo = '';
+    Algo=Algo.concat(Algorithms.returnCipherAlgorithm, '|');
+    Algo=Algo.concat(Algorithms.returnHashAlgorithm, '|');
+    jsonToSend.CipherSuites = Algo;
+    jsonToSend.PseudoNumber = Generator.pseudorandom();
+    jsonToSend.HmacHash = HMAC.HmacSign(jsonToSend.CipherSuites, key.returnIntegrityKey(), Algorithms.returnCurrentHash());
+
+    BasicProtocolEmmitter.prototype.on(_Event, ReceiveDHEncryptedMessage);
+    BasicProtocolEmmitter.prototype.removeListener(_Event, SendCipherSuites);
+};
 
 var ReceiveDHEncryptedMessage = function(ObjToRead) {
 
@@ -135,3 +176,5 @@ function clear() {
     delete jsonToSend['HmacHash'];
 
 }
+
+module.exports = BasicProtocolEmmitter;

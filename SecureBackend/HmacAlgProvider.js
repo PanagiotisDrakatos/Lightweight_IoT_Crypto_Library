@@ -1,17 +1,16 @@
 'use strict';
 
 const crypto = require('crypto');
+var forge = require('node-forge');
 
-exports.HmacSha256Sign = function(Encrypted, key) {
-    const hash = crypto.createHmac('sha256', key)
-        .update(Encrypted)
-        .digest('base64');
-    return hash;
+exports.HmacSign = function(Data, key,algo) {
+    var sign = crypto.createHmac(algo,new Buffer(key,'utf8')).update(Data).digest('base64');
+    return sign;
 }
-exports.HmacSha256Verify = function(Encrypted, key, HmacMsg) {
+exports.HmacVerify = function(Data,key, HmacMsg,algo) {
 
-    var ServerHmacSign = exports.HmacSha256Sign(Encrypted, key);
-    if (HmacMsg==ServerHmacSign) {
+    var ServerHmacSign = exports.HmacSign(Data, key,algo);
+    if (HmacMsg == ServerHmacSign) {
         console.log("Integrity verified successfully");
         return true;
     }
