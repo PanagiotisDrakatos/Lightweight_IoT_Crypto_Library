@@ -6,9 +6,9 @@ import java.security.cert.X509Certificate;
 
 public abstract class KeyManagerImp {
 
-    public static final String exponent = "95632573769194905177488615436919317766582673020891665265323677789504596581977";
-    public static final String modulus = "81554351438297688582888558141846154981885664956959015742153749206820791432251";
 
+    public static final String exponent = "67849492012064603525502413864581601255843190582896059031333969517102908698009";
+    public static final String modulus = "106953682714365274028621778978603013937497125686512166290051415904041709752171";
     //unfortunately this works only for Windows os
     public String currentpath = System.getProperty("user.dir") + "\\ClientStore\\";
     public String Server_PUBLIC_KEY = currentpath + "Public.key";

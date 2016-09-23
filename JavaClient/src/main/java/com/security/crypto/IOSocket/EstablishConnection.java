@@ -5,6 +5,7 @@ import com.security.crypto.Configuration.Properties;
 import javax.net.ssl.*;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.security.*;
@@ -42,13 +43,18 @@ public class EstablishConnection {
     }
 
     private boolean SetupPlainConnection() throws IOException {
-        System.out.println("Creating socket to '" + Properties.host + "' on port " + Properties.portNumber);
+        try {
+            System.out.println("Creating socket to '" + Properties.host + "' on port " + Properties.portNumber);
 
-        socket = new Socket(Properties.host, Properties.portNumber);
-        transport = new IOTransport(socket);
+            socket = new Socket(Properties.host, Properties.portNumber);
+            transport = new IOTransport(socket);
 
-        System.out.println("ESTABLISHED" + "\n");
-        System.out.println("Just connected to " + socket.getInetAddress() + "\n");
+            System.out.println("ESTABLISHED" + "\n");
+            System.out.println("Just connected to " + socket.getInetAddress() + "\n");
+        } catch (ConnectException ex) {
+            System.out.println("Connection failed Server probably down try  again later");
+            return false;
+        }
         return true;
     }
 

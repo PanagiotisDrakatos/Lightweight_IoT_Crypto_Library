@@ -1,12 +1,10 @@
 package com.security.crypto.KeyManager;
 
 
-import com.security.crypto.Ciphers.AES.Digest;
 import com.security.crypto.Configuration.Properties;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 
 public class DHIntegrityKey extends Keys {
 
@@ -21,12 +19,13 @@ public class DHIntegrityKey extends Keys {
     public void GenerateIntegrityKey(String SessionKey) {
         try {
             this.SessionKey = SessionKey;
-            byte[] keyBytes = Digest.Hash(this.SessionKey, Properties.HashingAlgorithm);
-            byte[] IntegrityBytes16 = new byte[16];
-            System.arraycopy(keyBytes, 16, IntegrityBytes16, 0, 16);
-            this.integrityKey = new SecretKeySpec(IntegrityBytes16, Properties.AES_PROVIDER);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            byte[] keyBytes = SessionKey.getBytes(Properties.CHAR_ENCODING);
+            // System.out.println("length is "+keyBytes.length);
+            byte[] keyBytes16 = new byte[16];
+            //Math.min(bytes.length/2,16),Math.min(bytes.length,32)
+            System.arraycopy(keyBytes, Math.min(keyBytes.length / 2, 16), keyBytes16, 0, Math.min(keyBytes.length, 16));
+            this.integrityKey = new SecretKeySpec(new String(keyBytes16).getBytes(Properties.CHAR_ENCODING), Properties.AES_PROVIDER);
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

@@ -22,12 +22,17 @@ public abstract class Properties {
     //can calculate the key, since the calculation of discrete logarithms under 
     //field arithmetic is very hard (see Galois Fields)
     //Prime numbers machine generator 
-    public static final String exponent = "95632573769194905177488615436919317766582673020891665265323677789504596581977";
-    public static final String modulus = "81554351438297688582888558141846154981885664956959015742153749206820791432251";
+    public static final String exponent = "67849492012064603525502413864581601255843190582896059031333969517102908698009";
+    public static final String modulus = "2488305068742644273557582289228577695008613947504239231451478997448862967615054559158646690894413368612518781574622331108225213890389508634163395377693";
 
     public static final String AES_PROVIDER = "AES";
-    public static final String AES_ALGORITHM = "AES/ECB/PKCS7Padding";
-    public static final String HashingAlgorithm = "SHA-256";
+    public static final String AES_ECB = "AES/ECB/PKCS7Padding";
+    public static final String AES_CBC = "AES/CBC/PKCS7Padding";
+
+    public static final String MD5 = "md5";
+    public static final String sha1 = "SHA-1";
+    public static final String SHA_256 = "SHA-256";
+    public static final String MACSHA_256 = "HmacSHA256";
 
     //Rsa needed
     public static final String RSA_ALGORITHM = "RSA";

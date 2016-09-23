@@ -19,7 +19,7 @@ public class AesIV_Params implements AesCiphers {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         // convert plain text to bytes
         byte[] plainBytes = plaintext.getBytes(Properties.CHAR_ENCODING);
-        Cipher cipher = Cipher.getInstance(Properties.AES_ALGORITHM);
+        Cipher cipher = Cipher.getInstance(Properties.AES_ECB);
         cipher.init(Cipher.ENCRYPT_MODE, ChiperKey);
         // encrypt
         byte[] encrypted = cipher.doFinal(plainBytes);
@@ -33,7 +33,7 @@ public class AesIV_Params implements AesCiphers {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         // convert plain text to bytes
         byte[] plainBytes = Base64.decodeBase64(encrypted.getBytes(Properties.CHAR_ENCODING));
-        Cipher cipher = Cipher.getInstance(Properties.AES_ALGORITHM);
+        Cipher cipher = Cipher.getInstance(Properties.AES_ECB);
         cipher.init(Cipher.DECRYPT_MODE, ChiperKey);
 
         byte[] decrypted = cipher.doFinal(plainBytes);

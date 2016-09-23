@@ -1,5 +1,7 @@
 package com.security.crypto.IOSocket;
 
+import com.security.crypto.Configuration.CiphersForUse;
+
 import java.io.IOException;
 
 public abstract class IOSynAck {
@@ -14,4 +16,7 @@ public abstract class IOSynAck {
 
     public abstract void ReceivePublicValue() throws Exception;
 
+    public abstract void SendCipherSuites() throws Exception;
+
+    public abstract CiphersForUse ReceiveCipherSuites() throws Exception;
 }

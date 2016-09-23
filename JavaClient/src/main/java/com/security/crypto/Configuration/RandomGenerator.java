@@ -60,7 +60,7 @@ public class RandomGenerator {
         BigInteger randomServerPrimeNumber;
 
         Random r = new Random();
-        byte[] random = new byte[16];
+        byte[] random = new byte[32];
 
         BigInteger skip1024Modulus = new BigInteger(1, skip1024ModulusBytes);
         r.nextBytes(random);

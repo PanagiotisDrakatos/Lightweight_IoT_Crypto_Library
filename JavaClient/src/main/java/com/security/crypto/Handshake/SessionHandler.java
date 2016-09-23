@@ -1,14 +1,13 @@
 package com.security.crypto.Handshake;
 
+import com.security.crypto.Configuration.CiphersForUse;
 import com.security.crypto.IOSocket.EstablishConnection;
 import com.security.crypto.IOSocket.IOCallback;
 import com.security.crypto.IOSocket.IOSynAck;
 import com.security.crypto.KeyManager.KeyHandler;
 import com.security.crypto.KeyManager.KeyManagerImp;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,9 +18,8 @@ public class SessionHandler {
 
     private IOSynAck keyExchange = null;
     private IOCallback MessageExhange = null;
+    private CiphersForUse ciphersforUse = null;
 
-    private Timer timer;
-    private Toolkit toolkit;
 
     public SessionHandler(String connection) {
         this.Session = new EstablishConnection(connection);
@@ -55,6 +53,14 @@ public class SessionHandler {
             this.keyExchange.ReceivePublicValue();
             long Execution_Time5 = (System.currentTimeMillis() - Execution_Time4);
             System.out.println("---------------Execution Time5--------------------" + Execution_Time5);//778
+            this.keyExchange.SendCipherSuites();
+            long Execution_Time6 = (System.currentTimeMillis() - Execution_Time5);
+            System.out.println("---------------Execution Time6--------------------" + Execution_Time6);//778
+            ciphersforUse = this.keyExchange.ReceiveCipherSuites();
+            this.MessageExhange.setCiphersforUse(ciphersforUse);
+            long Execution_Time7 = (System.currentTimeMillis() - Execution_Time6);
+            System.out.println("---------------Execution Time7--------------------" + Execution_Time7);//778
+            System.out.println("---------------Sum upTime------------------------ " + (System.currentTimeMillis() - elapsetime));
         } catch (IOException e) {
             e.printStackTrace();
             this.ConnectionClose();

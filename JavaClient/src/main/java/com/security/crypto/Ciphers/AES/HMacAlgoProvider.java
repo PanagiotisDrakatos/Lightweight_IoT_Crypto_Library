@@ -9,20 +9,18 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class HMacAlgoProvider {
 
-    public static String HmacSha256Sign(String Encrypted, String key) throws Exception {
-        Mac sha256_HMAC = Mac.getInstance(Properties.HmacAlgProv);
-        byte[] keybytes = key.getBytes(Properties.CHAR_ENCODING);
-        SecretKeySpec secret_key = new SecretKeySpec(keybytes, Properties.HmacAlgProv);
-        sha256_HMAC.init(secret_key);
+    public static String HmacSign(String Data, SecretKeySpec Integritykey, String algorithm) throws Exception {
+        Mac sha256_HMAC = Mac.getInstance(algorithm);
+        sha256_HMAC.init(Integritykey);
 
-        byte[] EncryptedBytes = Encrypted.getBytes(Properties.CHAR_ENCODING);
-        String hash = new String(Base64.encodeBase64(sha256_HMAC.doFinal(EncryptedBytes)));
+        byte[] DatadBytes = Data.getBytes(Properties.CHAR_ENCODING);
+        String hash = new String(Base64.encodeBase64(sha256_HMAC.doFinal(DatadBytes)));
         return hash;
     }
 
-    public static boolean HmacSha256Verify(String Encrypted, String key, String HmacMsg) throws Exception {
+    public static boolean HmacVerify(String Data, SecretKeySpec Integritykey, String HmacMsg, String algorithm) throws Exception {
 
-        String ServerHmacSign = HmacSha256Sign(Encrypted, key);
+        String ServerHmacSign = HmacSign(Data, Integritykey, algorithm);
         if (HmacMsg.equals(ServerHmacSign)) {
             System.out.println("Integrity verified successfully");
             return true;

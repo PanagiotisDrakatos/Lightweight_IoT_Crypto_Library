@@ -11,6 +11,7 @@ public class JSonObject {
     public String ClientEncryptedPrimeNumber = "";
     public String ServerPrimeNumber = "";
 
+    public String CipherSuites = "";
     public String EncryptedMessage = "";
     public String FingerPrint = "";
     public String HmacHash = "";
