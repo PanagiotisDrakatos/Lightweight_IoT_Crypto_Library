@@ -2,11 +2,13 @@
 var forge = require('node-forge');
 
 exports.SignData = function(Encrypted, PrivateKey) {
-    var Hash = 'SHA256'
     var InputEncoding = 'utf8'
-    var OutputEncoding = 'base64'
-    var _signature = PrivateKey.hashAndSign(Hash, Encrypted, InputEncoding, OutputEncoding);
-    return _signature;
+    var md = forge.md.sha1.create();
+    md.update(Encrypted, InputEncoding);
+    var privateKey = forge.pki.privateKeyFromPem(PrivateKey);
+    var _signature = privateKey.sign(md);
+    var base64encoded = forge.util.encode64(_signature);
+    return base64encoded;
 }
 
 exports.verifySig = function(Encrypted, publicKey, ClientSignatue) {

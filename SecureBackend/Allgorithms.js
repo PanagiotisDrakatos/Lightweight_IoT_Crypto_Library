@@ -51,7 +51,7 @@ AlgorithmsUse.prototype.returnCipherAlgorithm = function(SessionResult) {
     return this.getCipherAlgorithm().toString();
 }
 AlgorithmsUse.prototype.ChooserCipher = function(cipher) {
-    this.setCipherAlgorithm(cipher[0]);
+    this.setCipherAlgorithm(cipher[1]);
 }
 
 AlgorithmsUse.prototype.ChooserHash = function(Diggest) {
