@@ -23,7 +23,7 @@ public abstract class Properties {
     //field arithmetic is very hard (see Galois Fields)
     //Prime numbers machine generator 
     public static final String exponent = "67849492012064603525502413864581601255843190582896059031333969517102908698009";
-    public static final String modulus = "2488305068742644273557582289228577695008613947504239231451478997448862967615054559158646690894413368612518781574622331108225213890389508634163395377693";
+    public static final String modulus = "71121776095154293411645315316982820283937449209225990596316112319337209629611";
 
     public static final String AES_PROVIDER = "AES";
     public static final String AES_ECB = "AES/ECB/PKCS7Padding";
@@ -32,7 +32,7 @@ public abstract class Properties {
     public static final String MD5 = "md5";
     public static final String sha1 = "SHA-1";
     public static final String SHA_256 = "SHA-256";
-    public static final String MACSHA_256 = "HmacSHA256";
+    public static final String MACSHA_256 = "SHA256";
 
     //Rsa needed
     public static final String RSA_ALGORITHM = "RSA";
@@ -49,8 +49,8 @@ public abstract class Properties {
     public static final int RSA_KEYSIZE = 2048;
 
     //HmacAlgProvider hash Function
-    public static final String HmacAlgProv = "HmacSHA256";
+    public static final String HmacAlgProv = "SHA256";
     //Rsa Integrity Signature
-    public static final String Signature = "SHA256withRSA";
+    public static final String Signature = "SHA1withRSA";
 
 }

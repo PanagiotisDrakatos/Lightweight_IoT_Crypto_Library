@@ -1,17 +1,13 @@
 package com.security.crypto.KeyManager;
 
 
-import com.security.crypto.Ciphers.AES.Digest;
 import com.security.crypto.Configuration.Properties;
 
-import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 public class DHCipherKey extends Keys {
 
-    private SecretKeySpec CipherKey;
+    private String CipherKey;
     private String SessionKey;
 
     public DHCipherKey() {
@@ -22,13 +18,12 @@ public class DHCipherKey extends Keys {
     public void GenerateCipherKey(String SessionKey) {
         try {
             this.SessionKey = SessionKey;
-            byte[] keyBytes = Digest.Hash(this.SessionKey, Properties.SHA_256);
-            byte[] CipherBytes16 = new byte[16];
-            byte[] slice = Arrays.copyOfRange(keyBytes, 0, 16);
-            System.arraycopy(keyBytes, 0, CipherBytes16, 0, 16);
-            this.CipherKey = new SecretKeySpec(CipherBytes16, Properties.AES_PROVIDER);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            byte[] keyBytes = SessionKey.getBytes(Properties.CHAR_ENCODING);
+            byte[] keyBytes16 = new byte[16];
+            System.arraycopy(keyBytes, 0, keyBytes16, 0, Math.min(keyBytes.length / 2, 16));
+            // byte[] hash = Digest.Hash(new String(keyBytes16), Properties.MD5);
+            // this.CipherKey = new SecretKeySpec(hash, Properties.AES_PROVIDER);
+            this.CipherKey = new String(keyBytes16);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -38,7 +33,7 @@ public class DHCipherKey extends Keys {
         return this.SessionKey;
     }
 
-    public SecretKeySpec getCipherKey() {
+    public String getCipherKey() {
         return CipherKey;
     }
 

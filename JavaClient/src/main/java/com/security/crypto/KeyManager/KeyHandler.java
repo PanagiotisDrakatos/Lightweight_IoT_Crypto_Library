@@ -115,7 +115,7 @@ public class KeyHandler extends KeyManagerImp {
     }
 
     @Override
-    public SecretKeySpec loadRemoteCipherKey() {
+    public String loadRemoteCipherKey() {
         return this.CipherKey.getCipherKey();
     }
 

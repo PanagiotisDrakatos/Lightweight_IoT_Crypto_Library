@@ -10,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class HMacAlgoProvider {
 
     public static String HmacSign(String Data, SecretKeySpec Integritykey, String algorithm) throws Exception {
-        Mac sha256_HMAC = Mac.getInstance(algorithm);
+        Mac sha256_HMAC = Mac.getInstance("Hmac" + algorithm);
         sha256_HMAC.init(Integritykey);
 
         byte[] DatadBytes = Data.getBytes(Properties.CHAR_ENCODING);

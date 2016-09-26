@@ -8,19 +8,17 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Security;
 
-public class AesNoIV_Params implements AesCiphers {
+public class AesECB implements AesCiphers {
 
 
-    public AesNoIV_Params() {
-
-    }
-
-    public String AeS_Encrypt(String plaintext, SecretKeySpec ChiperKey) throws Exception {
+    public String AeS_Encrypt(String plaintext, String Key) throws Exception {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         // convert plain text to bytes
         byte[] plainBytes = plaintext.getBytes(Properties.CHAR_ENCODING);
         Cipher cipher = Cipher.getInstance(Properties.AES_ECB);
-        cipher.init(Cipher.ENCRYPT_MODE, ChiperKey);
+        byte[] keybytes = Digest.Hash(Key, Properties.MD5);
+        SecretKeySpec sky = new SecretKeySpec(keybytes, Properties.AES_PROVIDER);
+        cipher.init(Cipher.ENCRYPT_MODE, sky);
         // encrypt
         byte[] encrypted = cipher.doFinal(plainBytes);
         String encryptedString = new String(Base64.encodeBase64(encrypted));
@@ -29,12 +27,14 @@ public class AesNoIV_Params implements AesCiphers {
 
     }
 
-    public String AeS_Decrypt(String encrypted, SecretKeySpec ChiperKey) throws Exception {
+    public String AeS_Decrypt(String encrypted, String Key) throws Exception {
         Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         // convert plain text to bytes
         byte[] plainBytes = Base64.decodeBase64(encrypted.getBytes(Properties.CHAR_ENCODING));
+        byte[] keybytes = Digest.Hash(Key, Properties.MD5);
+        SecretKeySpec sky = new SecretKeySpec(keybytes, Properties.AES_PROVIDER);
         Cipher cipher = Cipher.getInstance(Properties.AES_ECB);
-        cipher.init(Cipher.DECRYPT_MODE, ChiperKey);
+        cipher.init(Cipher.DECRYPT_MODE, sky);
 
         byte[] decrypted = cipher.doFinal(plainBytes);
         return new String(decrypted, Properties.CHAR_ENCODING);

@@ -5,20 +5,29 @@ import com.security.crypto.Handshake.SessionHandler;
 
 /**
  * Hello world!
- *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
+public class App {
+    public static void main(String[] args) throws Exception {
+
+         /*AesCBC SD=new AesCBC();
+        String encrypted= SD.AeS_Encrypt("mitsos","key");
+        System.out.println(encrypted);
+        String decrypted=SD.AeS_Decrypt("NsOOehXDtinjI3nk4EPsKQ==","key");
+        System.out.println(decrypted);*/
+
+       /* byte[] keyBytes = Digest.Hash("key", "md5");
+        SecretKeySpec skeySpec = new SecretKeySpec(keyBytes, Properties.AES_PROVIDER);
+        String s = new AesECB().AeS_Encrypt("hallo", skeySpec);
+        System.out.println(s);*/
         SessionHandler session = new SessionHandler(Properties.PlainTextConnection);
+        String Receive = null;
         session.StartDHKeyExchange();
         session.SendSecureMessage("hello Server 1");
-        String Receive = session.ReceiveSecureMessage();
-        System.out.println(Receive+ "1");
-        session.SendSecureMessage("hello Server2");
         Receive = session.ReceiveSecureMessage();
-        System.out.println(Receive + "2");
+        System.out.println(Receive);
+        session.SendSecureMessage("hello Server 2");
+        Receive = session.ReceiveSecureMessage();
+        System.out.println(Receive);
         session.ConnectionClose();
     }
 }
