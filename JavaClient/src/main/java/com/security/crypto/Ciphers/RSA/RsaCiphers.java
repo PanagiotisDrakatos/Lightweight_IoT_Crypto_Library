@@ -1,4 +1,4 @@
-package com.security.crypto.Ciphers;
+package com.security.crypto.Ciphers.RSA;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;

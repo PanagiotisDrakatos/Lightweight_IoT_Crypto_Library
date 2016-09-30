@@ -1,4 +1,4 @@
-package com.security.crypto.Ciphers;
+package com.security.crypto.Ciphers.AES;
 
 
 public interface AesCiphers {

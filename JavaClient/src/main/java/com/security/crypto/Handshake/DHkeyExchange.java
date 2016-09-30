@@ -2,7 +2,7 @@ package com.security.crypto.Handshake;
 
 import com.security.crypto.Ciphers.AES.AesECB;
 import com.security.crypto.Ciphers.AES.HMacAlgoProvider;
-import com.security.crypto.Ciphers.RSA.RSA_ECB_PKCS1;
+import com.security.crypto.Ciphers.RSA.RSA_PKCS1;
 import com.security.crypto.Configuration.*;
 import com.security.crypto.IOSocket.IOSynAck;
 import com.security.crypto.IOSocket.IOTransport;
@@ -20,7 +20,7 @@ public final class DHkeyExchange extends IOSynAck {
     private RandomGenerator Genarator;
     private final KeyHandler keystore;
     private AesECB aesNoIVParams;
-    private RSA_ECB_PKCS1 rsa_ecb_pkcs1;
+    private RSA_PKCS1 rsa_pkcs1;
     private CookieGen cookie;
     private StringJoiner Ciphers;
     private StringJoiner Diggest;
@@ -32,7 +32,7 @@ public final class DHkeyExchange extends IOSynAck {
         this.Genarator = new RandomGenerator();
         this.keystore = keystore;
         this.aesNoIVParams = new AesECB();
-        this.rsa_ecb_pkcs1 = new RSA_ECB_PKCS1();
+        this.rsa_pkcs1 = new RSA_PKCS1();
         Ciphers = new StringJoiner(",");
         Diggest = new StringJoiner(",");
         CurrentDiggest = new StringJoiner(",");
@@ -76,7 +76,7 @@ public final class DHkeyExchange extends IOSynAck {
         try {
             JSonObject ObjToSend = new JSonObject();
             ObjToSend.PseudoNumber = Genarator.pseudorandom();
-            ObjToSend.ClientEncryptedPrimeNumber = this.rsa_ecb_pkcs1.RsaEncrypt(
+            ObjToSend.ClientEncryptedPrimeNumber = this.rsa_pkcs1.RsaEncrypt(
                     keystore.loadRemoteServerPublicKey(), ServerPublicPrimeNumber.toString());
 
             String toSend = JSonParse.WriteObject(ObjToSend);

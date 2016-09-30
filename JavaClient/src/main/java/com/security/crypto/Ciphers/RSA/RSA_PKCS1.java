@@ -1,6 +1,5 @@
 package com.security.crypto.Ciphers.RSA;
 
-import com.security.crypto.Ciphers.RsaCiphers;
 import com.security.crypto.Configuration.Properties;
 import org.apache.commons.codec.binary.Base64;
 
@@ -8,7 +7,7 @@ import javax.crypto.Cipher;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-public class RSA_ECB_PKCS1 implements RsaCiphers {
+public class RSA_PKCS1 implements RsaCiphers {
 
     public String RsaEncrypt(PublicKey pubKey, String plainText) throws Exception {
         byte[] plainBytes = plainText.getBytes(Properties.CHAR_ENCODING);
