@@ -2,14 +2,20 @@ package com.security.crypto.KeyManager;
 
 import com.security.crypto.Configuration.Properties;
 import com.security.crypto.Handshake.DHkeyExchange;
+import org.apache.commons.codec.binary.Base64;
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.x509.Certificate;
+import org.bouncycastle.jce.provider.X509CertificateObject;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
+import java.security.Security;
+import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -23,6 +29,7 @@ public class KeyHandler extends KeyManagerImp {
 
 
     public KeyHandler() {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         this.CipherKey = new DHCipherKey();
         this.IntegrityKey = new DHIntegrityKey();
         File f = new File(currentpath);
@@ -33,7 +40,9 @@ public class KeyHandler extends KeyManagerImp {
     @Override
     public void SaveServerPublicKey() {
         try {
-            PublicKey key = this.loadCertificate().getPublicKey();
+            X509Certificate cert = this.loadCertificate();
+            PublicKey key = cert.getPublicKey();
+            System.out.println(key);
             byte[] keyBytes = key.getEncoded();
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
             FileOutputStream Fos = new FileOutputStream(new File(Server_PUBLIC_KEY));
@@ -99,16 +108,57 @@ public class KeyHandler extends KeyManagerImp {
         }
     }
 
+    /*
+     FileInputStream fis = null;
+            ObjectInputStream ois = null;
+            try {
+                File filecert = new File(Server_Certificate);
+                fis = new FileInputStream(filecert);
+                ois = new ObjectInputStream(fis);
+                String Der_Encoded = (String) ois.readObject();
+
+                byte[] Der_bytes = Base64.decodeBase64(Der_Encoded.getBytes(Properties.CHAR_ENCODING));
+                ByteArrayInputStream inStream = new ByteArrayInputStream(Der_bytes);
+                ASN1InputStream derin = new ASN1InputStream(inStream);
+                ASN1Primitive certInfo = derin.readObject();
+                ASN1Sequence seq = ASN1Sequence.getInstance(certInfo);
+
+                fis.close();
+                return new X509CertificateObject(Certificate.getInstance(seq));
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (CertificateParsingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return null;
+     */
     public X509Certificate loadCertificate() {
-        FileInputStream is = null;
+        FileInputStream fis = null;
         try {
-            CertificateFactory fact = CertificateFactory.getInstance("X.509");
-            is = new FileInputStream(new File(Server_Certificate));
-            X509Certificate cer = (X509Certificate) fact.generateCertificate(is);
-            return cer;
+            File filecert = new File(Server_Certificate);
+            fis = new FileInputStream(filecert);
+            byte[] Der_Encoded_Cert = new byte[(int) filecert.length()];
+            fis.read(Der_Encoded_Cert);
+
+            byte[] data = Base64.decodeBase64(Der_Encoded_Cert);
+            ByteArrayInputStream inStream = new ByteArrayInputStream(data);
+            ASN1InputStream derin = new ASN1InputStream(inStream);
+            ASN1Primitive certInfo = derin.readObject();
+            ASN1Sequence seq = ASN1Sequence.getInstance(certInfo);
+
+            fis.close();
+            return new X509CertificateObject(Certificate.getInstance(seq));
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (CertificateException e) {
+        } catch (CertificateParsingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return null;

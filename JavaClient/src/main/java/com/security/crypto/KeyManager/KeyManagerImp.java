@@ -1,6 +1,7 @@
 package com.security.crypto.KeyManager;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 
@@ -22,7 +23,7 @@ public abstract class KeyManagerImp {
 
     public abstract PublicKey loadRemoteServerPublicKey();
 
-    public abstract X509Certificate loadCertificate();
+    public abstract X509Certificate loadCertificate() throws IOException;
 
     public abstract String loadRemoteCipherKey();
 
