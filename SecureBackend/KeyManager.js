@@ -8,7 +8,7 @@ const util = require('util');
 
 function KeyHandle() {
     EventEmitter.call(this);
-    this._format="utf8";
+    this._format = "utf8";
     this.relativeOrAbsolutePathToPublicKey = dir + "/Public.pem"
     this.relativeOrAbsolutePrivateKey = dir + "/Private.pem"
     this.relativeOrAbsoluteCertificate = dir + "/Certificate.pem"
@@ -29,7 +29,7 @@ KeyHandle.prototype.SavePublicKey = function(pubkey) {
 };
 
 KeyHandle.prototype.SaveCertificate = function(ServerCert) {
-    var certpem=ServerCert.Self_Sign_CertTopem();
+    var certpem = ServerCert.Self_Sign_CertTopem();
     fs.writeFile(this.relativeOrAbsoluteCertificate, certpem, this._format)
     return
 }
@@ -43,9 +43,13 @@ KeyHandle.prototype.loadPublicKey = function() {
     return publicKey;
 };
 
-KeyHandle.prototype.loadCertificate  = function() {
+KeyHandle.prototype.loadCertificate = function() {
     var certpem = fs.readFileSync(this.relativeOrAbsoluteCertificate, this._format);
-    return certpem;
+    var cert = forge.pki.certificateFromPem(certpem);
+    var asn1Cert = forge.pki.certificateToAsn1(cert);
+    var der1 = forge.asn1.toDer(asn1Cert).getBytes();
+    var encoded= forge.util.encode64(der1);
+    return encoded;
 };
 
 module.exports = KeyHandle;

@@ -11,7 +11,7 @@
 
 //npm install mongodb
 
-var _HOST = '192.168.1.66';
+var _HOST = '192.168.1.67';
 var _PORT = 1337;
 var _address;
 
@@ -28,7 +28,7 @@ var server = net.createServer(function(socket) {
     });
 
     socket.on('data', function(data) {
-        //console.log('clients says' + ': ' + data);
+        console.log('clients says' + ': ' + data);
         userCount++;
         ProtocolEmmitter.Receive(data);
         // socket.pipe(socket);
