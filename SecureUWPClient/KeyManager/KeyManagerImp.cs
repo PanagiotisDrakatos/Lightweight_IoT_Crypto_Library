@@ -12,13 +12,13 @@ namespace SecureUWPClient.KeyManager
     public abstract class KeyManagerImp
     {
 
-        protected String _clientFolder = "\\ClientStore\\";
+        protected String _clientFolder = "ClientStore";
         protected String _server_PUBLIC_KEY =  "Public.key";
         protected String _server_Certificate = "Certificate.pem";
 
         public abstract void SaveServerPublicKey(Certificate cert);
 
-        public abstract void SaveCertificate(String CertPemFormat);
+        public abstract Task<int> SaveCertificate(String CertPemFormat);
 
         public abstract Task<Certificate> LoadCertificate();
 
@@ -30,7 +30,9 @@ namespace SecureUWPClient.KeyManager
 
        // public abstract X509Certificate loadCertificate();
 
-        public abstract String loadRemoteCipherKey();
+        public abstract Task<String> LoadCipherKey();
+
+        public abstract Task<CryptographicKey> LoadIntegrityKey();
 
         public abstract String ClientFolder { get; }
         public abstract String Server_PUBLIC_KEY { get; }

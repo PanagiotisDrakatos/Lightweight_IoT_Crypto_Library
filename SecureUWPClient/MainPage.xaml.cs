@@ -1,9 +1,12 @@
-﻿using System;
+﻿using SecureUWPClient.Configuration;
+using SecureUWPClient.KeyManager;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -26,11 +29,9 @@ namespace SecureUWPClient
         public MainPage()
         {
             this.InitializeComponent();
-            Windows.ApplicationModel.Package package = Windows.ApplicationModel.Package.Current;
-            Windows.Storage.StorageFolder installedLocation = package.InstalledLocation;
+            
 
-            String output = String.Format("Installed Location: {0}", installedLocation.Path);
-            Debug.WriteLine(output);
+          
         }
     }
 }

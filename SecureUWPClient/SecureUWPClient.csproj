@@ -98,10 +98,21 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ciphers\AES\AESCiphers.cs" />
+    <Compile Include="Ciphers\AES\MacAlgProvider.cs" />
+    <Compile Include="Ciphers\RSA\Fingerprint.cs" />
+    <Compile Include="Ciphers\RSA\RsaCiphers.cs" />
+    <Compile Include="Ciphers\RSA\RSA_PKCS1.cs" />
+    <Compile Include="Configuration\CiphersForUse.cs" />
+    <Compile Include="Configuration\Cookie.cs" />
+    <Compile Include="Configuration\ExecutionTime.cs" />
     <Compile Include="Configuration\JSonObject.cs" />
     <Compile Include="Configuration\JsonParse.cs" />
     <Compile Include="Configuration\PrimeNumberGenerator.cs" />
     <Compile Include="Configuration\SampleConfiguration.cs" />
+    <Compile Include="Configuration\StringJoin.cs" />
+    <Compile Include="Handshake\IOMessageExhange.cs" />
+    <Compile Include="Handshake\IOSessionBuilder.cs" />
     <Compile Include="IOTransport\IAsyncSynAck.cs" />
     <Compile Include="IOTransport\IOCallbackAsync.cs" />
     <Compile Include="Handshake\DHkeyExchange.cs" />

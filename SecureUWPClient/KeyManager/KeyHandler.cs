@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,17 +16,25 @@ namespace SecureUWPClient.KeyManager
     public class KeyHandler : KeyManagerImp
     {
         private String Output;
-        private Windows.Storage.StorageFile sampleFile;
+        private  DHCipherKey CipherKey;
+        private  DHIntegrityKey IntegrityKey;
+
+        private StorageFolder newFolder;
+        private  StorageFile pubFile;
+        private  StorageFile certFile;
+      
         public KeyHandler()
         {
             Intialize();
+            this.CipherKey = new DHCipherKey();
+            this.IntegrityKey = new DHIntegrityKey();
         }
 
         public override string Server_Certificate
         {
             get
             {
-                return Output + _clientFolder+_server_Certificate;
+                return _server_Certificate;
                 throw new NotImplementedException();
             }
         }
@@ -34,7 +43,7 @@ namespace SecureUWPClient.KeyManager
         {
             get
             {
-                return Output + _clientFolder+_server_PUBLIC_KEY;
+                return _server_PUBLIC_KEY;
                 throw new NotImplementedException();
             }
         }
@@ -43,32 +52,32 @@ namespace SecureUWPClient.KeyManager
         {
             get
             {
-                return Output + _clientFolder;
+                return _clientFolder;
                 throw new NotImplementedException();
             }
         }
 
-        public override string loadRemoteCipherKey()
-        {
-            throw new NotImplementedException();
-        }
+     
 
         public override void ProduceCipherKey(string SessionResult)
         {
-            throw new NotImplementedException();
+            CipherKey.GenerateCipherKey(SessionResult);
+            return;
         }
 
         public override void ProduceIntegrityKey(string SessionResult)
         {
-            throw new NotImplementedException();
+            IntegrityKey.GenerateIntegrityKey(SessionResult);
+            return;
         }
 
-        public override async void SaveCertificate(string CertPemFormat)
+        public override async  Task<int> SaveCertificate(string CertPemFormat)
         {
-            IBuffer certBuffer = CryptographicBuffer.DecodeFromBase64String(CertPemFormat);
-            await Windows.Storage.FileIO.WriteTextAsync(sampleFile, CertPemFormat);
-            Certificate ft = new Certificate(certBuffer);
-            throw new NotImplementedException();
+            StorageFile certFile = await newFolder.GetFileAsync(Server_Certificate);
+            var buffer = Windows.Security.Cryptography.CryptographicBuffer.ConvertStringToBinary(CertPemFormat, 
+                Windows.Security.Cryptography.BinaryStringEncoding.Utf8);
+            await Windows.Storage.FileIO.WriteBufferAsync(certFile, buffer);
+            return 0;
         }
 
         public override async void SaveServerPublicKey(Certificate cert)
@@ -76,45 +85,86 @@ namespace SecureUWPClient.KeyManager
             CryptographicKey keyPair = PersistedKeyProvider.OpenPublicKeyFromCertificate(cert, HashAlgorithmNames.Sha1, CryptographicPadding.RsaPkcs1V15);
             IBuffer keybuffer =keyPair.ExportPublicKey();
             String PublicKey=CryptographicBuffer.EncodeToBase64String(keybuffer);
-            await Windows.Storage.FileIO.WriteTextAsync(sampleFile, PublicKey);
-            throw new NotImplementedException();
+            StorageFile pubFile = await newFolder.GetFileAsync(Server_PUBLIC_KEY);
+            var buffer = Windows.Security.Cryptography.CryptographicBuffer.ConvertStringToBinary(PublicKey,
+             Windows.Security.Cryptography.BinaryStringEncoding.Utf8);
+            await Windows.Storage.FileIO.WriteBufferAsync(pubFile, buffer);
+            return;
         }
 
         public override async Task<Certificate> LoadCertificate()
         {
-            string CertPemFormat = await Windows.Storage.FileIO.ReadTextAsync(sampleFile);
-            IBuffer certBuffer = CryptographicBuffer.DecodeFromBase64String(CertPemFormat);
-            Certificate cert = new Certificate(certBuffer);
+            Certificate cert = null;
+            string CertPemFormat = null;
+            try
+            {
+                    StorageFolder loclfold = await ApplicationData.Current.LocalFolder.GetFolderAsync(ClientFolder);
+                    var buffer = await Windows.Storage.FileIO.ReadBufferAsync(await loclfold.GetFileAsync(Server_Certificate));
+                    using (var dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
+                    {
+                        CertPemFormat = dataReader.ReadString(buffer.Length);
+                    }
+                    Debug.WriteLine(CertPemFormat);
+                    IBuffer certBuffer = CryptographicBuffer.DecodeFromBase64String(CertPemFormat);
+                    cert = new Certificate(certBuffer);
+                    return cert;
+                
+            }
+            catch (FileNotFoundException e)
+            {
+                Debug.WriteLine("Folder Not Exists!!!" + e.Data);
+            }
             return cert;
-            throw new NotImplementedException();
         }
 
         public override async Task<CryptographicKey> LoadPublicKey()
         {
-            string Pubkey = await Windows.Storage.FileIO.ReadTextAsync(sampleFile);
+            string Pubkey = await Windows.Storage.FileIO.ReadTextAsync(pubFile);
             IBuffer keyBuffer = CryptographicBuffer.DecodeFromBase64String(Pubkey);
 
             AsymmetricKeyAlgorithmProvider provider = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
             CryptographicKey publicKey = provider.ImportPublicKey(keyBuffer, CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
             return publicKey;
         }
+
+        public override async Task<CryptographicKey> LoadIntegrityKey()
+        {
+            return this.IntegrityKey.IntegrityKey;
+        }
+
+        public override async Task<String> LoadCipherKey()
+        {
+            return this.CipherKey.CipherKey;
+        }
         private async void Intialize()
         {
-            bool x = await isFilePresent(ClientFolder);
-            if (!x)
-                Debug.WriteLine("File eady Created!!!!");
-
-            Windows.ApplicationModel.Package package = Windows.ApplicationModel.Package.Current;
-            Windows.Storage.StorageFolder storageFolder =Windows.Storage.ApplicationData.Current.LocalFolder;
-            sampleFile = await storageFolder.GetFileAsync("sample.txt");
-           // Output = String.Format("Installed Location: {0}", installedLocation.Path);
-           
+            var t = Task.Run(() => isFilePresent(ClientFolder));
+            t.Wait();
+            return;
         }
 
         public async Task<bool> isFilePresent(string fileName)
         {
-            var item = await ApplicationData.Current.LocalFolder.TryGetItemAsync(fileName);
-            return item != null;
+            try {
+                StorageFolder appInstalledFolder = ApplicationData.Current.LocalFolder;
+
+
+                newFolder = await appInstalledFolder.CreateFolderAsync(ClientFolder, CreationCollisionOption.ReplaceExisting);
+          
+                await newFolder.CreateFileAsync(Server_PUBLIC_KEY, CreationCollisionOption.ReplaceExisting);
+                await newFolder.CreateFileAsync(Server_Certificate, CreationCollisionOption.ReplaceExisting);
+
+                // certFile = await newFolder.GetFileAsync(Server_Certificate);
+               //  pubFile = await newFolder.GetFileAsync(Server_PUBLIC_KEY);
+                Debug.WriteLine(newFolder.Path);
+                return true;
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("Folder Already Exists!!!" + e.Data);
+                return false;
+            }
         }
+
     }
 }

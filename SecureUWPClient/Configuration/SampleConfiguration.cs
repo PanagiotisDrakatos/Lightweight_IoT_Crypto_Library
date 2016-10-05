@@ -37,6 +37,16 @@ namespace SecureUWPChannel.Prooperties
         public static  String exponent = "95632573769194905177488615436919317766582673020891665265323677789504596581977";
         public static  String modulus = "81554351438297688582888558141846154981885664956959015742153749206820791432251";
 
+
+        public static  String AES_PROVIDER = "AES";
+        public static  String AES_ECB = "AES/ECB/PKCS7Padding";
+        public static  String AES_CBC = "AES/CBC/PKCS7Padding";
+
+        public static  String MD5 = "md5";
+        public static  String sha1 = "SHA-1";
+        public static  String SHA_256 = "SHA-256";
+        public static  String MACSHA_256 = "SHA256";
+
         public const string SampleBackgroundTaskEntryPoint = "Tasks.SampleBackgroundTask";
         public const string SampleBackgroundTaskName = "SampleBackgroundTask";
         public static string SampleBackgroundTaskProgress = "";

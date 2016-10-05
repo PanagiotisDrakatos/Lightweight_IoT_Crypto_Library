@@ -7,9 +7,9 @@ using SecureUWPChannel.Serialization;
 
 namespace SecureUWPChannel.Interfaces
 {
-    public interface IOCallbackAsync
+    public abstract class IOCallbackAsync
     {
-        Task SendDHEncryptedMessage(String Message);
-        Task<String> ReceiveDHEncryptedMessage(String PublicKey);
+        abstract public Task SendDHEncryptedMessage(String Message);
+        abstract public Task<String> ReceiveDHEncryptedMessage(String PublicKey);
     }
 }
