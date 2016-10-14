@@ -20,7 +20,7 @@
         "json()": {
             "meta": {
                 "accessList": [
-                    "tab9",
+                    "tab0",
                     "tab1"
                 ]
             },
@@ -39,8 +39,8 @@
                             "timestamp": 1473802969379
                         },
                         "filter": true,
-                        "title": "bash - \"root@kali: ~/c9projects/c9sdk/SecureBackend\" ",
-                        "tooltip": "bash - \"root@kali: ~/c9projects/c9sdk/SecureBackend\" ",
+                        "title": "bash - \"kali\" ",
+                        "tooltip": "bash - \"kali\" ",
                         "terminal": {
                             "id": "devel_195",
                             "cwd": "",
@@ -53,52 +53,27 @@
                 },
                 {
                     "type": "tab",
-                    "name": "tab9",
+                    "name": "tab0",
                     "path": "",
                     "className": [
-                        "tab9",
-                        "running"
+                        "tab0"
                     ],
                     "document": {
                         "changed": false,
                         "meta": {
-                            "timestamp": 1475455211781
+                            "timestamp": 1476442347452
                         },
                         "filter": true,
-                        "title": "PlainConnection.js - Running",
-                        "tooltip": "PlainConnection.js - Running",
+                        "title": "PlainConnection.js - Stopped",
+                        "tooltip": "PlainConnection.js - Stopped",
                         "output": {
-                            "id": "output8938611",
-                            "width": 1291,
+                            "id": "output640740",
+                            "width": 1328,
                             "height": 220,
                             "config": {
                                 "runner": "Node.js",
                                 "command": "PlainConnection.js",
                                 "toolbar": true,
-                                "debug": true
-                            },
-                            "running": {
-                                "pid": 4748,
-                                "name": "output8938611",
-                                "running": 2,
-                                "runner": [
-                                    {
-                                        "cmd": [
-                                            "node",
-                                            "${debug?--nocrankshaft}",
-                                            "${debug?--nolazy}",
-                                            "${debug?`node --version | grep -vqE \"v0\\..\\.\" && echo --nodead_code_elimination`}",
-                                            "${debug?--debug-brk=15454}",
-                                            "$file",
-                                            "$args"
-                                        ],
-                                        "debugger": "v8",
-                                        "debugport": 15454,
-                                        "selector": "source.js",
-                                        "caption": "Node.js",
-                                        "$builtin": true
-                                    }
-                                ],
                                 "debug": true
                             }
                         }
@@ -128,15 +103,15 @@
             "@ace": 1,
             "@acestatus": 1,
             "@divider": 5,
-            "@document": 18,
+            "@document": 12,
             "@form": 5,
             "@immediate": 1,
             "@menu": 5,
             "@menuitem": 13,
             "@pane": 2,
-            "@session": 18,
-            "@tab": 10,
-            "@undoManager": 18,
+            "@session": 12,
+            "@tab": 1,
+            "@undoManager": 12,
             "@welcome": 1
         }
     },
@@ -155,8 +130,8 @@
     },
     "panecycle": {
         "json()": [
-            "tab16",
-            "tab9"
+            "tab20",
+            "tab0"
         ]
     },
     "panels": {
@@ -209,18 +184,19 @@
     },
     "tabs": {
         "json()": {
-            "focus": "/PlainConnection.js",
+            "focus": "/IOTransports.js",
             "meta": {
                 "accessList": [
-                    "tab16",
-                    "tab3",
-                    "tab21",
                     "tab20",
+                    "tab16",
                     "tab19",
+                    "tab21",
                     "tab22",
                     "tab24",
                     "tab25",
-                    "tab28"
+                    "tab28",
+                    "tab3",
+                    "tab2"
                 ]
             },
             "name": "pane0",
@@ -230,13 +206,12 @@
                     "name": "tab16",
                     "path": "/PlainConnection.js",
                     "className": [
-                        "tab16",
-                        "focus"
+                        "tab16"
                     ],
                     "document": {
                         "changed": false,
                         "meta": {
-                            "timestamp": 1475455527513
+                            "timestamp": 1476409793947
                         },
                         "filter": true,
                         "title": "PlainConnection.js",
@@ -244,7 +219,7 @@
                         "ace": {}
                     },
                     "editorType": "ace",
-                    "active": true
+                    "active": false
                 },
                 {
                     "type": "tab",
@@ -259,7 +234,7 @@
                         "tooltip": "/Allgorithms.js",
                         "ace": {
                             "folds": [],
-                            "scrolltop": 540,
+                            "scrolltop": 0,
                             "scrollleft": 0,
                             "selection": {
                                 "start": {
@@ -278,7 +253,7 @@
                                 "wrapToView": true
                             },
                             "firstLineState": {
-                                "row": 16,
+                                "row": 24,
                                 "state": "no_regex",
                                 "mode": "ace/mode/javascript"
                             }
@@ -297,12 +272,13 @@
                     "name": "tab20",
                     "path": "/IOTransports.js",
                     "className": [
-                        "tab20"
+                        "tab20",
+                        "focus"
                     ],
                     "document": {
                         "changed": false,
                         "meta": {
-                            "timestamp": 1474925931375
+                            "timestamp": 1476448372723
                         },
                         "filter": true,
                         "title": "IOTransports.js",
@@ -310,24 +286,46 @@
                         "ace": {}
                     },
                     "editorType": "ace",
-                    "active": false
+                    "active": true
                 },
                 {
                     "type": "tab",
                     "name": "tab21",
                     "path": "/testing.js",
                     "className": [
-                        "tab21"
+                        "tab21",
+                        "changed"
                     ],
                     "document": {
-                        "changed": false,
-                        "meta": {
-                            "timestamp": 1475445711778
-                        },
+                        "changed": true,
                         "filter": true,
                         "title": "testing.js",
                         "tooltip": "/testing.js",
-                        "ace": {}
+                        "ace": {
+                            "folds": [],
+                            "scrolltop": 463,
+                            "scrollleft": 0,
+                            "selection": {
+                                "start": {
+                                    "row": 45,
+                                    "column": 0
+                                },
+                                "end": {
+                                    "row": 45,
+                                    "column": 46
+                                },
+                                "isBackwards": true
+                            },
+                            "options": {
+                                "guessTabSize": true,
+                                "useWrapMode": false,
+                                "wrapToView": true
+                            },
+                            "firstLineState": 0
+                        },
+                        "meta": {
+                            "timestamp": 1476283261215
+                        }
                     },
                     "editorType": "ace",
                     "active": false
@@ -364,8 +362,7 @@
                                 "wrapToView": true
                             },
                             "firstLineState": {
-                                "row": 16,
-                                "state": "start",
+                                "row": 45,
                                 "mode": "ace/mode/javascript"
                             }
                         },
@@ -409,7 +406,10 @@
                                 "useWrapMode": false,
                                 "wrapToView": true
                             },
-                            "firstLineState": 0
+                            "firstLineState": {
+                                "row": 45,
+                                "mode": "ace/mode/javascript"
+                            }
                         },
                         "hash": "5b73c2bcb2fbf20243e33cdcdf43c5c59a8dbeaa",
                         "meta": {
@@ -433,7 +433,7 @@
                         "tooltip": "/DHCipherKey.js",
                         "ace": {
                             "folds": [],
-                            "scrolltop": 240,
+                            "scrolltop": 0,
                             "scrollleft": 0,
                             "selection": {
                                 "start": {
@@ -451,11 +451,7 @@
                                 "useWrapMode": false,
                                 "wrapToView": true
                             },
-                            "firstLineState": {
-                                "row": 11,
-                                "state": "start",
-                                "mode": "ace/mode/javascript"
-                            }
+                            "firstLineState": 0
                         },
                         "hash": "e6af5db6edc2003625e8546699e2a5c90addd78b",
                         "meta": {
@@ -479,12 +475,12 @@
                         "tooltip": "/RandomGenerator.js",
                         "ace": {
                             "folds": [],
-                            "scrolltop": 480,
+                            "scrolltop": 0,
                             "scrollleft": 0,
                             "selection": {
                                 "start": {
                                     "row": 16,
-                                    "column": 94
+                                    "column": 14
                                 },
                                 "end": {
                                     "row": 16,
@@ -497,15 +493,11 @@
                                 "useWrapMode": false,
                                 "wrapToView": true
                             },
-                            "firstLineState": {
-                                "row": 97,
-                                "state": "no_regex",
-                                "mode": "ace/mode/javascript"
-                            }
+                            "firstLineState": 0
                         },
                         "hash": "bf2c8a49f2afd8f67b7cb9ebe4d92e072dfc9328",
                         "meta": {
-                            "timestamp": 1474898074967
+                            "timestamp": 1476314714703
                         },
                         "changed": false
                     },
@@ -520,14 +512,81 @@
                         "tab3"
                     ],
                     "document": {
-                        "changed": false,
-                        "meta": {
-                            "timestamp": 1475449093694
-                        },
                         "filter": true,
                         "title": "KeyManager.js",
                         "tooltip": "/KeyManager.js",
-                        "ace": {}
+                        "ace": {
+                            "folds": [],
+                            "scrolltop": 491,
+                            "scrollleft": 0,
+                            "selection": {
+                                "start": {
+                                    "row": 48,
+                                    "column": 53
+                                },
+                                "end": {
+                                    "row": 48,
+                                    "column": 53
+                                },
+                                "isBackwards": false
+                            },
+                            "options": {
+                                "guessTabSize": true,
+                                "useWrapMode": false,
+                                "wrapToView": true
+                            },
+                            "firstLineState": {
+                                "row": 80,
+                                "mode": "ace/mode/javascript"
+                            }
+                        },
+                        "hash": "8365978c843dc8d6bb468a00619b169e9bd258de",
+                        "meta": {
+                            "timestamp": 1475449093863
+                        },
+                        "changed": false
+                    },
+                    "editorType": "ace",
+                    "active": false
+                },
+                {
+                    "type": "tab",
+                    "name": "tab2",
+                    "path": "/HmacAlgProvider.js",
+                    "className": [
+                        "tab2"
+                    ],
+                    "document": {
+                        "filter": true,
+                        "title": "HmacAlgProvider.js",
+                        "tooltip": "/HmacAlgProvider.js",
+                        "ace": {
+                            "folds": [],
+                            "scrolltop": 0,
+                            "scrollleft": 0,
+                            "selection": {
+                                "start": {
+                                    "row": 2,
+                                    "column": 10
+                                },
+                                "end": {
+                                    "row": 2,
+                                    "column": 10
+                                },
+                                "isBackwards": false
+                            },
+                            "options": {
+                                "guessTabSize": true,
+                                "useWrapMode": false,
+                                "wrapToView": true
+                            },
+                            "firstLineState": 0
+                        },
+                        "hash": "3c7be33aa7f40098e85d67d09a60b1855666b39f",
+                        "meta": {
+                            "timestamp": 1474716263723
+                        },
+                        "changed": false
                     },
                     "editorType": "ace",
                     "active": false
@@ -540,7 +599,7 @@
     },
     "tree_selection": {
         "json()": [
-            "/testing.js"
+            "/PlainConnection.js"
         ]
     }
 }

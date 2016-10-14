@@ -132,7 +132,9 @@ var ReceiveCipherSuites = function(ObjToRead) {
     var Digests = joiner[1].split(",");
     var CurrentDiggests = joiner[2].split(",");
 
-    if (CurrentDiggests.indexOf("Hmac"))
+    if (CurrentDiggests.indexOf("Hmac_"))
+        CurrentDiggests = CurrentDiggests.toString().replace(/Hmac_/i, '');
+    else if (CurrentDiggests.indexOf("Hmac"))
         CurrentDiggests = CurrentDiggests.toString().replace(/Hmac/i, '');
 
     if (!HMAC.HmacVerify(jsonToRead.CipherSuites,
