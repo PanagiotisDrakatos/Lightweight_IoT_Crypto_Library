@@ -24,7 +24,7 @@ namespace SecureUWPChannel.Prooperties
         //encryption properties  
         public static String strSecret = "PutAStrongPassword";
         public static String MacAlg = MacAlgorithmNames.HmacSha256;
-        public static String SymetrricAlgorithm = SymmetricAlgorithmNames.AesCbcPkcs7;
+        public static String AesCbcPkcs7 = SymmetricAlgorithmNames.AesCbcPkcs7;
 
         //Put your Message to send to server
         public static String Messages = "Hello Server :D";
@@ -40,12 +40,12 @@ namespace SecureUWPChannel.Prooperties
 
 
         public static  String AES_PROVIDER = "AES";
-        public static  String AES_ECB = "AES/ECB/PKCS7Padding";
-        public static  String AES_CBC = "AES/CBC/PKCS7Padding";
+        public static  String AES_ECB = "ECB";
+        public static  String AES_CBC = "CBC";
 
         public static  String MD5 = "md5";
         public static  String sha1 = "SHA-1";
-        public static  String SHA_256 = "SHA-256";
+        public static  String SHA_256 = "SHA256";
         public static  String MACSHA_256 = MacAlgorithmNames.HmacSha256;
 
         public const string SampleBackgroundTaskEntryPoint = "Tasks.SampleBackgroundTask";

@@ -1,9 +1,11 @@
-﻿using SecureUWPClient.Handshake;
+﻿using SecureUWPClient.Ciphers.Symmetric;
+using SecureUWPClient.Handshake;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using Windows.Security.Cryptography;
+using Windows.Security.Cryptography.Core;
+using Windows.Storage.Streams;
 
 namespace SecureUWPClient.Ciphers.Symmetric
 {
@@ -20,14 +22,58 @@ namespace SecureUWPClient.Ciphers.Symmetric
         }
         public async Task<String> AeS_Encrypt(string plainText, string EncryptionKey)
         {
-            return "";
-            
+
+            SymmetricKeyAlgorithmProvider SAP = SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithmNames.AesEcbPkcs7);
+            HashAlgorithmProvider HAP = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
+            CryptographicHash Hash_AES = HAP.CreateHash();
+
+            try
+            {
+                Hash_AES.Append(CryptographicBuffer.CreateFromByteArray(System.Text.Encoding.UTF8.GetBytes(EncryptionKey)));
+                byte[] KeyBytes;
+                CryptographicBuffer.CopyToByteArray(Hash_AES.GetValueAndReset(), out KeyBytes);
+
+                CryptographicKey key = SAP.CreateSymmetricKey(CryptographicBuffer.CreateFromByteArray(KeyBytes));
+                IBuffer Buffer = CryptographicBuffer.CreateFromByteArray(System.Text.Encoding.UTF8.GetBytes(plainText));
+                encrypted = CryptographicBuffer.EncodeToBase64String(CryptographicEngine.Encrypt(key, Buffer, null));
+
+                return encrypted;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                return "Error in Encryption:With Aes ";
+            }
         }
 
         public async Task<String> AeS_Decrypt(String EncryptedText, String DecryptionKey)
         {
-            return "";
+            SymmetricKeyAlgorithmProvider SAP = SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithmNames.AesEcbPkcs7);
+            HashAlgorithmProvider HAP = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
+            CryptographicHash Hash_AES = HAP.CreateHash();
+
+            try
+            {
+                Hash_AES.Append(CryptographicBuffer.CreateFromByteArray(System.Text.Encoding.UTF8.GetBytes(DecryptionKey)));
+                byte[] KeyBytes;
+                CryptographicBuffer.CopyToByteArray(Hash_AES.GetValueAndReset(), out KeyBytes);
+
+                CryptographicKey key = SAP.CreateSymmetricKey(CryptographicBuffer.CreateFromByteArray(KeyBytes));
+
+                IBuffer Buffer = CryptographicBuffer.DecodeFromBase64String(EncryptedText);
+                byte[] Decrypted;
+
+                CryptographicBuffer.CopyToByteArray(CryptographicEngine.Decrypt(key, Buffer,null), out Decrypted);
+                decrypted = System.Text.Encoding.UTF8.GetString(Decrypted, 0, Decrypted.Length);
+                return decrypted;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                return "Error in Decryption:With Aes ";
+            }
+
         }
-    
+
     }
 }

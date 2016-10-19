@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Security.Cryptography.Core;
 
 namespace SecureUWPClient.Configuration
 {
@@ -42,7 +43,12 @@ namespace SecureUWPClient.Configuration
         {
             get
             {
-                return hashAlgorithm;
+                if (hashAlgorithm.Contains("256"))
+                    return MacAlgorithmNames.HmacSha256;
+                else if(hashAlgorithm.Contains("SHA1"))
+                    return MacAlgorithmNames.HmacSha1;
+                else
+                    return MacAlgorithmNames.HmacMd5;
             }
             set
             {

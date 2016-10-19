@@ -55,10 +55,10 @@ namespace SecureUWPChannel.IOTransport
 
         public override async Task ReceiveServerCertificate()
         {
-            ReadObj = JsonParse.ReadObject(await this.ActivitySocket.read());
+            ReadObj = JsonParse.ReadObject(await this.ActivitySocket.read()); 
             String timestamp = Genarator.pseudorandom();
             if (!ReadObj.PlainMessage.Equals(SampleConfiguration.SYN_ACK) ||
-                    !ReadObj.PseudoNumber.Equals(timestamp))
+                    !timestamp.Contains(ReadObj.PseudoNumber))
                 throw new Exception("Server Cannot Be Verified");
 
             /*  var t=Task.Run(async () => {
@@ -112,7 +112,7 @@ namespace SecureUWPChannel.IOTransport
         {
             ReadObj = JsonParse.ReadObject(await this.ActivitySocket.read());
             String timestamp = Genarator.pseudorandom();
-            if (!ReadObj.PseudoNumber.Equals(timestamp))
+            if (!timestamp.Contains(ReadObj.PseudoNumber))
                 throw new Exception("Server Cannot Be Verified Possible Replay Attack");
 
             String sessionResult = Genarator.SessionDHGenerator(ReadObj.ServerPrimeNumber);
@@ -127,7 +127,7 @@ namespace SecureUWPChannel.IOTransport
             WriteObj = new JSonObject();
 
              Ciphers = StringUtils.Joiner(",",SampleConfiguration.AES_ECB, SampleConfiguration.AES_CBC);
-             Diggest = StringUtils.Joiner(",", SampleConfiguration.MD5, SampleConfiguration.sha1, SampleConfiguration.MACSHA_256);
+             Diggest = StringUtils.Joiner(",", SampleConfiguration.MD5, SampleConfiguration.sha1, SampleConfiguration.SHA_256);
              CurrentDiggest = StringUtils.Joiner(",", SampleConfiguration.MACSHA_256);
             string joiner = StringUtils.Joiner("|", Ciphers, Diggest, CurrentDiggest);
 
@@ -144,8 +144,8 @@ namespace SecureUWPChannel.IOTransport
         {
             ReadObj = JsonParse.ReadObject(await this.ActivitySocket.read());
             String timestamp = Genarator.pseudorandom(); 
-          //  if (!ReadObj.PseudoNumber.Equals(timestamp) ||
-              if(  !HMacAlgoProvider.VerifyHMAC(ReadObj.CipherSuites, await keystore.LoadIntegrityKey(), ReadObj.HmacHash, CurrentDiggest))
+            if (!timestamp.Contains(ReadObj.PseudoNumber) ||
+                !HMacAlgoProvider.VerifyHMAC(ReadObj.CipherSuites, await keystore.LoadIntegrityKey(), ReadObj.HmacHash, CurrentDiggest))
                 throw new Exception("Server Cannot Be Verified Possible Replay Attack");
 
 

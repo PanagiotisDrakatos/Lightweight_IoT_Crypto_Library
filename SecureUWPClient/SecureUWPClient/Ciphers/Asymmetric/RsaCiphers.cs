@@ -9,6 +9,6 @@ namespace SecureUWPClient.Ciphers.RSA
 {
     public interface RsaCiphers
     {
-        Task<String> RsaEncrypt(CryptographicKey publicKey, String plainText);
+        Task<String> RsaEncrypt(String publicKey, String plainText);
     }
 }

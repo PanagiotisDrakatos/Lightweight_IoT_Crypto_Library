@@ -34,31 +34,49 @@ namespace SecureUWPClient.Handshake
             DHsession = new DHkeyExchange(Activity, this.keystore);
         }
 
-        public async void  EstablishDHkeySession()
+        public async void EstablishDHkeySession()
         {
-        var t = Task.Run(async () => {
-           long elapsed=ExecutionTime.CurrentTimeMillis();
-           await DHsession.SendPlainMessage();
-           await this.DHsession.ReceiveServerCertificate();
-           await this.DHsession.ResendCookieServer();
-           await this.DHsession.SendPublicValue();
-           await this.DHsession.ReceivePublicValue();
-           await this.DHsession.SendCipherSuites();
-           ciphersforUse =  await this.DHsession.ReceiveCipherSuites();
-           Debug.WriteLine("---------------Sum up Time------------------------ " + (ExecutionTime.CurrentTimeMillis() - elapsed));//900-1000ms
-           messageExhange = new IOMessageExhange(Activity, ciphersforUse, this.keystore);
-         });
-         t.Wait();
+            var task1 = Task.Run(async () =>
+            {
+                long elapsed = ExecutionTime.CurrentTimeMillis();
+                await DHsession.SendPlainMessage();
+                await this.DHsession.ReceiveServerCertificate();
+                await this.DHsession.ResendCookieServer();
+                await this.DHsession.SendPublicValue();
+                await this.DHsession.ReceivePublicValue();
+                await this.DHsession.SendCipherSuites();
+                ciphersforUse = await this.DHsession.ReceiveCipherSuites();
+                Debug.WriteLine("---------------Sum up Time------------------------ " + (ExecutionTime.CurrentTimeMillis() - elapsed));//900-1000ms
+                messageExhange = new IOMessageExhange(Activity, ciphersforUse, this.keystore);
+            });
+            try
+            {
+                task1.Wait();
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle((x) =>
+                {
+                    if (x is UnauthorizedAccessException) 
+                    {
+                        Debug.WriteLine("You do not have permission to access all folders in this path.");
+                        Debug.WriteLine("See your network administrator or try another path.");
+                        return true;
+                    }
+                    return false; 
+                });
+            }
         }
+       
 
         public async Task<Object> ChooseCipher()
         {
-            if(ciphersforUse.CipherAlgorithm.Contains("CBC", StringComparison.OrdinalIgnoreCase))
+            if(ciphersforUse.CipherAlgorithm.Contains(SampleConfiguration.AES_CBC, StringComparison.OrdinalIgnoreCase))
             {
                 Cryptography CBC_Cipher=new AES_CBC(SupportedChipher.CBC);
                 return CBC_Cipher;
             }
-            else if(ciphersforUse.CipherAlgorithm.Contains("ECB", StringComparison.OrdinalIgnoreCase))
+            else if(ciphersforUse.CipherAlgorithm.Contains(SampleConfiguration.AES_ECB, StringComparison.OrdinalIgnoreCase))
             {
                 Cryptography ECB_Cipher = new AES_CBC(SupportedChipher.ECB);
                 return ECB_Cipher;

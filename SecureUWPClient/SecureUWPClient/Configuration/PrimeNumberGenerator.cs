@@ -55,7 +55,7 @@ namespace SecureUWPClient.Configuration
         {
             seed++;
             double num = Math.Sin(seed) * (0.5);
-            return num.ToString("G16");
+            return num.ToString("G15");
         }
     }
  }

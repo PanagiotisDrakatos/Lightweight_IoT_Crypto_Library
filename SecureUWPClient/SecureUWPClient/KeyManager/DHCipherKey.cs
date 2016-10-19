@@ -30,8 +30,7 @@ namespace SecureUWPClient.KeyManager
             CryptographicBuffer.CopyToByteArray(keyBuffer, out keyBytes);
             Array.Copy(keyBytes, 0, keyBytes16, 0, Math.Min(keyBytes.Length / 2, 16));
 
-            IBuffer cipherBuffer = CryptographicBuffer.CreateFromByteArray(keyBytes16);
-            CipherKey = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8,cipherBuffer);
+            CipherKey = System.Text.Encoding.UTF8.GetString(keyBytes16);
 
         }
 

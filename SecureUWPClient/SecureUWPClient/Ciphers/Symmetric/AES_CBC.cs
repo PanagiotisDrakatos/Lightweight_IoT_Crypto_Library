@@ -14,6 +14,8 @@ namespace SecureUWPClient.Ciphers.AES
         private String encrypted;
         private String decrypted;
         private SupportedChipher cipher;
+        private static byte[] ivBytes = new byte[]{0x15, 0x14, 0x13, 0x12, 0x11,
+            0x10, 0x09, 0x08, 0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00};
         public AES_CBC(SupportedChipher cipher) {
             this.cipher = cipher;
             this.encrypted = null;
@@ -29,19 +31,15 @@ namespace SecureUWPClient.Ciphers.AES
             try
             {
                 //byte[] KeyBytes = System.Text.Encoding.UTF8.GetBytes(password);
-                byte[] KeyBytes16 = new byte[16];
+              //  byte[] KeyBytes16 = new byte[16];
                 Hash_AES.Append(CryptographicBuffer.CreateFromByteArray(System.Text.Encoding.UTF8.GetBytes(EncryptionKey)));
                 byte[] KeyBytes;
                 CryptographicBuffer.CopyToByteArray(Hash_AES.GetValueAndReset(), out KeyBytes);
-                for (int i = 0; i < KeyBytes.Length; i++)
-                {
-                    KeyBytes16[i] = KeyBytes[i];
-                }
-
-                CryptographicKey key = SAP.CreateSymmetricKey(CryptographicBuffer.CreateFromByteArray(KeyBytes16));
-
+   
+                CryptographicKey key = SAP.CreateSymmetricKey(CryptographicBuffer.CreateFromByteArray(KeyBytes));
                 IBuffer Buffer = CryptographicBuffer.CreateFromByteArray(System.Text.Encoding.UTF8.GetBytes(plainText));
-                encrypted = CryptographicBuffer.EncodeToBase64String(CryptographicEngine.Encrypt(key, Buffer, null));
+                IBuffer ivparams = CryptographicBuffer.CreateFromByteArray(ivBytes);
+                encrypted = CryptographicBuffer.EncodeToBase64String(CryptographicEngine.Encrypt(key, Buffer, ivparams));
 
                 return encrypted;
             }
@@ -61,22 +59,18 @@ namespace SecureUWPClient.Ciphers.AES
             try
             {
                 //byte[] KeyBytes = System.Text.Encoding.UTF8.GetBytes(password);
-                byte[] KeyBytes16 = new byte[16];
                 Hash_AES.Append(CryptographicBuffer.CreateFromByteArray(System.Text.Encoding.UTF8.GetBytes(DecryptionKey)));
                 byte[] KeyBytes;
                 CryptographicBuffer.CopyToByteArray(Hash_AES.GetValueAndReset(), out KeyBytes);
-                for (int i = 0; i < KeyBytes.Length; i++)
-                {
-                    KeyBytes16[i] = KeyBytes[i];
-                }
-
-                CryptographicKey key = SAP.CreateSymmetricKey(CryptographicBuffer.CreateFromByteArray(KeyBytes16));
+              
+                CryptographicKey key = SAP.CreateSymmetricKey(CryptographicBuffer.CreateFromByteArray(KeyBytes));
 
 
                 IBuffer Buffer = CryptographicBuffer.DecodeFromBase64String(EncryptedText);
                 byte[] Decrypted;
 
-                CryptographicBuffer.CopyToByteArray(CryptographicEngine.Decrypt(key, Buffer, null), out Decrypted);
+                IBuffer ivparams = CryptographicBuffer.CreateFromByteArray(ivBytes);
+                CryptographicBuffer.CopyToByteArray(CryptographicEngine.Decrypt(key, Buffer, ivparams), out Decrypted);
                 decrypted = System.Text.Encoding.UTF8.GetString(Decrypted, 0, Decrypted.Length);
                 return decrypted;
             }

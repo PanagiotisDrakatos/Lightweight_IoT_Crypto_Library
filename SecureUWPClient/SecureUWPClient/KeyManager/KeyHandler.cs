@@ -15,11 +15,11 @@ namespace SecureUWPClient.KeyManager
 {
     public class KeyHandler : KeyManagerImp
     {
-        private String Output;
+        private  String Output;
         private  DHCipherKey CipherKey;
         private  DHIntegrityKey IntegrityKey;
 
-        private StorageFolder newFolder;
+        private  StorageFolder newFolder;
         private  StorageFile pubFile;
         private  StorageFile certFile;
         private Task t;
@@ -44,7 +44,7 @@ namespace SecureUWPClient.KeyManager
             get
             {
                 return _server_PUBLIC_KEY;
-                throw new NotImplementedException();
+               // throw new NotImplementedException("sadass");
             }
         }
 
@@ -53,7 +53,7 @@ namespace SecureUWPClient.KeyManager
             get
             {
                 return _clientFolder;
-                throw new NotImplementedException();
+                throw new NotImplementedException("saas");
             }
         }
 
@@ -123,28 +123,25 @@ namespace SecureUWPClient.KeyManager
             return cert;
         }
 
-        public override async Task<CryptographicKey> LoadPublicKey()
+        public override async Task<String> LoadPublicKey()
         {
             string Pubkey = null;
-            CryptographicKey publicKey = null;
             try
             {
+             
                 StorageFolder loclfold = await ApplicationData.Current.LocalFolder.GetFolderAsync(ClientFolder);
                 var buffer = await Windows.Storage.FileIO.ReadBufferAsync(await loclfold.GetFileAsync(Server_PUBLIC_KEY));
                 using (var dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
                 {
                     Pubkey = dataReader.ReadString(buffer.Length);
                 }
-                IBuffer keyBuffer = CryptographicBuffer.DecodeFromBase64String(Pubkey);
 
-                AsymmetricKeyAlgorithmProvider provider = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
-                publicKey = provider.ImportPublicKey(keyBuffer, CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
-                return publicKey;
+                return Pubkey;
             }
             catch (FileNotFoundException e)
             {
                 Debug.WriteLine("Folder Not Exists!!!" + e.Data);
-                return publicKey;
+                return Pubkey;
             }
         }
 

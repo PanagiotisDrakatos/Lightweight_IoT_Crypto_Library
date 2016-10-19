@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Security.Cryptography.Core;
 
 namespace SecureUWPClient.Handshake
 {
@@ -22,6 +23,7 @@ namespace SecureUWPClient.Handshake
         private IOMulticastAndBroadcast ActivitySocket;
         private CiphersForUse ciphersforUse;
         private KeyManagerImp keystore;
+        private CryptographicKey pubkey;
 
 
         private JSonObject ReadObj;
@@ -35,10 +37,11 @@ namespace SecureUWPClient.Handshake
             Intialize();
         }
 
-        public void Intialize()
+        public async void Intialize()
         {
             ReadObj = new JSonObject();
             WriteObj = new JSonObject();
+            await keystore.LoadPublicKey();
         }
 
         public override async Task SendDHEncryptedMessage(string Message, AES_CBC CBC)
@@ -46,7 +49,10 @@ namespace SecureUWPClient.Handshake
             WriteObj = new JSonObject();
             String encrypted = await CBC.AeS_Encrypt(Message, await keystore.LoadCipherKey());
             WriteObj.EncryptedMessage = encrypted;
-            WriteObj.HmacHash = HMacAlgoProvider.CreateHMAC(encrypted, await keystore.LoadIntegrityKey(), ciphersforUse.HashAlgorithm);
+            if (ciphersforUse.HashAlgorithm.Contains(SampleConfiguration.SHA_256, StringComparison.OrdinalIgnoreCase))
+               WriteObj.HmacHash = HMacAlgoProvider.CreateHMAC(encrypted, await keystore.LoadIntegrityKey(), SampleConfiguration.MACSHA_256);
+            else
+               WriteObj.HmacHash = HMacAlgoProvider.CreateHMAC(encrypted, await keystore.LoadIntegrityKey(), ciphersforUse.HashAlgorithm);
             // System.out.println(ObjToSend.EncryptedMessage);
 
             String toSend = JsonParse.WriteObject(WriteObj);
@@ -70,7 +76,7 @@ namespace SecureUWPClient.Handshake
         public override async Task<string> ReceiveDHEncryptedMessage(AES_CBC CBC)
         {
             ReadObj = JsonParse.ReadObject(await this.ActivitySocket.read());
-            if (Fingerprint.VerifySignature(ReadObj.EncryptedMessage, await keystore.LoadPublicKey(), ReadObj.FingerPrint))
+            if (Fingerprint.VerifySig(ReadObj.EncryptedMessage, await keystore.LoadPublicKey(), ReadObj.FingerPrint))
             {
                 if (HMacAlgoProvider.VerifyHMAC(ReadObj.EncryptedMessage, await keystore.LoadIntegrityKey(), ReadObj.HmacHash,
                         ciphersforUse.HashAlgorithm))
@@ -91,7 +97,7 @@ namespace SecureUWPClient.Handshake
         public override async Task<string> ReceiveDHEncryptedMessage(AES_ECB ECB)
         {
             ReadObj = JsonParse.ReadObject(await this.ActivitySocket.read());
-            if (Fingerprint.VerifySignature(ReadObj.EncryptedMessage, await keystore.LoadPublicKey(), ReadObj.FingerPrint))
+            if (Fingerprint.VerifySig(ReadObj.EncryptedMessage, await keystore.LoadPublicKey(), ReadObj.FingerPrint))
             {
                 if (HMacAlgoProvider.VerifyHMAC(ReadObj.EncryptedMessage, await keystore.LoadIntegrityKey(), ReadObj.HmacHash,
                         ciphersforUse.HashAlgorithm))

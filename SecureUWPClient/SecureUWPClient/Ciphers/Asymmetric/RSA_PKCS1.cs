@@ -13,10 +13,15 @@ namespace SecureUWPClient.Ciphers.RSA
 {
     public class RSA_PKCS1:RsaCiphers
     {
-        public async Task<String> RsaEncrypt(CryptographicKey publicKey,String plainText)
+        public async Task<String> RsaEncrypt(String Pubkey, String plainText)
         {
             try
             {
+                IBuffer keyBuffer = CryptographicBuffer.DecodeFromBase64String(Pubkey);
+
+                AsymmetricKeyAlgorithmProvider provider = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
+                CryptographicKey publicKey = provider.ImportPublicKey(keyBuffer, CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
+
                 IBuffer dataBuffer = CryptographicBuffer.CreateFromByteArray(System.Text.Encoding.UTF8.GetBytes(plainText));
                 var encryptedData = CryptographicEngine.Encrypt(publicKey, dataBuffer, null);
                 return CryptographicBuffer.EncodeToBase64String(encryptedData);

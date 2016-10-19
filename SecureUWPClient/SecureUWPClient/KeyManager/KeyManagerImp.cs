@@ -23,7 +23,7 @@ namespace SecureUWPClient.KeyManager
 
         public abstract Task<Certificate> LoadCertificate();
 
-        public abstract Task<CryptographicKey> LoadPublicKey();
+        public abstract Task<String> LoadPublicKey();
 
         public abstract void ProduceCipherKey(String SessionResult);
 

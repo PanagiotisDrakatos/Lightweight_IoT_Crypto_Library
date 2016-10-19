@@ -1,5 +1,6 @@
 ﻿using SecureUWPChannel.Interfaces;
 using SecureUWPClient.Ciphers.AES;
+using SecureUWPClient.Ciphers.RSA;
 using SecureUWPClient.Ciphers.Symmetric;
 using SecureUWPClient.Configuration;
 using SecureUWPClient.Handshake;
@@ -13,6 +14,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Security.Cryptography.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,11 +32,14 @@ namespace SecureUWPClient
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private String receive = null;
         public MainPage()
         {
             this.InitializeComponent();
+            //Debug.WriteLine(new testing().pseudorandom());
             StartAsync();
-            
+            //CryptographicKey publicKey = null;
+          //  Fingerprint.VerifySig("", publicKey, "");
         }
 
         private async void StartAsync()
@@ -44,7 +49,6 @@ namespace SecureUWPClient
             ses.EstablishDHkeySession();
             Object obj = await ses.ChooseCipher();
             IOCallbackAsync messageExhange = ses.MessageExhange;
-            String receive = null;
             if (obj.GetType() == (typeof(AES_CBC)))
             {
                 await messageExhange.SendDHEncryptedMessage("hello server", (AES_CBC)obj);
@@ -53,10 +57,12 @@ namespace SecureUWPClient
             else if(obj.GetType() == typeof(AES_ECB))
             {
                 await messageExhange.SendDHEncryptedMessage("hello server", (AES_ECB)Convert.ChangeType(obj.GetType(), typeof(AES_ECB)));
-                receive = await messageExhange.ReceiveDHEncryptedMessage((AES_CBC)Convert.ChangeType(obj.GetType(), typeof(AES_ECB)));
+                receive = await messageExhange.ReceiveDHEncryptedMessage((AES_ECB)Convert.ChangeType(obj.GetType(), typeof(AES_ECB)));
             }
 
 
         }
+
+        
     }
 }

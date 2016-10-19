@@ -61,6 +61,7 @@ namespace SecureUWPChannel.IOTransport
             catch (Exception exception)
             {
                 this.socket.Dispose();
+                await new MessageDialog("Make sure your Server is open and make sure you follow Instructions To connect localhost").ShowAsync();
                 switch (SocketError.GetStatus(exception.HResult))
                 {
                     case SocketErrorStatus.HostNotFound:

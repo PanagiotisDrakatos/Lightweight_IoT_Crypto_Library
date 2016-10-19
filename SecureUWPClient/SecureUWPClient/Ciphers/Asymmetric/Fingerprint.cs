@@ -10,13 +10,20 @@ using Windows.Storage.Streams;
 
 namespace SecureUWPClient.Ciphers.RSA
 {
-    public static class Fingerprint
+    public class Fingerprint
     {
-        public static bool VerifySignature(String encrypted, CryptographicKey hmacKey, String signature)
+        public static bool VerifySig(String encrypted, String PubKey, String signature)
         {
-            IBuffer buffMsg = CryptographicBuffer.CreateFromByteArray(System.Text.Encoding.UTF8.GetBytes(encrypted));
-            IBuffer buffsig = CryptographicBuffer.CreateFromByteArray(System.Text.Encoding.UTF8.GetBytes(signature));
-            Boolean IsAuthenticated = CryptographicEngine.VerifySignature(hmacKey, buffMsg, buffsig);
+            HashAlgorithmProvider objAlgProv = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Sha1);
+            IBuffer buffMsg = CryptographicBuffer.ConvertStringToBinary(encrypted,BinaryStringEncoding.Utf8);
+            IBuffer buffHash = objAlgProv.HashData(buffMsg);
+            IBuffer buffsig = CryptographicBuffer.DecodeFromBase64String(signature);
+
+            IBuffer keyBuffer = CryptographicBuffer.DecodeFromBase64String(PubKey);
+            AsymmetricKeyAlgorithmProvider provider = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaSignPkcs1Sha256);
+            CryptographicKey publicKey = provider.ImportPublicKey(keyBuffer, CryptographicPublicKeyBlobType.X509SubjectPublicKeyInfo);
+
+            bool IsAuthenticated = CryptographicEngine.VerifySignatureWithHashInput(publicKey, buffHash, buffsig);
             if (!IsAuthenticated)
             {
                 Debug.WriteLine("The Integrity of RSA cannot be verified.");
