@@ -1,6 +1,8 @@
 package com.security.crypto.Configuration;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Random;
 
 public class RandomGenerator {
@@ -85,7 +87,10 @@ public class RandomGenerator {
     public String pseudorandom() {
         seed++;
         double num = Math.sin(seed) * (0.5);
-        return String.valueOf(num);
+        Double truncatedDouble = BigDecimal.valueOf(num)
+                .setScale(15, RoundingMode.HALF_DOWN)
+                .doubleValue();
+        return String.valueOf(truncatedDouble);
     }
 
 }
