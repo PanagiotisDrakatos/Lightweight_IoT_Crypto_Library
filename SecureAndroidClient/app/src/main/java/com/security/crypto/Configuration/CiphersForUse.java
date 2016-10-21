@@ -13,7 +13,12 @@ public class CiphersForUse {
 
     public CiphersForUse(String CipherAlgorithm, String HashAlgorithm) {
         this.CipherAlgorithm = CipherAlgorithm;
-        this.HashAlgorithm = HashAlgorithm;
+        if (HashAlgorithm.contains("SHA256"))
+            this.HashAlgorithm = Properties.MACSHA_256;
+        else if (HashAlgorithm.contains("SHA1"))
+            this.HashAlgorithm = Properties.MACSHA1;
+        else
+            this.HashAlgorithm = Properties.MACSHA1;
     }
 
     public void setHashAlgorithm(String hashAlgorithm) {

@@ -53,7 +53,7 @@ public class EstablishConnection {
             System.out.println("Just connected to " + socket.getInetAddress() + "\n");
         } catch (ConnectException ex) {
             System.out.println("Connection failed Server probably down try  again later");
-            return false;
+            System.exit(0);
         }
         return true;
     }

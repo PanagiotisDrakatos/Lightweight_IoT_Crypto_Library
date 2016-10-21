@@ -31,7 +31,8 @@ public abstract class Properties {
 
     public static final String MD5 = "md5";
     public static final String sha1 = "SHA-1";
-    public static final String SHA_256 = "SHA-256";
+    public static final String SHA_256 = "SHA256";
+
     public static final String MACSHA_256 = "HmacSHA256";
     public static final String MACSHA1 = "HmacSHA1";
 

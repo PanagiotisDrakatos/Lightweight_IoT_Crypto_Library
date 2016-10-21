@@ -117,8 +117,8 @@ public final class DHkeyExchange extends IOSynAck {
         Ciphers.add(Properties.AES_CBC);
 
         Diggest.add(Properties.MD5);
-        Diggest.add(Properties.MACSHA1);
-        Diggest.add(Properties.MACSHA_256);
+        Diggest.add(Properties.sha1);
+        Diggest.add(Properties.SHA_256);
 
         CurrentDiggest.add(Properties.MACSHA_256);
         joiner.add(TextUtils.join(",", Ciphers));
@@ -128,7 +128,7 @@ public final class DHkeyExchange extends IOSynAck {
         // System.out.println(joiner.toString());
         ObjToSend.PseudoNumber = Genarator.pseudorandom();
         ObjToSend.CipherSuites = TextUtils.join("|", joiner);
-        ObjToSend.HmacHash = HMacAlgoProvider.HmacSign(ObjToSend.CipherSuites, keystore.loadRemoteIntegrityKey(), CurrentDiggest.toString());
+        ObjToSend.HmacHash = HMacAlgoProvider.HmacSign(ObjToSend.CipherSuites, keystore.loadRemoteIntegrityKey(), CurrentDiggest.get(0));
 
         String toSend = JSonParse.WriteObject(ObjToSend);
         SocketChanel.SendMessage(toSend);
@@ -137,7 +137,7 @@ public final class DHkeyExchange extends IOSynAck {
     public CiphersForUse ReceiveCipherSuites() throws Exception {
         JSonObject receivedObj = JSonParse.ReadObject(SocketChanel.receiveMessage());
         if (!receivedObj.PseudoNumber.equals(Genarator.pseudorandom()) ||
-                !HMacAlgoProvider.HmacVerify(receivedObj.CipherSuites, keystore.loadRemoteIntegrityKey(), receivedObj.HmacHash, CurrentDiggest.toString()))
+                !HMacAlgoProvider.HmacVerify(receivedObj.CipherSuites, keystore.loadRemoteIntegrityKey(), receivedObj.HmacHash, CurrentDiggest.get(0)))
             throw new Exception("Server Cannot Be Verified Possible Replay Attack");
 
 
