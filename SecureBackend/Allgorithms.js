@@ -51,10 +51,10 @@ AlgorithmsUse.prototype.returnCipherAlgorithm = function(SessionResult) {
     return this.getCipherAlgorithm().toString();
 }
 AlgorithmsUse.prototype.ChooserCipher = function(cipher) {
-    this.setCipherAlgorithm(cipher[1]);
+    this.setCipherAlgorithm(cipher[1].toString());
 }
 
 AlgorithmsUse.prototype.ChooserHash = function(Diggest) {
-    this.setHashAlgorithmy(Diggest[2]);
+    this.setHashAlgorithmy(Diggest[2].toString());
 }
 module.exports = AlgorithmsUse

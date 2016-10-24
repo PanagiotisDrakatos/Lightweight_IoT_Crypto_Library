@@ -1,4 +1,4 @@
-var _HOST = '127.0.0.1';
+var _HOST = '192.168.1.67';
 var _PORT = 1337;
 var _address;
 
@@ -7,23 +7,22 @@ const fs = require('fs');
 
 const options = {
     // These are necessary only if using the client certificate authentication
-    key: fs.readFileSync('./SSL_TLS/ServerCakey.pem'),
-    cert: fs.readFileSync('./SSL_TLS/Server-cert.pem'),
-    requestCert: true,
-    ca: [fs.readFileSync('./SSL_TLS/smclient_cert.pem')]
+    key: fs.readFileSync('./Certs/ca.key'),
+    cert: fs.readFileSync('./Certs/ca.crt'),
+    //ca: [fs.readFileSync('./Certs/smclient_cert.pem')],
+    requestCert: false,
+    passphrase: 'password',
 };
 
 const BasicProtocolEmmitter = require("./IOTransports");
 
 var server = tls.createServer(options, (socket) => {
     const ProtocolEmmitter = new BasicProtocolEmmitter();
-
+    
     socket.on('connect', (e) => {
         console.log('client connected ' +
             socket.remoteAddress + ':' +
             socket.remotePort);
-        console.log('server connected',
-            socket.authorized ? 'authorized' : 'unauthorized');
     });
 
     socket.on('data', function(data) {

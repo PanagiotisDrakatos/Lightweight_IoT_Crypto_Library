@@ -15,7 +15,6 @@ var THIRTY = new BigInteger(null);
 var bits = 128;
 var exponent = "67849492012064603525502413864581601255843190582896059031333969517102908698009";
 var modulus = "71121776095154293411645315316982820283937449209225990596316112319337209629611";
-THIRTY.fromInt(30);
 
 // generate random BigInteger
 var num = generateRandom(bits);
@@ -27,8 +26,8 @@ var ServerCookie = '';
 module.exports = RandomGenerators;
 
 function RandomGenerators() {
-    EventEmitter.call(this);
     this.seed = 34;
+    EventEmitter.call(this);
     GenerateCookie();
     PrivatePrimeNumber = findPrivatePrime(num, function(num) {
         return num.toString();
@@ -94,6 +93,7 @@ RandomGenerators.prototype.DHKeyExchange = function() {
 RandomGenerators.prototype.pseudorandom = function() {
     this.seed++;
     var x = Math.sin(this.seed) * 0.5;
+    x=x.toFixed(15);
     return x;
 }
 

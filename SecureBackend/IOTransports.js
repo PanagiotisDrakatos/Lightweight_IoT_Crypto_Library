@@ -132,13 +132,14 @@ var ReceiveCipherSuites = function(ObjToRead) {
     var Digests = joiner[1].split(",");
     var CurrentDiggests = joiner[2].split(",");
 
-    if (CurrentDiggests.indexOf("Hmac_"))
+    if (CurrentDiggests.toString().includes("HMAC_"))
         CurrentDiggests = CurrentDiggests.toString().replace(/Hmac_/i, '');
-    else if (CurrentDiggests.indexOf("Hmac"))
+    else if (CurrentDiggests.toString().includes("Hmac"))
         CurrentDiggests = CurrentDiggests.toString().replace(/Hmac/i, '');
 
+    console.log(CurrentDiggests.toString());
     if (!HMAC.HmacVerify(jsonToRead.CipherSuites,
-            integritykey.returnIntegrityKey(), jsonToRead.HmacHash, CurrentDiggests))
+            integritykey.returnIntegrityKey(), jsonToRead.HmacHash, CurrentDiggests.toString()))
         new Error('Integrity Of Message can not be verified');
     Algorithms.ChooserCipher(Chiphers);
     Algorithms.ChooserHash(Digests);
@@ -164,7 +165,7 @@ var SendCipherSuites = function() {
 
 var ReceiveDHEncryptedMessage = function(ObjToRead) {
     jsonToRead = JSON.parse(ObjToRead);
-    console.log(jsonToRead.EncryptedMessage);
+    console.log("d " + Algorithms.returnHashAlgorithm());
     if (!HMAC.HmacVerify(jsonToRead.EncryptedMessage, integritykey.returnIntegrityKey(),
             jsonToRead.HmacHash, Algorithms.returnHashAlgorithm()))
         new Error('Integrity Of Client Key canot be verified');
@@ -186,7 +187,6 @@ var SendDHEncryptedMessage = function(ObjToRead) {
     jsonToSend.EncryptedMessage = _EncryptedMessage;
     jsonToSend.HmacHash = _Mac;
     jsonToSend.FingerPrint = _signature;
-
     BasicProtocolEmmitter.prototype.on(_Event, ReceiveDHEncryptedMessage);
     BasicProtocolEmmitter.prototype.removeListener(_Event, SendDHEncryptedMessage);
 };
