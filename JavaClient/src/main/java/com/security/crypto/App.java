@@ -20,6 +20,8 @@ public class App {
         Receive = session.ReceiveSecureMessage();
         System.out.println(Receive);
         session.ConnectionClose();
+
+        // SessionHandler session = new SessionHandler(Properties.SslTlsV2);
     }
 
 

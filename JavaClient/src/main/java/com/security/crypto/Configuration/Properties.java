@@ -51,6 +51,6 @@ public abstract class Properties {
     //HmacAlgProvider hash Function
     public static final String HmacAlgProv = "SHA256";
     //Rsa Integrity Signature
-    public static final String Signature = "SHA1withRSA";
+    public static final String Signature = "SHA256withRSA";
 
 }

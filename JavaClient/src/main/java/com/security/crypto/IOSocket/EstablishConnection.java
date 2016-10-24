@@ -18,8 +18,8 @@ public class EstablishConnection {
     private Socket socket;
     private SSLSocket sslsocket;
     private IOTransport transport;
-    private static final String currentPath = System.getProperty("user.dir") + "/KeyTool/";
-    private static final String Password = "sarantis";
+    private static final String currentPath = System.getProperty("user.dir") + "/SSLStore/";
+    private static final String Password = "password";
     private boolean result;
 
     public EstablishConnection(String connection) {
@@ -32,15 +32,6 @@ public class EstablishConnection {
         }
     }
 
-    public EstablishConnection(String connection, int timeout) {
-        try {
-            System.out.println(System.getProperty("user.dir"));
-            result = (connection.equals("PlainTextConnection")) ? SetupPlainConnection(timeout) : SslTlsv2Connection(timeout);
-            setResult(result);
-        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableKeyException | KeyManagementException ex) {
-            Logger.getLogger(EstablishConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     private boolean SetupPlainConnection() throws IOException {
         try {
