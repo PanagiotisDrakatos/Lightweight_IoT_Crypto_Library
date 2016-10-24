@@ -8,4 +8,10 @@ Assets\Square44x44Logo.targetsize-24_altform-unplated.png
 Assets\StoreLogo.png
 Assets\Wide310x150Logo.scale-200.png
 SecureUWPClient.xr.xml
+Certificates\ca.crt
+Certificates\cas.pfx
+Certificates\client.crt
+Certificates\client.pfx
+Certificates\keystore.crt
+Certificates\keystore.pfx
 Properties\Default.rd.xml

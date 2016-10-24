@@ -16,6 +16,10 @@ using SecureUWPChannel.Prooperties;
 using Windows.Security.Cryptography;
 using Windows.ApplicationModel.Background;
 using System.IO;
+using SecureUWPClient.Configuration;
+using Windows.Security.Cryptography.Certificates;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace SecureUWPChannel.IOTransport
 {
@@ -37,6 +41,59 @@ namespace SecureUWPChannel.IOTransport
             this.socket = new Windows.Networking.Sockets.StreamSocket();
         }
        
+        public async Task<long> UpgradeToSSL()
+        {
+            long elapsed = ExecutionTime.CurrentTimeMillis();
+            Windows.Security.Cryptography.Certificates.Certificate certificate = await GetClientCert();
+            socket.Control.ClientCertificate = certificate;
+      
+                if (socket.Information.ServerCertificateErrorSeverity == SocketSslErrorSeverity.Ignorable && socket.Information.ServerCertificateErrors.Count > 0)
+                {
+                    socket.Control.IgnorableServerCertificateErrors.Clear();
+                    foreach (ChainValidationResult ignorableError in socket.Information.ServerCertificateErrors)
+                    {
+                        socket.Control.IgnorableServerCertificateErrors.Add(ignorableError);
+                    }
+                    await socket.ConnectAsync(new Windows.Networking.HostName(SocksParameters.Host), SocksParameters.Port, SocketProtectionLevel.Tls12);
+                    Debug.WriteLine(socket.Information.RemoteHostName);
+                }
+            
+            long executetTime= ExecutionTime.CurrentTimeMillis() - elapsed;
+            return executetTime;
+        }
+        
+        public async Task<Certificate> GetClientCert()
+        {
+            Certificate crt = null;
+            try {
+                //new Uri("ms-appx://SecureUWPClient/Certificate/clients.crt")
+                Windows.Storage.StorageFile sampleFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Certificates/client.pfx"));
+                IBuffer certBuffer = await Windows.Storage.FileIO.ReadBufferAsync(sampleFile);
+                String encodedCertificate = CryptographicBuffer.EncodeToBase64String(certBuffer);
+                IBuffer Encodebuff = CryptographicBuffer.ConvertStringToBinary(encodedCertificate, BinaryStringEncoding.Utf8);
+              //  await CertificateEnrollmentManager.InstallCertificateAsync(encodedCertificate, InstallOptions.None);
+                //   await CertificateEnrollmentManager.UserCertificateEnrollmentManager.InstallCertificateAsync(encodedCertificate, InstallOptions.None);
+              //  await CertificateEnrollmentManager.ImportPfxDataAsync(encodedCertificate, "password",
+              //    ExportOption.NotExportable,KeyProtectionLevel.NoConsent,InstallOptions.None, "UWPClient");
+                await CertificateEnrollmentManager.UserCertificateEnrollmentManager.ImportPfxDataAsync(encodedCertificate, "password",
+                ExportOption.NotExportable, KeyProtectionLevel.ConsentWithPassword, InstallOptions.None, "UWPClient");
+                CertificateQuery certQuery = new CertificateQuery();
+                certQuery.FriendlyName = "UWPClient";
+                IReadOnlyList<Certificate> certificates = await CertificateStores.FindAllAsync(certQuery);
+                if (certificates.Count == 1)
+                {
+                  
+                    crt = certificates[0];
+                }
+                // CertificateStore.
+                //   Certificate crt = new Certificate(Encodebuff);
+                return crt;
+            }catch(Exception e)
+            {
+                Debug.WriteLine(e.ToString());
+            }
+            return null;
+        }
         public async Task connect()
         {
 

@@ -37,9 +37,8 @@ namespace SecureUWPClient
         {
             this.InitializeComponent();
             //Debug.WriteLine(new testing().pseudorandom());
-            StartAsync();
-            //CryptographicKey publicKey = null;
-          //  Fingerprint.VerifySig("", publicKey, "");
+          //  StartAsync();
+            SSLtimeConn();
         }
 
         private async void StartAsync()
@@ -59,10 +58,17 @@ namespace SecureUWPClient
                 await messageExhange.SendDHEncryptedMessage("hello server", (AES_ECB)Convert.ChangeType(obj.GetType(), typeof(AES_ECB)));
                 receive = await messageExhange.ReceiveDHEncryptedMessage((AES_ECB)Convert.ChangeType(obj.GetType(), typeof(AES_ECB)));
             }
-
+            ses.Close();
 
         }
 
-        
+        private async void SSLtimeConn()
+        {
+            IOSessionBuilder ses = new IOSessionBuilder();
+            long time= await ses.SSLConnAsyncTime();
+        }
+
+
+
     }
 }

@@ -87,6 +87,16 @@ namespace SecureUWPClient.Handshake
             }
 
         }
+
+        public async Task<long> SSLConnAsyncTime()
+        {
+            return  await Activity.UpgradeToSSL();
+        }
+
+        public void Close()
+        {
+            Activity.close();
+        }
         public IOCallbackAsync MessageExhange
         {
             get

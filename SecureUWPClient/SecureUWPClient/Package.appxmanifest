@@ -33,5 +33,14 @@
     <Capability Name="internetClient" />
     <Capability Name="internetClientServer" />
     <uap:Capability Name="removableStorage" />
+    <uap:Capability Name="sharedUserCertificates" />
   </Capabilities>
+  <Extensions>
+    <Extension Category="windows.certificates">
+      <Certificates>
+        <Certificate StoreName="client" Content="Certificates\client.crt" />
+        <Certificate StoreName="ca" Content="Certificates\ca.crt" />
+      </Certificates>
+    </Extension>
+  </Extensions>
 </Package>

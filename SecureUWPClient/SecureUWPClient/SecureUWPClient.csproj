@@ -92,6 +92,15 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Certificates\ca.crt" />
+    <None Include="Certificates\ca.key" />
+    <Content Include="Certificates\client.crt" />
+    <None Include="Certificates\client.csr" />
+    <None Include="Certificates\client.key" />
+    <None Include="Certificates\client.pem" />
+    <Content Include="Certificates\client.pfx" />
+    <Content Include="Certificates\keystore.pfx" />
+    <Content Include="Certificates\keystore.crt" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

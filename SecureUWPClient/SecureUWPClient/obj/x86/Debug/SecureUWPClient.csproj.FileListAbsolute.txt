@@ -194,4 +194,3 @@ C:\Users\user\documents\visual studio 2015\Projects\SecureUWPClient\SecureUWPCli
 C:\Users\user\documents\visual studio 2015\Projects\SecureUWPClient\SecureUWPClient\obj\x86\Debug\qualifiers.txt.intermediate
 C:\Users\user\documents\visual studio 2015\Projects\SecureUWPClient\SecureUWPClient\obj\x86\Debug\MultipleQualifiersPerDimensionFound.txt
 C:\Users\user\documents\visual studio 2015\Projects\SecureUWPClient\SecureUWPClient\obj\x86\Debug\ProjectArchitectures.txt
-C:\Users\user\documents\visual studio 2015\Projects\SecureUWPClient\SecureUWPClient\obj\x86\Debug\SecureUWPClient.csprojResolveAssemblyReference.cache
