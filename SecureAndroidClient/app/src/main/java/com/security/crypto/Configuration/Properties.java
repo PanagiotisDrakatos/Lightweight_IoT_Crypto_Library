@@ -4,7 +4,7 @@ public abstract class Properties {
 
     //socket properties
 
-    public static final String host = "192.168.1.67";
+    public static final String host = "192.168.1.68";
     public static final int portNumber = 1337;
     public static final String PlainTextConnection = "PlainTextConnection";
     public static final String SslTlsV2 = "SslTlsV2";
@@ -53,6 +53,6 @@ public abstract class Properties {
     //HmacAlgProvider hash Function
     public static final String HmacAlgProv = "SHA256";
     //Rsa Integrity Signature
-    public static final String Signature = "SHA1withRSA";
+    public static final String Signature = "SHA256withRSA";
 
 }

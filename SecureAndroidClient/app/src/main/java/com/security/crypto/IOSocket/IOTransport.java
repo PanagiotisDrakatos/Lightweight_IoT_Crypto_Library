@@ -1,10 +1,13 @@
 package com.security.crypto.IOSocket;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
 
 import javax.net.ssl.SSLSocket;
 
@@ -16,8 +19,12 @@ public class IOTransport {
     private PrintWriter out;
     private BufferedReader br;
 
+    private BufferedOutputStream output;
+    private BufferedInputStream in;
+
     public IOTransport(Socket socket) throws IOException {
         this.socket = socket;
+        this.socket.setTcpNoDelay(true);
         set_PlainoutpuStreams();
     }
 
@@ -27,9 +34,9 @@ public class IOTransport {
     }
 
     private void set_PlainoutpuStreams() throws IOException {
-        out = new PrintWriter(socket.getOutputStream(), true);
-        out.flush();
-        br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        output = new BufferedOutputStream(socket.getOutputStream());
+        output.flush();
+        in = new BufferedInputStream(socket.getInputStream());
     }
 
     private void set_SecureOutPutStreams() throws IOException {
@@ -39,21 +46,40 @@ public class IOTransport {
     }
 
     public void SendMessage(String toSend) throws IOException {
-        out.print(toSend);
-        out.flush();
+        output.write(toSend.getBytes());
+        output.flush();
     }
 
-    public String receiveMessage() throws IOException {
-        String received = br.readLine();
-        return received;
+    public String receiveMessage() throws IOException, InterruptedException {
+        StringBuilder sb = new StringBuilder();
+        byte[] bytes = new byte[1024];
+        int s = 0;
+        int index = 0;
+        while (true) {
+            s = in.read();
+            if (s == 10) {
+                break;
+            }
+            bytes[index++] = (byte) (s);
+            if (index == bytes.length) {
+                sb.append(new String(bytes));
+                bytes = new byte[1024];
+                index = 0;
+            }
+        }
+        if (index > 0) {
+            sb.append(new String(Arrays.copyOfRange(bytes, 0, index)));
+        }
+
+        return sb.toString();
     }
 
     public void close() throws IOException {
 
         if (socket != null) {
             socket.close();
-            out.close();
-            br.close();
+            output.close();
+            in.close();
         } else {
             sslsocket.close();
             out.close();
