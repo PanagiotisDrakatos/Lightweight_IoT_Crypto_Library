@@ -62,7 +62,6 @@ public class SessionHandler {
             ciphersforUse = this.keyExchange.ReceiveCipherSuites();
             System.out.println("---------------Execution Time7--------------------" + (Execution_Time7 - System.currentTimeMillis()));
             System.out.println("---------------Sum up Time------------------------ " + (System.currentTimeMillis() - elapsetime));//900 ms total
-
             this.MessageExhange = new IOMessageExhange(this.Session.getTransport(), this.keystore, ciphersforUse);
             StoreCipher();
         } catch (IOException e) {
