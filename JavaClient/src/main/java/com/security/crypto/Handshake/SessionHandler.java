@@ -31,47 +31,50 @@ public class SessionHandler {
     }
 
 
-    public void StartDHKeyExchange() {
+    public long StartDHKeyExchange() {
+        long Sum_up = 0;
         try {
             long elapsetime = System.currentTimeMillis();
             this.keyExchange.SendPlainMessage();
             long Execution_Time1 = (System.currentTimeMillis());
-            System.out.println("---------------Execution Time1--------------------" + (Execution_Time1 - elapsetime));//60
+            System.out.println("---------------Execution Time1--------------------" + (Execution_Time1 - elapsetime));
 
             long Execution_Time2 = (System.currentTimeMillis());
             this.keyExchange.ReceiveServerCertificate();
-            System.out.println("---------------Execution Time2--------------------" + (System.currentTimeMillis() - Execution_Time2));//1474378962584
+            System.out.println("---------------Execution Time2--------------------" + (System.currentTimeMillis() - Execution_Time2));
 
             long Execution_Time3 = (System.currentTimeMillis());
             this.keyExchange.ResendCookieServer();
-            System.out.println("---------------Execution Time3--------------------" + (System.currentTimeMillis() - Execution_Time3));//61
+            System.out.println("---------------Execution Time3--------------------" + (System.currentTimeMillis() - Execution_Time3));
 
             long Execution_Time4 = (System.currentTimeMillis());
             this.keyExchange.SendPublicValue();
-            System.out.println("---------------Execution Time4--------------------" + (System.currentTimeMillis() - Execution_Time4));//1474378962729
+            System.out.println("---------------Execution Time4--------------------" + (System.currentTimeMillis() - Execution_Time4));
 
             long Execution_Time5 = (System.currentTimeMillis());
             this.keyExchange.ReceivePublicValue();
-            System.out.println("---------------Execution Time5--------------------" + (System.currentTimeMillis() - Execution_Time5));//77
+            System.out.println("---------------Execution Time5--------------------" + (System.currentTimeMillis() - Execution_Time5));
 
             long Execution_Time6 = (System.currentTimeMillis());
             this.keyExchange.SendCipherSuites();
-            System.out.println("---------------Execution Time6--------------------" + (System.currentTimeMillis() - Execution_Time6));//778
+            System.out.println("---------------Execution Time6--------------------" + (System.currentTimeMillis() - Execution_Time6));
 
             long Execution_Time7 = (System.currentTimeMillis());
             ciphersforUse = this.keyExchange.ReceiveCipherSuites();
             System.out.println("---------------Execution Time7--------------------" + (Execution_Time7 - System.currentTimeMillis()));
-            System.out.println("---------------Sum up Time------------------------ " + (System.currentTimeMillis() - elapsetime));//900 ms total
+            Sum_up = (System.currentTimeMillis() - elapsetime);
+            System.out.println("---------------Sum up Time------------------------ " + Sum_up);
             this.MessageExhange = new IOMessageExhange(this.Session.getTransport(), this.keystore, ciphersforUse);
             StoreCipher();
+            return Sum_up;
         } catch (IOException e) {
             e.printStackTrace();
             this.ConnectionClose();
-            return;
+            return Sum_up;
         } catch (Exception e) {
             e.printStackTrace();
             this.ConnectionClose();
-            return;
+            return Sum_up;
         }
     }
 

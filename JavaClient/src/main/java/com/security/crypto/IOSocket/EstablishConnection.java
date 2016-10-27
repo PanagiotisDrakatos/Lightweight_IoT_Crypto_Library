@@ -70,7 +70,8 @@ public class EstablishConnection {
         SSLSocketFactory ssf = sc.getSocketFactory();
         sslsocket = (SSLSocket) ssf.createSocket(Properties.host, Properties.portNumber);
 
-        System.out.println("ESTABLISHED" + "\n");
+        sslsocket.startHandshake();
+        System.out.println("Handshaking Complete");
         System.out.println("Just connected to " + sslsocket.getInetAddress() + "\n");
 
         transport = new IOTransport(sslsocket);

@@ -18,6 +18,7 @@ public class IOTransport {
 
     public IOTransport(Socket socket) throws IOException {
         this.socket = socket;
+        //this.socket.setTcpNoDelay(true);
         set_PlainoutpuStreams();
     }
 
@@ -30,6 +31,7 @@ public class IOTransport {
         output = new BufferedOutputStream(socket.getOutputStream());
         output.flush();
         in = new BufferedInputStream(socket.getInputStream());
+        // br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
     private void set_SecureOutPutStreams() throws IOException {
@@ -73,6 +75,7 @@ public class IOTransport {
             socket.close();
             output.close();
             in.close();
+            // br.close();
         } else {
             sslsocket.close();
             out.close();

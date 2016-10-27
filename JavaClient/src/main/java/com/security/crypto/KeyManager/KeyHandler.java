@@ -42,7 +42,7 @@ public class KeyHandler extends KeyManagerImp {
         try {
             X509Certificate cert = this.loadCertificate();
             PublicKey key = cert.getPublicKey();
-            System.out.println(key);
+            //System.out.println(key);
             byte[] keyBytes = key.getEncoded();
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
             FileOutputStream Fos = new FileOutputStream(new File(Server_PUBLIC_KEY));
@@ -108,35 +108,7 @@ public class KeyHandler extends KeyManagerImp {
         }
     }
 
-    /*
-     FileInputStream fis = null;
-            ObjectInputStream ois = null;
-            try {
-                File filecert = new File(Server_Certificate);
-                fis = new FileInputStream(filecert);
-                ois = new ObjectInputStream(fis);
-                String Der_Encoded = (String) ois.readObject();
 
-                byte[] Der_bytes = Base64.decodeBase64(Der_Encoded.getBytes(Properties.CHAR_ENCODING));
-                ByteArrayInputStream inStream = new ByteArrayInputStream(Der_bytes);
-                ASN1InputStream derin = new ASN1InputStream(inStream);
-                ASN1Primitive certInfo = derin.readObject();
-                ASN1Sequence seq = ASN1Sequence.getInstance(certInfo);
-
-                fis.close();
-                return new X509CertificateObject(Certificate.getInstance(seq));
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (CertificateParsingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            return null;
-     */
     public X509Certificate loadCertificate() {
         FileInputStream fis = null;
         try {

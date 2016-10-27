@@ -1,27 +1,26 @@
 package com.security.crypto;
 
-import com.security.crypto.Configuration.Properties;
-import com.security.crypto.Handshake.SessionHandler;
-
-
 /**
  * Hello world!
  */
 public class App {
+    public enum Command {
+        PlainTextConnection, SslTlsV2,
+    }
+
     public static void main(String[] args) throws Exception {
 
-        SessionHandler session = new SessionHandler(Properties.PlainTextConnection);
-        String Receive = null;
-        session.StartDHKeyExchange();
-        session.SendSecureMessage("hello Server 1");
-        Receive = session.ReceiveSecureMessage();
-        System.out.println(Receive);
-        session.SendSecureMessage("hello Server 2");
-        Receive = session.ReceiveSecureMessage();
-        System.out.println(Receive);
-        session.ConnectionClose();
+        int LoopValue = 100;
+        //To run this code Make sure you open PlainConnection.js in order to connect to the  server
+        PerfomanceTime per = new PerfomanceTime(LoopValue, Command.PlainTextConnection);//set counter for LoopValue & set Property PlainTextConnection
+        per.Set_CryptoDevice_Experiment();//Save  time in ms in a HashMap for each Connection
+        per.WriteData();//write HashMap data to excel*/
 
-        // SessionHandler session = new SessionHandler(Properties.SslTlsV2);
+        //-------------------------------------------------------------------//
+
+        //To run this code Make sure you open SslTlsV2.js in order to connect to the node.js server
+        PerfomanceTime ssl = new PerfomanceTime(LoopValue, Command.SslTlsV2);//set counter for LoopValue & set Property SslTlsV2
+        ssl.Set_SSl_Experiment();//Update Excel data with ssl time
     }
 
 
