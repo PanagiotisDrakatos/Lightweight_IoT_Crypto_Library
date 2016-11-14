@@ -7,7 +7,7 @@ def __Signature__(EncryptedMessage, Password, CurrentDiggest):
     text_bytes = EncryptedMessage.encode('utf-8')
     Plainmac = hmac.new(pw_bytes, text_bytes, digestmod=CurrentDiggest).digest()
     EncodedHmac = base64.b64encode(Plainmac)
-    print("hmac ", EncodedHmac.decode("utf-8"))
+    # print("hmac ", EncodedHmac.decode("utf-8"))
     return EncodedHmac.decode("utf-8")
 
 

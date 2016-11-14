@@ -6,6 +6,7 @@ from Configuration.CookieGen import CookieGen
 from Configuration.JsonObject import JsonObject
 from Configuration.RandomGenerator import Genarator
 from IOSocket.IOSynAck import SynAck
+from KeyManager.DHIntegrityKey import DHIntegrity
 
 
 class DiffeHelmanExhange(SynAck):
@@ -17,6 +18,7 @@ class DiffeHelmanExhange(SynAck):
         self.__Generator = Genarator()
         self.__cookie = CookieGen()
         self.__rsa = PCKCS1()
+        self._IntegrityKey = DHIntegrity()
 
     def _SynAck__SendPlainMessage(self):
         self.__ObjToSend = JsonObject()
@@ -68,53 +70,48 @@ class DiffeHelmanExhange(SynAck):
 
         timestamp = self.__Generator.__Pseudorandom__()
 
-        if str(self.__ObjToRead.PseudoNumber).__eq__(self, str(timestamp)):
-            SessionResult = self.__KeyHandle._KeyManager__DHSessionPrimeNumber__(
-                long(self.__ObjToRead.ServerPrimeNumber))
-            self.__KeyHandle_KeyManager__.ProduceCipherKey(SessionResult)
-            self.__KeyHandle_KeyManager__.ProduceIntegrityKey(SessionResult)
-            print(SessionResult)
+        if str(self.__ObjToRead.PseudoNumber).__eq__(str(timestamp)):
+            SessionResult = self.__Generator.__DHSessionPrimeNumber__(long(self.__ObjToRead.ServerPrimeNumber))
+            self.__KeyHandle._KeyManager__ProduceCipherKey(SessionResult)
+            self.__KeyHandle._KeyManager__ProduceIntegrityKey(SessionResult)
+            # print(SessionResult)
         else:
             raise Exception("Server Cannot Be Verified Possible Replay Attack")
 
     def _SynAck__SendCipherSuites(self):
         self.__ObjToSend = JsonObject()
         Ciphers = [Properties.AES_CBC, Properties.AES_ECB]
-        Diggest = [Properties.MD5, Properties.sha1, Properties.sha256]
-        CurrentDiggest = [Properties.sha256]
+        Diggest = [Properties.MD5, Properties.sha1, Properties.MACSHA_256]
+        CurrentDiggest = [Properties.MACSHA_256]
 
-        Ciphers.join(",")
-        Diggest.join(",")
-        CurrentDiggest.join(",")
-
-        Joiner = [Ciphers, Diggest, CurrentDiggest]
-        Joiner.join("|")
+        Joiner = [','.join(Ciphers), ','.join(Diggest), ','.join(CurrentDiggest)]
 
         self.__ObjToSend.PseudoNumber = self.__Generator.__Pseudorandom__()
-        self.__ObjToSend.CipherSuites = str(Joiner);
+        self.__ObjToSend.CipherSuites = "|".join(Joiner)
+        self.Algo = CipherSuite(''.join(CurrentDiggest), "", "")
         self.__ObjToSend.HmacHash = HmacAlgoProvider.__Signature__(self.__ObjToSend.CipherSuites,
-                                                                   self._KeyManager__loadRemoteCipherKey(),
-                                                                   CurrentDiggest)
+                                                                   self.__KeyHandle._KeyManager__loadRemoteIntegrityKey(),
+                                                                   self.Algo.CurrentHash)
 
         self.__StrToSend = Format.JsonObjToStr(self.__ObjToSend)
-        self.__Socket.__Send__(self.__StrToSend, 128)
+        self.__Socket.__Send__(self.__StrToSend, 256)
 
     def _SynAck__ReceiveCipherSuites(self):
         StrToread = self.__Socket.__Receive__()
         self.__ObjToRead = JsonObject(StrToread)
 
         timestamp = self.__Generator.__Pseudorandom__()
-        if str(self.__ObjToRead.PseudoNumber).__eq__(self, str(timestamp)):
+        if str(self.__ObjToRead.PseudoNumber).__eq__(str(timestamp)):
             SelectedCiphers = str(self.__ObjToRead.CipherSuites);
 
-            if (SelectedCiphers.__contains__(self, "|")):
-                parts = SelectedCiphers.split(self, "\\|");
+            if (SelectedCiphers.__contains__("|")):
+                parts = SelectedCiphers.split("|")
             else:
                 raise Exception("String " + SelectedCiphers + " does not contain |")
 
             CipherAlgo = parts[0];
             HashAlgo = parts[1];
-            return CipherSuite(CipherAlgo, HashAlgo)
+            return CipherSuite(None, CipherAlgo, HashAlgo)
 
         else:
             raise Exception("Server Cannot Be Verified")

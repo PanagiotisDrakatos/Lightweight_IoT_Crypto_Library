@@ -1,13 +1,13 @@
 import abc
 
 
-class IOCallback(object):
+class Callback(object):
     __metaclass__ = abc.ABCMeta
 
     @abc.abstractmethod
-    def SendDHEncryptedMessage(self, Message):
+    def __SendDHEncryptedMessage(self, Message):
         return
 
     @abc.abstractmethod
-    def ReceiveDHEncryptedMessage(self):
+    def __ReceiveDHEncryptedMessage(self):
         return

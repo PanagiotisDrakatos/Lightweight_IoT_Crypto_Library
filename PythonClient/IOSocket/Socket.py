@@ -6,6 +6,7 @@ from IOSocket.IOTransport import IoTransport
 class PlainSocket(IoTransport):
     def __init__(self):
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
         super(PlainSocket, self).__init__(self._sock)
 
     def __Send__(self, msg, MSGLEN):

@@ -40,7 +40,6 @@ class KeyHandle(KeyManager):
         file = open(Properties.Server_PUBLIC_KEY, Properties.Read)
         PubPem = file.read()
         PubKey = base64.b64decode(PubPem)
-        # rsa_key = RSA.importKey(PubKey)
         file.close()
         return PubKey
 
@@ -57,7 +56,7 @@ class KeyHandle(KeyManager):
         self._CipherKey.__GenerateCipherKey__(SessionResult)
 
     def _KeyManager__ProduceIntegrityKey(self, SessionResult):
-        self._IntegrityKey.__GenerateCipherKey__(SessionResult)
+        self._IntegrityKey.__GenerateIntegrityKey__(SessionResult)
 
     def _KeyManager__loadRemoteCipherKey(self):
         return self._CipherKey.CipherKey

@@ -1,5 +1,4 @@
 import array
-import math
 
 
 class DHIntegrity:
@@ -9,26 +8,24 @@ class DHIntegrity:
 
     def __GenerateIntegrityKey__(self, SessionKey):
         self.Session = SessionKey
-        try:
-            data = SessionKey.decode("utf8")
-            array.array('B', data)
-            keyBytes16 = slice(math.min(len(array) / 2, 16), math.min(len(array), 32))
-            self.integrityKey = str(bytearray(keyBytes16))
-        except Exception as inst:
-            print type(inst)
+        data = SessionKey.encode("utf8")
+        Keybytes = array.array('B', data)
+        keyBytes16 = slice(min(len(Keybytes) / 2, 16), min(len(Keybytes), 32))
+        self.__integrityKey = str(bytearray(Keybytes[keyBytes16]))
+
 
     @property
     def Session(self):
-        return self.Session
+        return self.__Session
 
     @Session.setter
     def Session(self, value):
-        self.Session = value
+        self.__Session = value
 
     @property
     def integrityKey(self):
-        return self.integrityKey
+        return self.__integrityKey
 
     @integrityKey.setter
     def integrityKey(self, value):
-        self.integrityKey = value
+        self.__integrityKey = value
