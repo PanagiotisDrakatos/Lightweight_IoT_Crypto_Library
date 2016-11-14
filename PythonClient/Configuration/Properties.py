@@ -1,7 +1,11 @@
+import hashlib
 import os
+
+from Crypto.Cipher import AES
 
 host = "192.168.1.68"
 portNumber = 1337
+
 timeout = 1
 
 PlainTextConnection = "PlainTextConnection"
@@ -13,11 +17,13 @@ SslTlsV2 = "SslTlsV2"
 exponent = "67849492012064603525502413864581601255843190582896059031333969517102908698009"
 modulus = "71121776095154293411645315316982820283937449209225990596316112319337209629611"
 
-AES_PROVIDER = "Assymmetric"
-AES_ALGORITHM = "Assymmetric/ECB/PKCS7Padding"
+AES_ECB = AES.MODE_ECB
+AES_CBC = AES.MODE_CBC
 
-RSA_ALGORITHM = "Symmetric"
-RSA_CRYPTO_ALGORITHM = "Symmetric/ECB/PKCS1Padding"
+MD5 = hashlib.md5
+sha1 = hashlib.sha1
+sha256 = hashlib.sha256
+
 RSA_Provider = "BC"
 Rsa_PrivFormat = "DER"
 Rsa_pubFormat = "PEM"

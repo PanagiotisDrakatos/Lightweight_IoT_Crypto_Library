@@ -22,8 +22,8 @@ class SSLSocket(IoTransport):
     def __connect(self, host, port):
         super(SSLSocket, self).__connect()
 
-    def __Send__(self, msg):
-        super(SSLSocket, self).__Send__(msg)
+    def __Send__(self, msg, MSGLEN):
+        super(SSLSocket, self).__Send__(msg, MSGLEN)
 
     def __Receive__(self):
         return super(SSLSocket, self).__Receive__()

@@ -1,4 +1,3 @@
-import base64
 import binascii
 import json
 from binascii import a2b_base64
@@ -15,13 +14,18 @@ def hex2bin(hexStr):
 def PemtoDer(pem):
     lines = pem.replace(" ", '').split()
     der = a2b_base64(''.join(lines[1:-1]))
-    toBase64 = base64.b64encode(der).decode("utf-8")
-    return toBase64
+    return der
 
 
 def JsonObjToStr(objvalue):
-    return json.dumps(objvalue.__dict__)
+    json_string = json.dumps(objvalue.__dict__, ensure_ascii=False).encode('utf8')
+    return json_string
 
 
 def JsonStrToOB(strvalue):
-    return json.loads(strvalue)
+    return json.loads(strvalue, object_hook=ascii_encode_dict)
+
+
+def ascii_encode_dict(data):
+    ascii_encode = lambda x: x.encode('ascii')
+    return dict(map(ascii_encode, pair) for pair in data.items())

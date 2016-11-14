@@ -19,7 +19,7 @@ class HandleSession:
         self._DHExchange._SynAck__SendPublicValue()
         self._DHExchange._SynAck__ReceivePublicValue()
         self._DHExchange._SynAck__SendCipherSuites()
-        self._DHExchange._SynAck__ReceiveCipherSuites()
+        self._ciphersforUse = self._DHExchange._SynAck__ReceiveCipherSuites()
         print("---------------DHkeys Sucessfuly Changed--------------------")
 
     def __EstablishConn(self):

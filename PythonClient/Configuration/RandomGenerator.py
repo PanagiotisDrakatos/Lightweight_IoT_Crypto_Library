@@ -1,5 +1,5 @@
 import math
-from decimal import Decimal, ROUND_DOWN
+from decimal import getcontext, Decimal, ROUND_HALF_DOWN
 
 from Crypto.Util import number
 
@@ -49,6 +49,7 @@ class Genarator:
 
     def __Pseudorandom__(self):
         self._seed += 1
-        truncateValue = Decimal(math.sin(self._seed) * 0.5)
-        truncateValue.quantize(Decimal('.15'), rounding=ROUND_DOWN)
-        return str(truncateValue)
+        getcontext().prec = 16
+        truncateValue = Decimal(math.sin(self._seed)) * Decimal(0.5)
+        output = truncateValue.quantize(Decimal('.000000000000000'), rounding=ROUND_HALF_DOWN)
+        return str(output)

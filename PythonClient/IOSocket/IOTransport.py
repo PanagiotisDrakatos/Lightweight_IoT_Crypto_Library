@@ -21,10 +21,9 @@ class IoTransport(object):
             print("something's wrong with %s:%d. Exception is %s" % (host, port, e))
             self._sock.close()
 
-    def __Send__(self, msg):
+    def __Send__(self, msg, MSGLEN):
         totalsent = 0
-        self._MSGLEN = 256
-        while totalsent < self._MSGLEN:
+        while totalsent < MSGLEN:
             sent = self._sock.send(msg[totalsent:])
             if sent == 0:
                 raise RuntimeError("socket connection broken")

@@ -8,8 +8,8 @@ class PlainSocket(IoTransport):
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         super(PlainSocket, self).__init__(self._sock)
 
-    def __Send__(self, msg):
-        super(PlainSocket, self).__Send__(msg)
+    def __Send__(self, msg, MSGLEN):
+        super(PlainSocket, self).__Send__(msg, MSGLEN)
 
     def __Receive__(self):
         return super(PlainSocket, self).__Receive__()
