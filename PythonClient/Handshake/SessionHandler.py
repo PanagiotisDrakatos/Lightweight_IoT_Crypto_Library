@@ -1,16 +1,22 @@
 import time
 
+from Crypto.Cipher import AES
+
+from Ciphers.Symmetric.AesCBC import CBC
+from Ciphers.Symmetric.AesECB import ECB
 from Configuration import Properties
 from Handshake.DHkeyExchange import DiffeHelmanExhange
+from Handshake.IOMessageExchange import MessageExchange
 from IOSocket.SSLSocket import SSLSocket
 from IOSocket.Socket import PlainSocket
 from KeyManager.KeyHandler import KeyHandle
-
 
 class HandleSession:
     def __init__(self, ConnType):
         self._ConnType = ConnType
         self._Keystore = KeyHandle()
+        self.__ecb = None
+        self.__cbc = None
         self.__EstablishConn()
         self._DHExchange = DiffeHelmanExhange(self._Plain, self._Keystore)
 
@@ -43,7 +49,28 @@ class HandleSession:
 
         SumUpTime = int(round(time.time() * 1000))
         self._ciphersforUse = self._DHExchange._SynAck__ReceiveCipherSuites()
+        print("---------------Execution Time6--------------------" + str(SumUpTime - Execution_Time6))
         print("---------------DHkeys Sucessfuly Changed--------------------" + str(SumUpTime - elapsetime))
+        self._MessageExhange = MessageExchange(self._Plain, self._Keystore, self._ciphersforUse)
+        self.StoreCipher()
+
+    def StoreCipher(self):
+        if self._ciphersforUse.CipherAlgorithm == AES.MODE_ECB:
+            self.__ecb = ECB()
+        elif self._ciphersforUse.CipherAlgorithm == AES.MODE_CBC:
+            self.__cbc = CBC()
+
+    def __SendSecurMessage__(self, Message):
+        if self.__ecb is not None:
+            self._MessageExhange._Callback__SendDHEncryptedMessage(Message, self.__ecb)
+        elif self.__cbc is not None:
+            self._MessageExhange._Callback__SendDHEncryptedMessage(Message, self.__cbc)
+
+    def __ReceiveSecurMessage__(self):
+        if self.__ecb is not None:
+            return self._MessageExhange._Callback__ReceiveDHEncryptedMessage(self.__ecb)
+        elif self.__cbc is not None:
+            return self._MessageExhange._Callback__ReceiveDHEncryptedMessage(self.__cbc)
 
     def __EstablishConn(self):
         if str(self._ConnType).__eq__(str(Properties.Plain)):
@@ -57,4 +84,4 @@ class HandleSession:
         try:
             self._Plain.__Close__()
         except:
-            self._SSLSock
+            self._SSLSock.__Close__()

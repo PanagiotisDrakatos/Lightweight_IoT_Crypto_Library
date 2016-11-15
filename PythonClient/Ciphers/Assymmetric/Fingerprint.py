@@ -21,5 +21,6 @@ def __verification__(Encrypted, publicKey, ServerSig):
     ServerSigBase64 = base64.b64decode(ServerSig)
     if verifier.verify(hash, ServerSigBase64):
         print "The signature is authentic."
+        return True
     else:
         raise ValueError("The signature is not authentic")

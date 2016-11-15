@@ -59,7 +59,7 @@ class KeyHandle(KeyManager):
         self._IntegrityKey.__GenerateIntegrityKey__(SessionResult)
 
     def _KeyManager__loadRemoteCipherKey(self):
-        return self._CipherKey.CipherKey
+        return str(self._CipherKey.CipherKey)
 
     def _KeyManager__loadRemoteIntegrityKey(self):
         return self._IntegrityKey.integrityKey

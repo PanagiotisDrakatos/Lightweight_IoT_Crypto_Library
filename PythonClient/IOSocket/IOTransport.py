@@ -17,6 +17,7 @@ class IoTransport(object):
     def __connect(self, host, port):
         try:
             self._sock.connect((host, port))
+            self._sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
         except Exception as e:
             print("something's wrong with %s:%d. Exception is %s" % (host, port, e))
             self._sock.close()
@@ -39,12 +40,10 @@ class IoTransport(object):
             elif time.time() - begin > Properties.timeout * 2:
                 break
             try:
-                data = self._sock.recv(8192)
+                data = self._sock.recv(1024)
                 if data:
                     total_data.append(data)
                     begin = time.time()
-                else:
-                    time.sleep(0.1)
             except:
                 pass
         return ''.join(total_data)

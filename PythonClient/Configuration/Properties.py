@@ -3,7 +3,7 @@ import os
 host = "192.168.1.68"
 portNumber = 1337
 
-timeout = 1
+timeout = 0.1
 
 PlainTextConnection = "PlainTextConnection"
 SYN = "ClientHello"

@@ -11,7 +11,7 @@ def __Signature__(EncryptedMessage, Password, CurrentDiggest):
     return EncodedHmac.decode("utf-8")
 
 
-def __HmacSha256Verify__(EncryptedMessage, Password, SenderHmac, CurrentDiggest):
+def __HmacVerify__(EncryptedMessage, Password, SenderHmac, CurrentDiggest):
     CurrentHmac = __Signature__(EncryptedMessage, Password, CurrentDiggest)
     if CurrentHmac.__eq__(SenderHmac):
         print("Hmac Integrity Verifierd Succesfylly !!")
@@ -19,4 +19,5 @@ def __HmacSha256Verify__(EncryptedMessage, Password, SenderHmac, CurrentDiggest)
 
     else:
         print("Hmac Cannot be verified !!")
-        raise ValueError("Hmac Cannot be verified !!")
+        return True
+        # raise ValueError("Hmac Cannot be verified !!")
