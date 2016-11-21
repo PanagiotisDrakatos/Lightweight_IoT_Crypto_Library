@@ -18,7 +18,6 @@ class HandleSession:
         self.__ecb = None
         self.__cbc = None
         self.__EstablishConn()
-        self._DHExchange = DiffeHelmanExhange(self._Plain, self._Keystore)
 
     def __StartExhangeKey__(self):
         elapsetime = int(round(time.time() * 1000))
@@ -75,6 +74,7 @@ class HandleSession:
     def __EstablishConn(self):
         if str(self._ConnType).__eq__(str(Properties.Plain)):
             self._Plain = PlainSocket()
+            self._DHExchange = DiffeHelmanExhange(self._Plain, self._Keystore)
         elif str(self._ConnType).__eq__(str(Properties.Secure)):
             self._SSLSock = SSLSocket()
         else:

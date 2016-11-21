@@ -9,7 +9,7 @@ PlainTextConnection = "PlainTextConnection"
 SYN = "ClientHello"
 SYN_ACK = "ServerHello"
 Replay = "Resend"
-SslTlsV2 = "SslTlsV2"
+SslTlsV2 = "SSLSocket"
 
 exponent = "67849492012064603525502413864581601255843190582896059031333969517102908698009"
 modulus = "71121776095154293411645315316982820283937449209225990596316112319337209629611"
@@ -36,9 +36,12 @@ HmacAlgProv = "HmacSHA256"
 Signature = "SHA256withRSA"
 
 keypath = os.path.abspath('./../Keystore/')
-certpath = os.path.abspath('./../Certificates/')
 Server_PUBLIC_KEY = keypath + "/Server_Public.pem"
-Server_Cert = keypath + "/Server_Cert.pem"
+
+# -------SSL----
+certpath = os.path.abspath('./../Certificates/')
+Server_Cert = certpath + "/ca.crt"
+Server_key = certpath + "/ca.key"
 Client_Crt = certpath + "/clients.crt"
 Client_key = certpath + "/ClientKey.pem"
 

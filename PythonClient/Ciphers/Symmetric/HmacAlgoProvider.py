@@ -19,5 +19,4 @@ def __HmacVerify__(EncryptedMessage, Password, SenderHmac, CurrentDiggest):
 
     else:
         print("Hmac Cannot be verified !!")
-        return True
-        # raise ValueError("Hmac Cannot be verified !!")
+        raise ValueError("Hmac Cannot be verified !!")

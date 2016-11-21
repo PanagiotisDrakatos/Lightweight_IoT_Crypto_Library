@@ -80,7 +80,7 @@ class DiffeHelmanExhange(SynAck):
 
     def _SynAck__SendCipherSuites(self):
         self.__ObjToSend = JsonObject()
-        Ciphers = [Properties.AES_CBC, Properties.AES_ECB]
+        Ciphers = [Properties.AES_ECB, Properties.AES_CBC, ]
         Diggest = [Properties.MD5, Properties.sha1, Properties.MACSHA_256]
         CurrentDiggest = [Properties.MACSHA_256]
 
