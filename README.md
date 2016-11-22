@@ -22,10 +22,10 @@ such an attractive option  include the following</p>
 #Quick Start
 <p>The quickest way to get started is to install the Server.All what you need to run the server is described below:</p>
  * About 15 minutes
- * A favorite text editor or IDE  (i use this one<a href="https://c9.io/">c9).</a>
+ * A favorite text editor or IDE  (i use this one<a href="https://c9.io/"> c9 ).</a>
  * Node.js v4.6.1 or later
  
- <p>The package  can be installed via git clone only (for now). Also you will need to run the Server Locally in order to play the example given. An easy way to do this if you use <a href="https://c9.io/">c9</a> is to follow <a href ="https://www.youtube.com/watch?v=Bhy0vZYElbE">this</a> tutorial </p>
+<p>The package  can be installed via git clone only (for now). Also you will need to run the Server Locally in order to play the example given. An easy way to do this if you use <a href="https://c9.io/">c9</a> is to follow <a href ="https://www.youtube.com/watch?v=Bhy0vZYElbE">this</a> tutorial </p>
  
  ```
 $git clone https://github.com/PanagiotisDrakatos/Light_IoT_CryptoDevice.git
