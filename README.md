@@ -3,7 +3,7 @@
 # Light_IoT_CryptoDevice
 <p>A cross Platform Encryption Library which Interact with Many Programming Languages Provides a Lightweight Encryption for all Devices. It gives the oportunity in many Companies to Interact with a server wrriten in pure node.js which can  feeds data across  any device or across any pc where supported this Programming Languages(Java,android,UWP,IOS,python)</p>
 
-# Light_IoT_CryptoDevice
+# Getting Started
 <p> <b>Light_IoT_CryptoDevice </b>Encryption aims at providing an easy-to-use Cross Platform API which allows an encrypted communication ( multi platform programming languages)over socket which it can be used from every  company or developers who want a High level security inside a network  between multiple cross platform devices</p>
 
 <p>Some of the important characteristics that make Light_IoT_CryptoDevice
@@ -17,8 +17,37 @@ such an attractive option  include the following</p>
 
 
 #Philosophy
-<p>The<b>Light_IoT_CryptoDevice </b> philosophy is to provide small, robust tooling for companies to adopt Bring your own device (BYOD) which is refers to the policy of permitting employees to bring personally owned devices (laptops, tablets, and smart phones) to their workplace, and to use those devices to access privileged company information and application with secure </p>
+<p>The <b>Light_IoT_CryptoDevice </b> philosophy is to provide small, robust tooling for companies to adopt Bring your own device (BYOD) which is refers to the policy of permitting employees to bring personally owned devices (laptops, tablets, and smart phones) to their workplace, and to use those devices to access privileged company information and application with secure </p>
 
+#Quick Start
+<p>The quickest way to get started is to install the Server.All what you need to run the server is described below:</p>
+ * About 15 minutes
+ * A favorite text editor or IDE  (i use this one<a href="https://c9.io/">c9).</a>
+ * Node.js v4.6.1 or later
+ 
+ <p>The package  can be installed via git clone only (for now). Also you will need to run the Server Locally in order to play the example given. An easy way to do this if you use <a href="https://c9.io/">c9</a> is to follow <a href ="https://www.youtube.com/watch?v=Bhy0vZYElbE">this</a> tutorial </p>
+ 
+ ```
+$git clone https://github.com/PanagiotisDrakatos/Light_IoT_CryptoDevice.git
+$cd Light_IoT_CryptoDevice
+```
+<p>Install dependencies:</p>
+ ```
+$npm install node-rsa
+$npm install node-forge
+$npm install big-integer
+```
+#Usage
+ ```
+$npm start
+```
+<p>Open a Web browser, go to http://localhost:1337,Navigate in <a href="https://github.com/PanagiotisDrakatos/Light_IoT_CryptoDevice/blob/master/SecureBackend/PlainConnection.js">PlainConnection.js</a> and dont forget to change this lines of code with your values</p>
+```Javascript
+var _HOST = '192.168.1.68';//your local server ip 
+var _PORT = 1337;//your local server port
+```
+---
+<p>et voilà!You are ready to Start the Server By Running the <a href="https://github.com/PanagiotisDrakatos/Light_IoT_CryptoDevice/blob/master/SecureBackend/PlainConnection.js">PlainConnection.js</a> script</p>
 <h2>Python Manual</h2>
 ```Python
 from Handshake.SessionHandler import HandleSession
@@ -81,3 +110,14 @@ public class App {
 <p>Navigate <a href="https://github.com/PanagiotisDrakatos/Light_IoT_CryptoDevice/blob/master/SecureUWPClient/SecureUWPClient/MainPage.xaml.cs">here</a> for furthermore informations of how to run this library in UWP apps</p>
 <h2>Android</h2>
 <p>Navigate <a href="https://github.com/PanagiotisDrakatos/Light_IoT_CryptoDevice/blob/master/SecureAndroidClient/app/src/main/java/com/security/crypto/MainActivity.java">here</a> for furthermore informations of how to run this library in Android apps</p>
+
+
+#Contribute
+ 1. Fork it: git clone https://github.com/PanagiotisDrakatos/Light_IoT_CryptoDevice.git
+ 2. Create your feature branch: git checkout -b my-new-feature
+ 3. Commit your changes: git commit -am 'Add some feature'
+ 4. Push to the branch: git push origin my-new-feature
+ 5. Submit a pull request :D
+ 
+#License
+<p> This project is licensed under the MIT License - see the<a href="https://github.com/PanagiotisDrakatos/Light_IoT_CryptoDevice/blob/master/LICENSE">Licence.md</a>file for details</p>
