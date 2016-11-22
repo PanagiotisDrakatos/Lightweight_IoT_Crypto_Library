@@ -72,3 +72,8 @@ public class App {
 }
 ```
 ---
+
+<h2>Universal Windows Platform (UWP)</h2>
+<p>Navigate <a href="https://github.com/PanagiotisDrakatos/Light_IoT_CryptoDevice/blob/master/SecureUWPClient/SecureUWPClient/MainPage.xaml.cs">here</a> for furthermore informations of how to run this library in UWP apps</p>
+<h2>Android</h2>
+<p>Navigate <a href="https://github.com/PanagiotisDrakatos/Light_IoT_CryptoDevice/blob/master/SecureAndroidClient/app/src/main/java/com/security/crypto/MainActivity.java">here</a> for furthermore informations of how to run this library in Android apps</p>
