@@ -40,13 +40,13 @@ $npm install big-integer
  ```
 $npm start
 ```
-<p>Open a Web browser, go to http://localhost:1337,Navigate in <a href="https://github.com/PanagiotisDrakatos/Lightweight IoT Crypto Library/blob/master/SecureBackend/PlainConnection.js">PlainConnection.js</a> and dont forget to change this lines of code with your values</p>
+<p>Open a Web browser, go to http://localhost:1337,Navigate in <a href="https://github.com/PanagiotisDrakatos/Lightweight_IoT_Crypto_Library/blob/master/SecureBackend/PlainConnection.js">PlainConnection.js</a> and dont forget to change this lines of code with your values</p>
 ```Javascript
 var _HOST = '192.168.1.68';//your local server ip 
 var _PORT = 1337;//your local server port
 ```
 ---
-<p>et voilà!You are ready to Start the Server By Running the <a href="https://github.com/PanagiotisDrakatos/Lightweight IoT Crypto Library/blob/master/SecureBackend/PlainConnection.js">PlainConnection.js</a> script</p>
+<p>et voilà!You are ready to Start the Server By Running the <a href="https://github.com/PanagiotisDrakatosLightweight_IoT_Crypto_Library/blob/master/SecureBackend/PlainConnection.js">PlainConnection.js</a> script</p>
 <h2>Python Manual</h2>
 ```Python
 from Handshake.SessionHandler import HandleSession
@@ -106,13 +106,13 @@ public class App {
 ---
 
 <h2>Universal Windows Platform (UWP)</h2>
-<p>Navigate <a href="https://github.com/PanagiotisDrakatos/Lightweight IoT Crypto Library/blob/master/SecureUWPClient/SecureUWPClient/MainPage.xaml.cs">here</a> for furthermore informations of how to run this library in UWP apps</p>
+<p>Navigate <a href="https://github.com/PanagiotisDrakatos/Lightweight_IoT_Crypto_Library/blob/master/SecureUWPClient/SecureUWPClient/MainPage.xaml.cs">here</a> for furthermore informations of how to run this library in UWP apps</p>
 <h2>Android</h2>
-<p>Navigate <a href="https://github.com/PanagiotisDrakatos/Lightweight IoT Crypto Library/blob/master/SecureAndroidClient/app/src/main/java/com/security/crypto/MainActivity.java">here</a> for furthermore informations of how to run this library in Android apps</p>
+<p>Navigate <a href="https://github.com/PanagiotisDrakatos/Lightweight_IoT_Crypto_Library/blob/master/SecureAndroidClient/app/src/main/java/com/security/crypto/MainActivity.java">here</a> for furthermore informations of how to run this library in Android apps</p>
 
 
 #Contribute
- 1. Fork it: git clone https://github.com/PanagiotisDrakatos/Lightweight IoT Crypto Library.git
+ 1. Fork it: git clone https://github.com/PanagiotisDrakatos/Lightweight_IoT_Crypto_Library.git
  2. Create your feature branch: git checkout -b my-new-feature
  3. Commit your changes: git commit -am 'Add some feature'
  4. Push to the branch: git push origin my-new-feature
