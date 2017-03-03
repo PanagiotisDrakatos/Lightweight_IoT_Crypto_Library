@@ -46,7 +46,7 @@ var _HOST = '192.168.1.68';//your local server ip
 var _PORT = 1337;//your local server port
 ```
 ---
-<p>et voilà!You are ready to Start the Server By Running the <a href="https://github.com/PanagiotisDrakatosLightweight_IoT_Crypto_Library/blob/master/SecureBackend/PlainConnection.js">PlainConnection.js</a> script</p>
+<p>et voilà!You are ready to Start the Server By Running the <a href="https://github.com/PanagiotisDrakatos/Lightweight_IoT_Crypto_Library/blob/master/SecureBackend/PlainConnection.js">PlainConnection.js</a> script</p>
 <h2>Python Manual</h2>
 ```Python
 from Handshake.SessionHandler import HandleSession
