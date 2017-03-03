@@ -1,11 +1,11 @@
 
-# Light_IoT_CryptoDevice
+# Lightweight_IoT_Crypto_Library
 <p>A cross Platform Encryption Library which Interact with Many Programming Languages Provides a Lightweight Encryption for all Devices. It gives the oportunity in many Companies to Interact with a server wrriten in pure node.js which can  feeds data across  any device or across any pc where supported this Programming Languages(Java,android,UWP,IOS,python)</p>
 
 # Getting Started
-<p> <b>Light_IoT_CryptoDevice </b>Encryption aims at providing an easy-to-use Cross Platform API which allows an encrypted communication ( multi platform programming languages)over socket which it can be used from every  company or developers who want a High level security inside a network  between multiple cross platform devices</p>
+<p> <b>Lightweight_IoT_Crypto_Library </b>Encryption aims at providing an easy-to-use Cross Platform API which allows an encrypted communication ( multi platform programming languages)over socket which it can be used from every  company or developers who want a High level security inside a network  between multiple cross platform devices</p>
 
-<p>Some of the important characteristics that make Light_IoT_CryptoDevice
+<p>Some of the important characteristics that make Lightweight_IoT_Crypto_Library
 such an attractive option  include the following</p>
 
 | Feature            |                         Description                                        |
@@ -16,7 +16,7 @@ such an attractive option  include the following</p>
 
 
 #Philosophy
-<p>The <b>Light_IoT_CryptoDevice </b> philosophy is to provide small, robust tooling for companies to adopt Bring your own device (BYOD) which is refers to the policy of permitting employees to bring personally owned devices (laptops, tablets, and smart phones) to their workplace, and to use those devices to access privileged company information and application with secure </p>
+<p>The <b>Lightweight_IoT_Crypto_Library </b> philosophy is to provide small, robust tooling for companies to adopt Bring your own device (BYOD) which is refers to the policy of permitting employees to bring personally owned devices (laptops, tablets, and smart phones) to their workplace, and to use those devices to access privileged company information and application with secure </p>
 
 #Quick Start
 <p>The quickest way to get started is to install the Server.All what you need to run the server is described below:</p>
